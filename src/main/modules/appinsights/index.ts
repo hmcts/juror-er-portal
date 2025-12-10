@@ -7,8 +7,7 @@ export class AppInsights {
     if (config.get('appInsights.instrumentationKey')) {
       appInsights.setup(config.get('app-insights-connection-string')).setSendLiveMetrics(true).start();
 
-      appInsights.defaultClient.context.tags[appInsights.defaultClient.context.keys.cloudRole] =
-        'juror-er-portal';
+      appInsights.defaultClient.context.tags[appInsights.defaultClient.context.keys.cloudRole] = 'juror-er-portal';
       appInsights.defaultClient.trackTrace({
         message: 'App insights activated',
       });

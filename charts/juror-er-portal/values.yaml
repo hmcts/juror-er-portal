@@ -4,8 +4,7 @@ nodejs:
   ingressHost: juror-er-portal.{{ .Values.global.environment }}.platform.hmcts.net
   aadIdentityName: juror
   keyVaults:
-      juror:
-        secrets:
-          - name: app-insights-connection-string
-          - name: er-portal-redisConnection
-  environment:
+    juror:
+      secrets:
+        - name: app-insights-connection-string
+        - name: er-portal-redisConnection
