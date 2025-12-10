@@ -1,0 +1,21 @@
+#!groovy
+
+@Library("Infrastructure")
+
+def type = "nodejs"
+def product = "juror"
+def component = "er-portal"
+
+def branchesToSync = ['demo', 'ithc', 'perftest']
+
+def yarnBuilder = new uk.gov.hmcts.contino.YarnBuilder(this)
+
+withPipeline(type, product, component) {
+  enableSlackNotifications('#juror-build-notices')
+  syncBranchesWithMaster(branchesToSync)
+  afterSuccess('build') {
+    yarnBuilder.yarn('playwright install')
+    yarnBuilder.yarn('rebuild puppeteer')
+    yarnBuilder.yarn('build')
+  }
+}
