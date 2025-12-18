@@ -90,7 +90,7 @@ const RAW_RUNTIME_STATE =
           ["juror-er-portal", "workspace:."],\
           ["lint-staged", "npm:13.2.2"],\
           ["lodash", "npm:4.17.21"],\
-          ["mini-css-extract-plugin", "virtual:43ba2d5dbef19a54a56a4416410f3628ef094a5369cee84e80003b3b58a58b3de92035ac3067a897afe2a40bd212252e5fd435207fdd55e6f076908b009d1ab7#npm:2.7.6"],\
+          ["mini-css-extract-plugin", "virtual:43ba2d5dbef19a54a56a4416410f3628ef094a5369cee84e80003b3b58a58b3de92035ac3067a897afe2a40bd212252e5fd435207fdd55e6f076908b009d1ab7#npm:2.9.4"],\
           ["nock", "npm:13.3.1"],\
           ["nodemon", "npm:2.0.22"],\
           ["nunjucks", "virtual:43ba2d5dbef19a54a56a4416410f3628ef094a5369cee84e80003b3b58a58b3de92035ac3067a897afe2a40bd212252e5fd435207fdd55e6f076908b009d1ab7#npm:3.2.4"],\
@@ -14773,7 +14773,7 @@ const RAW_RUNTIME_STATE =
           ["juror-er-portal", "workspace:."],\
           ["lint-staged", "npm:13.2.2"],\
           ["lodash", "npm:4.17.21"],\
-          ["mini-css-extract-plugin", "virtual:43ba2d5dbef19a54a56a4416410f3628ef094a5369cee84e80003b3b58a58b3de92035ac3067a897afe2a40bd212252e5fd435207fdd55e6f076908b009d1ab7#npm:2.7.6"],\
+          ["mini-css-extract-plugin", "virtual:43ba2d5dbef19a54a56a4416410f3628ef094a5369cee84e80003b3b58a58b3de92035ac3067a897afe2a40bd212252e5fd435207fdd55e6f076908b009d1ab7#npm:2.9.4"],\
           ["nock", "npm:13.3.1"],\
           ["nodemon", "npm:2.0.22"],\
           ["nunjucks", "virtual:43ba2d5dbef19a54a56a4416410f3628ef094a5369cee84e80003b3b58a58b3de92035ac3067a897afe2a40bd212252e5fd435207fdd55e6f076908b009d1ab7#npm:3.2.4"],\
@@ -15700,19 +15700,20 @@ const RAW_RUNTIME_STATE =
       }]\
     ]],\
     ["mini-css-extract-plugin", [\
-      ["npm:2.7.6", {\
-        "packageLocation": "./.yarn/cache/mini-css-extract-plugin-npm-2.7.6-0014d24fe7-1f718bfdcb.zip/node_modules/mini-css-extract-plugin/",\
+      ["npm:2.9.4", {\
+        "packageLocation": "./.yarn/cache/mini-css-extract-plugin-npm-2.9.4-9bd74fa138-24a0418dc4.zip/node_modules/mini-css-extract-plugin/",\
         "packageDependencies": [\
-          ["mini-css-extract-plugin", "npm:2.7.6"]\
+          ["mini-css-extract-plugin", "npm:2.9.4"]\
         ],\
         "linkType": "SOFT"\
       }],\
-      ["virtual:43ba2d5dbef19a54a56a4416410f3628ef094a5369cee84e80003b3b58a58b3de92035ac3067a897afe2a40bd212252e5fd435207fdd55e6f076908b009d1ab7#npm:2.7.6", {\
-        "packageLocation": "./.yarn/__virtual__/mini-css-extract-plugin-virtual-9beba88b29/0/cache/mini-css-extract-plugin-npm-2.7.6-0014d24fe7-1f718bfdcb.zip/node_modules/mini-css-extract-plugin/",\
+      ["virtual:43ba2d5dbef19a54a56a4416410f3628ef094a5369cee84e80003b3b58a58b3de92035ac3067a897afe2a40bd212252e5fd435207fdd55e6f076908b009d1ab7#npm:2.9.4", {\
+        "packageLocation": "./.yarn/__virtual__/mini-css-extract-plugin-virtual-d56bdeadc4/0/cache/mini-css-extract-plugin-npm-2.9.4-9bd74fa138-24a0418dc4.zip/node_modules/mini-css-extract-plugin/",\
         "packageDependencies": [\
           ["@types/webpack", null],\
-          ["mini-css-extract-plugin", "virtual:43ba2d5dbef19a54a56a4416410f3628ef094a5369cee84e80003b3b58a58b3de92035ac3067a897afe2a40bd212252e5fd435207fdd55e6f076908b009d1ab7#npm:2.7.6"],\
+          ["mini-css-extract-plugin", "virtual:43ba2d5dbef19a54a56a4416410f3628ef094a5369cee84e80003b3b58a58b3de92035ac3067a897afe2a40bd212252e5fd435207fdd55e6f076908b009d1ab7#npm:2.9.4"],\
           ["schema-utils", "npm:4.3.0"],\
+          ["tapable", "npm:2.3.0"],\
           ["webpack", "virtual:43ba2d5dbef19a54a56a4416410f3628ef094a5369cee84e80003b3b58a58b3de92035ac3067a897afe2a40bd212252e5fd435207fdd55e6f076908b009d1ab7#npm:5.94.0"]\
         ],\
         "packagePeers": [\
@@ -19503,6 +19504,13 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "./.yarn/cache/tapable-npm-2.2.1-8cf5ff3039-1769336dd2.zip/node_modules/tapable/",\
         "packageDependencies": [\
           ["tapable", "npm:2.2.1"]\
+        ],\
+        "linkType": "HARD"\
+      }],\
+      ["npm:2.3.0", {\
+        "packageLocation": "./.yarn/cache/tapable-npm-2.3.0-905b9634e0-496a841039.zip/node_modules/tapable/",\
+        "packageDependencies": [\
+          ["tapable", "npm:2.3.0"]\
         ],\
         "linkType": "HARD"\
       }]\
