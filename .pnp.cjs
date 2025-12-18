@@ -60,7 +60,7 @@ const RAW_RUNTIME_STATE =
           ["axios", "npm:1.7.4"],\
           ["axios-debug-log", "virtual:43ba2d5dbef19a54a56a4416410f3628ef094a5369cee84e80003b3b58a58b3de92035ac3067a897afe2a40bd212252e5fd435207fdd55e6f076908b009d1ab7#npm:1.0.0"],\
           ["babel-loader", "virtual:43ba2d5dbef19a54a56a4416410f3628ef094a5369cee84e80003b3b58a58b3de92035ac3067a897afe2a40bd212252e5fd435207fdd55e6f076908b009d1ab7#npm:9.2.1"],\
-          ["body-parser", "npm:1.20.3"],\
+          ["body-parser", "npm:1.20.4"],\
           ["chai", "npm:4.5.0"],\
           ["chai-as-promised", "virtual:43ba2d5dbef19a54a56a4416410f3628ef094a5369cee84e80003b3b58a58b3de92035ac3067a897afe2a40bd212252e5fd435207fdd55e6f076908b009d1ab7#npm:7.1.2"],\
           ["chokidar", "npm:4.0.3"],\
@@ -8456,6 +8456,25 @@ const RAW_RUNTIME_STATE =
         ],\
         "linkType": "HARD"\
       }],\
+      ["npm:1.20.4", {\
+        "packageLocation": "./.yarn/cache/body-parser-npm-1.20.4-805a6a51d0-ff67e28d3f.zip/node_modules/body-parser/",\
+        "packageDependencies": [\
+          ["body-parser", "npm:1.20.4"],\
+          ["bytes", "npm:3.1.2"],\
+          ["content-type", "npm:1.0.5"],\
+          ["debug", "virtual:c7b184cd14c02e3ce555ab1875e60cf5033c617e17d82c4c02ea822101d3c817f48bf25a766b4d4335742dc5c9c14c2e88a57ed955a56c4ad0613899f82f5618#npm:2.6.9"],\
+          ["depd", "npm:2.0.0"],\
+          ["destroy", "npm:1.2.0"],\
+          ["http-errors", "npm:2.0.1"],\
+          ["iconv-lite", "npm:0.4.24"],\
+          ["on-finished", "npm:2.4.1"],\
+          ["qs", "npm:6.14.0"],\
+          ["raw-body", "npm:2.5.3"],\
+          ["type-is", "npm:1.6.18"],\
+          ["unpipe", "npm:1.0.0"]\
+        ],\
+        "linkType": "HARD"\
+      }],\
       ["npm:2.2.0", {\
         "packageLocation": "./.yarn/cache/body-parser-npm-2.2.0-b3d2aaf918-e9d844b036.zip/node_modules/body-parser/",\
         "packageDependencies": [\
@@ -12804,6 +12823,18 @@ const RAW_RUNTIME_STATE =
           ["toidentifier", "npm:1.0.1"]\
         ],\
         "linkType": "HARD"\
+      }],\
+      ["npm:2.0.1", {\
+        "packageLocation": "./.yarn/cache/http-errors-npm-2.0.1-6d19ab492e-9fe31bc0ed.zip/node_modules/http-errors/",\
+        "packageDependencies": [\
+          ["depd", "npm:2.0.0"],\
+          ["http-errors", "npm:2.0.1"],\
+          ["inherits", "npm:2.0.4"],\
+          ["setprototypeof", "npm:1.2.0"],\
+          ["statuses", "npm:2.0.2"],\
+          ["toidentifier", "npm:1.0.1"]\
+        ],\
+        "linkType": "HARD"\
       }]\
     ]],\
     ["http-proxy-agent", [\
@@ -14712,7 +14743,7 @@ const RAW_RUNTIME_STATE =
           ["axios", "npm:1.7.4"],\
           ["axios-debug-log", "virtual:43ba2d5dbef19a54a56a4416410f3628ef094a5369cee84e80003b3b58a58b3de92035ac3067a897afe2a40bd212252e5fd435207fdd55e6f076908b009d1ab7#npm:1.0.0"],\
           ["babel-loader", "virtual:43ba2d5dbef19a54a56a4416410f3628ef094a5369cee84e80003b3b58a58b3de92035ac3067a897afe2a40bd212252e5fd435207fdd55e6f076908b009d1ab7#npm:9.2.1"],\
-          ["body-parser", "npm:1.20.3"],\
+          ["body-parser", "npm:1.20.4"],\
           ["chai", "npm:4.5.0"],\
           ["chai-as-promised", "virtual:43ba2d5dbef19a54a56a4416410f3628ef094a5369cee84e80003b3b58a58b3de92035ac3067a897afe2a40bd212252e5fd435207fdd55e6f076908b009d1ab7#npm:7.1.2"],\
           ["chokidar", "npm:4.0.3"],\
@@ -17582,6 +17613,17 @@ const RAW_RUNTIME_STATE =
           ["http-errors", "npm:2.0.0"],\
           ["iconv-lite", "npm:0.4.24"],\
           ["raw-body", "npm:2.5.2"],\
+          ["unpipe", "npm:1.0.0"]\
+        ],\
+        "linkType": "HARD"\
+      }],\
+      ["npm:2.5.3", {\
+        "packageLocation": "./.yarn/cache/raw-body-npm-2.5.3-bcb2281e9c-f35759fe5a.zip/node_modules/raw-body/",\
+        "packageDependencies": [\
+          ["bytes", "npm:3.1.2"],\
+          ["http-errors", "npm:2.0.1"],\
+          ["iconv-lite", "npm:0.4.24"],\
+          ["raw-body", "npm:2.5.3"],\
           ["unpipe", "npm:1.0.0"]\
         ],\
         "linkType": "HARD"\
