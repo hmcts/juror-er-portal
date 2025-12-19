@@ -33,7 +33,7 @@ const RAW_RUNTIME_STATE =
           ["@codeceptjs/allure-legacy", "npm:1.0.2"],\
           ["@codeceptjs/configure", "virtual:43ba2d5dbef19a54a56a4416410f3628ef094a5369cee84e80003b3b58a58b3de92035ac3067a897afe2a40bd212252e5fd435207fdd55e6f076908b009d1ab7#npm:0.10.0"],\
           ["@hmcts/info-provider", "npm:1.2.3"],\
-          ["@hmcts/nodejs-healthcheck", "npm:1.8.5"],\
+          ["@hmcts/nodejs-healthcheck", "npm:1.8.6"],\
           ["@hmcts/nodejs-logging", "npm:4.0.4"],\
           ["@hmcts/properties-volume", "npm:0.0.14"],\
           ["@types/body-parser", "npm:1.19.6"],\
@@ -3722,13 +3722,13 @@ const RAW_RUNTIME_STATE =
       }]\
     ]],\
     ["@hmcts/nodejs-healthcheck", [\
-      ["npm:1.8.5", {\
-        "packageLocation": "./.yarn/cache/@hmcts-nodejs-healthcheck-npm-1.8.5-fa7409827a-c847735784.zip/node_modules/@hmcts/nodejs-healthcheck/",\
+      ["npm:1.8.6", {\
+        "packageLocation": "./.yarn/cache/@hmcts-nodejs-healthcheck-npm-1.8.6-da4b651ec1-baa0fcb688.zip/node_modules/@hmcts/nodejs-healthcheck/",\
         "packageDependencies": [\
-          ["@hmcts/nodejs-healthcheck", "npm:1.8.5"],\
+          ["@hmcts/nodejs-healthcheck", "npm:1.8.6"],\
           ["@hmcts/nodejs-logging", "npm:4.0.4"],\
           ["js-yaml", "npm:4.1.0"],\
-          ["superagent", "npm:9.0.2"]\
+          ["superagent", "npm:10.2.3"]\
         ],\
         "linkType": "HARD"\
       }]\
@@ -10861,16 +10861,6 @@ const RAW_RUNTIME_STATE =
       }]\
     ]],\
     ["formidable", [\
-      ["npm:3.5.2", {\
-        "packageLocation": "./.yarn/cache/formidable-npm-3.5.2-6ab06047e7-b9d87af44b.zip/node_modules/formidable/",\
-        "packageDependencies": [\
-          ["dezalgo", "npm:1.0.4"],\
-          ["formidable", "npm:3.5.2"],\
-          ["hexoid", "npm:2.0.0"],\
-          ["once", "npm:1.4.0"]\
-        ],\
-        "linkType": "HARD"\
-      }],\
       ["npm:3.5.4", {\
         "packageLocation": "./.yarn/cache/formidable-npm-3.5.4-a3473998f7-4645e6ce3d.zip/node_modules/formidable/",\
         "packageDependencies": [\
@@ -11506,15 +11496,6 @@ const RAW_RUNTIME_STATE =
         "packageDependencies": [\
           ["hermes-estree", "npm:0.32.0"],\
           ["hermes-parser", "npm:0.32.0"]\
-        ],\
-        "linkType": "HARD"\
-      }]\
-    ]],\
-    ["hexoid", [\
-      ["npm:2.0.0", {\
-        "packageLocation": "./.yarn/cache/hexoid-npm-2.0.0-0ddab1afd3-73d8e135bd.zip/node_modules/hexoid/",\
-        "packageDependencies": [\
-          ["hexoid", "npm:2.0.0"]\
         ],\
         "linkType": "HARD"\
       }]\
@@ -13523,7 +13504,7 @@ const RAW_RUNTIME_STATE =
           ["@codeceptjs/allure-legacy", "npm:1.0.2"],\
           ["@codeceptjs/configure", "virtual:43ba2d5dbef19a54a56a4416410f3628ef094a5369cee84e80003b3b58a58b3de92035ac3067a897afe2a40bd212252e5fd435207fdd55e6f076908b009d1ab7#npm:0.10.0"],\
           ["@hmcts/info-provider", "npm:1.2.3"],\
-          ["@hmcts/nodejs-healthcheck", "npm:1.8.5"],\
+          ["@hmcts/nodejs-healthcheck", "npm:1.8.6"],\
           ["@hmcts/nodejs-logging", "npm:4.0.4"],\
           ["@hmcts/properties-volume", "npm:0.0.14"],\
           ["@types/body-parser", "npm:1.19.6"],\
@@ -18171,22 +18152,6 @@ const RAW_RUNTIME_STATE =
           ["mime", "npm:2.6.0"],\
           ["qs", "npm:6.14.0"],\
           ["superagent", "npm:10.2.3"]\
-        ],\
-        "linkType": "HARD"\
-      }],\
-      ["npm:9.0.2", {\
-        "packageLocation": "./.yarn/cache/superagent-npm-9.0.2-9e8cceb765-d3c0c9051c.zip/node_modules/superagent/",\
-        "packageDependencies": [\
-          ["component-emitter", "npm:1.3.1"],\
-          ["cookiejar", "npm:2.1.4"],\
-          ["debug", "virtual:2b51d83636a42cdc1434b9a574324a754fe902f0d8f47c84f37fc9dd9e42f0be9d5cd9599ca4ccf8c80b9be5756c7aea000403217e2fd7a585437af81d091cfd#npm:4.4.0"],\
-          ["fast-safe-stringify", "npm:2.1.1"],\
-          ["form-data", "npm:4.0.2"],\
-          ["formidable", "npm:3.5.2"],\
-          ["methods", "npm:1.1.2"],\
-          ["mime", "npm:2.6.0"],\
-          ["qs", "npm:6.14.0"],\
-          ["superagent", "npm:9.0.2"]\
         ],\
         "linkType": "HARD"\
       }]\
