@@ -102,7 +102,7 @@ const RAW_RUNTIME_STATE =
           ["request", "npm:2.88.2"],\
           ["require-directory", "npm:2.1.1"],\
           ["sass", "npm:1.97.0"],\
-          ["sass-loader", "virtual:43ba2d5dbef19a54a56a4416410f3628ef094a5369cee84e80003b3b58a58b3de92035ac3067a897afe2a40bd212252e5fd435207fdd55e6f076908b009d1ab7#npm:13.3.3"],\
+          ["sass-loader", "virtual:43ba2d5dbef19a54a56a4416410f3628ef094a5369cee84e80003b3b58a58b3de92035ac3067a897afe2a40bd212252e5fd435207fdd55e6f076908b009d1ab7#npm:16.0.6"],\
           ["serve-favicon", "npm:2.5.1"],\
           ["sinon", "npm:15.2.0"],\
           ["sinon-chai", "virtual:43ba2d5dbef19a54a56a4416410f3628ef094a5369cee84e80003b3b58a58b3de92035ac3067a897afe2a40bd212252e5fd435207fdd55e6f076908b009d1ab7#npm:3.7.0"],\
@@ -14673,7 +14673,7 @@ const RAW_RUNTIME_STATE =
           ["request", "npm:2.88.2"],\
           ["require-directory", "npm:2.1.1"],\
           ["sass", "npm:1.97.0"],\
-          ["sass-loader", "virtual:43ba2d5dbef19a54a56a4416410f3628ef094a5369cee84e80003b3b58a58b3de92035ac3067a897afe2a40bd212252e5fd435207fdd55e6f076908b009d1ab7#npm:13.3.3"],\
+          ["sass-loader", "virtual:43ba2d5dbef19a54a56a4416410f3628ef094a5369cee84e80003b3b58a58b3de92035ac3067a897afe2a40bd212252e5fd435207fdd55e6f076908b009d1ab7#npm:16.0.6"],\
           ["serve-favicon", "npm:2.5.1"],\
           ["sinon", "npm:15.2.0"],\
           ["sinon-chai", "virtual:43ba2d5dbef19a54a56a4416410f3628ef094a5369cee84e80003b3b58a58b3de92035ac3067a897afe2a40bd212252e5fd435207fdd55e6f076908b009d1ab7#npm:3.7.0"],\
@@ -18247,36 +18247,36 @@ const RAW_RUNTIME_STATE =
       }]\
     ]],\
     ["sass-loader", [\
-      ["npm:13.3.3", {\
-        "packageLocation": "./.yarn/cache/sass-loader-npm-13.3.3-f5ea4bd230-a8a8519add.zip/node_modules/sass-loader/",\
+      ["npm:16.0.6", {\
+        "packageLocation": "./.yarn/cache/sass-loader-npm-16.0.6-af7e26fbcb-ff4d11c48a.zip/node_modules/sass-loader/",\
         "packageDependencies": [\
-          ["sass-loader", "npm:13.3.3"]\
+          ["sass-loader", "npm:16.0.6"]\
         ],\
         "linkType": "SOFT"\
       }],\
-      ["virtual:43ba2d5dbef19a54a56a4416410f3628ef094a5369cee84e80003b3b58a58b3de92035ac3067a897afe2a40bd212252e5fd435207fdd55e6f076908b009d1ab7#npm:13.3.3", {\
-        "packageLocation": "./.yarn/__virtual__/sass-loader-virtual-4a1d83bdf4/0/cache/sass-loader-npm-13.3.3-f5ea4bd230-a8a8519add.zip/node_modules/sass-loader/",\
+      ["virtual:43ba2d5dbef19a54a56a4416410f3628ef094a5369cee84e80003b3b58a58b3de92035ac3067a897afe2a40bd212252e5fd435207fdd55e6f076908b009d1ab7#npm:16.0.6", {\
+        "packageLocation": "./.yarn/__virtual__/sass-loader-virtual-5e59f1c6ba/0/cache/sass-loader-npm-16.0.6-af7e26fbcb-ff4d11c48a.zip/node_modules/sass-loader/",\
         "packageDependencies": [\
-          ["@types/fibers", null],\
+          ["@rspack/core", null],\
           ["@types/node-sass", null],\
+          ["@types/rspack__core", null],\
           ["@types/sass", null],\
           ["@types/sass-embedded", null],\
           ["@types/webpack", null],\
-          ["fibers", null],\
           ["neo-async", "npm:2.6.2"],\
           ["node-sass", null],\
           ["sass", "npm:1.97.0"],\
           ["sass-embedded", null],\
-          ["sass-loader", "virtual:43ba2d5dbef19a54a56a4416410f3628ef094a5369cee84e80003b3b58a58b3de92035ac3067a897afe2a40bd212252e5fd435207fdd55e6f076908b009d1ab7#npm:13.3.3"],\
+          ["sass-loader", "virtual:43ba2d5dbef19a54a56a4416410f3628ef094a5369cee84e80003b3b58a58b3de92035ac3067a897afe2a40bd212252e5fd435207fdd55e6f076908b009d1ab7#npm:16.0.6"],\
           ["webpack", "virtual:43ba2d5dbef19a54a56a4416410f3628ef094a5369cee84e80003b3b58a58b3de92035ac3067a897afe2a40bd212252e5fd435207fdd55e6f076908b009d1ab7#npm:5.104.1"]\
         ],\
         "packagePeers": [\
-          "@types/fibers",\
+          "@rspack/core",\
           "@types/node-sass",\
+          "@types/rspack__core",\
           "@types/sass-embedded",\
           "@types/sass",\
           "@types/webpack",\
-          "fibers",\
           "node-sass",\
           "sass-embedded",\
           "sass",\
