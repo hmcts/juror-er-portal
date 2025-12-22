@@ -108,7 +108,7 @@ const RAW_RUNTIME_STATE =
           ["sinon-chai", "virtual:43ba2d5dbef19a54a56a4416410f3628ef094a5369cee84e80003b3b58a58b3de92035ac3067a897afe2a40bd212252e5fd435207fdd55e6f076908b009d1ab7#npm:3.7.0"],\
           ["style-loader", "virtual:43ba2d5dbef19a54a56a4416410f3628ef094a5369cee84e80003b3b58a58b3de92035ac3067a897afe2a40bd212252e5fd435207fdd55e6f076908b009d1ab7#npm:3.3.4"],\
           ["stylelint", "npm:16.26.1"],\
-          ["stylelint-config-standard", "virtual:43ba2d5dbef19a54a56a4416410f3628ef094a5369cee84e80003b3b58a58b3de92035ac3067a897afe2a40bd212252e5fd435207fdd55e6f076908b009d1ab7#npm:36.0.1"],\
+          ["stylelint-config-standard", "virtual:43ba2d5dbef19a54a56a4416410f3628ef094a5369cee84e80003b3b58a58b3de92035ac3067a897afe2a40bd212252e5fd435207fdd55e6f076908b009d1ab7#npm:39.0.1"],\
           ["stylelint-config-standard-scss", "virtual:43ba2d5dbef19a54a56a4416410f3628ef094a5369cee84e80003b3b58a58b3de92035ac3067a897afe2a40bd212252e5fd435207fdd55e6f076908b009d1ab7#npm:13.1.0"],\
           ["superagent", "npm:10.2.3"],\
           ["supertest", "npm:7.1.4"],\
@@ -14679,7 +14679,7 @@ const RAW_RUNTIME_STATE =
           ["sinon-chai", "virtual:43ba2d5dbef19a54a56a4416410f3628ef094a5369cee84e80003b3b58a58b3de92035ac3067a897afe2a40bd212252e5fd435207fdd55e6f076908b009d1ab7#npm:3.7.0"],\
           ["style-loader", "virtual:43ba2d5dbef19a54a56a4416410f3628ef094a5369cee84e80003b3b58a58b3de92035ac3067a897afe2a40bd212252e5fd435207fdd55e6f076908b009d1ab7#npm:3.3.4"],\
           ["stylelint", "npm:16.26.1"],\
-          ["stylelint-config-standard", "virtual:43ba2d5dbef19a54a56a4416410f3628ef094a5369cee84e80003b3b58a58b3de92035ac3067a897afe2a40bd212252e5fd435207fdd55e6f076908b009d1ab7#npm:36.0.1"],\
+          ["stylelint-config-standard", "virtual:43ba2d5dbef19a54a56a4416410f3628ef094a5369cee84e80003b3b58a58b3de92035ac3067a897afe2a40bd212252e5fd435207fdd55e6f076908b009d1ab7#npm:39.0.1"],\
           ["stylelint-config-standard-scss", "virtual:43ba2d5dbef19a54a56a4416410f3628ef094a5369cee84e80003b3b58a58b3de92035ac3067a897afe2a40bd212252e5fd435207fdd55e6f076908b009d1ab7#npm:13.1.0"],\
           ["superagent", "npm:10.2.3"],\
           ["supertest", "npm:7.1.4"],\
@@ -19250,12 +19250,32 @@ const RAW_RUNTIME_STATE =
         ],\
         "linkType": "SOFT"\
       }],\
+      ["npm:17.0.0", {\
+        "packageLocation": "./.yarn/cache/stylelint-config-recommended-npm-17.0.0-dc584afd86-8164ed0b2c.zip/node_modules/stylelint-config-recommended/",\
+        "packageDependencies": [\
+          ["stylelint-config-recommended", "npm:17.0.0"]\
+        ],\
+        "linkType": "SOFT"\
+      }],\
       ["virtual:c33531ea81e162dae5c98656216976e5f18196a3a7decae2a279e4c280e2e1f1d59555efdef09b054693b859d821a0e8b9be63700a12570efd0793fb7fde12d1#npm:14.0.1", {\
         "packageLocation": "./.yarn/__virtual__/stylelint-config-recommended-virtual-592ba4d845/0/cache/stylelint-config-recommended-npm-14.0.1-95db5683e0-93c3fe9209.zip/node_modules/stylelint-config-recommended/",\
         "packageDependencies": [\
           ["@types/stylelint", null],\
           ["stylelint", "npm:16.26.1"],\
           ["stylelint-config-recommended", "virtual:c33531ea81e162dae5c98656216976e5f18196a3a7decae2a279e4c280e2e1f1d59555efdef09b054693b859d821a0e8b9be63700a12570efd0793fb7fde12d1#npm:14.0.1"]\
+        ],\
+        "packagePeers": [\
+          "@types/stylelint",\
+          "stylelint"\
+        ],\
+        "linkType": "HARD"\
+      }],\
+      ["virtual:f73d1131ddd0f571fa066a52eac3fefb85419be3b5cd3f2fab9aa1eead04b65b3d47f0e4de59be25d58f082faf67f855f8eb20d5bed19ad0053049199d862cb0#npm:17.0.0", {\
+        "packageLocation": "./.yarn/__virtual__/stylelint-config-recommended-virtual-f885e500d6/0/cache/stylelint-config-recommended-npm-17.0.0-dc584afd86-8164ed0b2c.zip/node_modules/stylelint-config-recommended/",\
+        "packageDependencies": [\
+          ["@types/stylelint", null],\
+          ["stylelint", "npm:16.26.1"],\
+          ["stylelint-config-recommended", "virtual:f73d1131ddd0f571fa066a52eac3fefb85419be3b5cd3f2fab9aa1eead04b65b3d47f0e4de59be25d58f082faf67f855f8eb20d5bed19ad0053049199d862cb0#npm:17.0.0"]\
         ],\
         "packagePeers": [\
           "@types/stylelint",\
@@ -19301,13 +19321,34 @@ const RAW_RUNTIME_STATE =
         ],\
         "linkType": "SOFT"\
       }],\
-      ["virtual:43ba2d5dbef19a54a56a4416410f3628ef094a5369cee84e80003b3b58a58b3de92035ac3067a897afe2a40bd212252e5fd435207fdd55e6f076908b009d1ab7#npm:36.0.1", {\
-        "packageLocation": "./.yarn/__virtual__/stylelint-config-standard-virtual-ea759cedaa/0/cache/stylelint-config-standard-npm-36.0.1-3dfaa82493-50b8fb396f.zip/node_modules/stylelint-config-standard/",\
+      ["npm:39.0.1", {\
+        "packageLocation": "./.yarn/cache/stylelint-config-standard-npm-39.0.1-cd6ac3edd8-b295339fee.zip/node_modules/stylelint-config-standard/",\
+        "packageDependencies": [\
+          ["stylelint-config-standard", "npm:39.0.1"]\
+        ],\
+        "linkType": "SOFT"\
+      }],\
+      ["virtual:43ba2d5dbef19a54a56a4416410f3628ef094a5369cee84e80003b3b58a58b3de92035ac3067a897afe2a40bd212252e5fd435207fdd55e6f076908b009d1ab7#npm:39.0.1", {\
+        "packageLocation": "./.yarn/__virtual__/stylelint-config-standard-virtual-f73d1131dd/0/cache/stylelint-config-standard-npm-39.0.1-cd6ac3edd8-b295339fee.zip/node_modules/stylelint-config-standard/",\
+        "packageDependencies": [\
+          ["@types/stylelint", null],\
+          ["stylelint", "npm:16.26.1"],\
+          ["stylelint-config-recommended", "virtual:f73d1131ddd0f571fa066a52eac3fefb85419be3b5cd3f2fab9aa1eead04b65b3d47f0e4de59be25d58f082faf67f855f8eb20d5bed19ad0053049199d862cb0#npm:17.0.0"],\
+          ["stylelint-config-standard", "virtual:43ba2d5dbef19a54a56a4416410f3628ef094a5369cee84e80003b3b58a58b3de92035ac3067a897afe2a40bd212252e5fd435207fdd55e6f076908b009d1ab7#npm:39.0.1"]\
+        ],\
+        "packagePeers": [\
+          "@types/stylelint",\
+          "stylelint"\
+        ],\
+        "linkType": "HARD"\
+      }],\
+      ["virtual:eeaffbe8cab62251fde6113cf20e3aa2e4de4030272c0a9d027eb8d247be0776d5130a584427a1570b1eb544ab4be5400b1f6ad4338fdd6eefa19799ca30d6f7#npm:36.0.1", {\
+        "packageLocation": "./.yarn/__virtual__/stylelint-config-standard-virtual-4299d7a0da/0/cache/stylelint-config-standard-npm-36.0.1-3dfaa82493-50b8fb396f.zip/node_modules/stylelint-config-standard/",\
         "packageDependencies": [\
           ["@types/stylelint", null],\
           ["stylelint", "npm:16.26.1"],\
           ["stylelint-config-recommended", "virtual:c33531ea81e162dae5c98656216976e5f18196a3a7decae2a279e4c280e2e1f1d59555efdef09b054693b859d821a0e8b9be63700a12570efd0793fb7fde12d1#npm:14.0.1"],\
-          ["stylelint-config-standard", "virtual:43ba2d5dbef19a54a56a4416410f3628ef094a5369cee84e80003b3b58a58b3de92035ac3067a897afe2a40bd212252e5fd435207fdd55e6f076908b009d1ab7#npm:36.0.1"]\
+          ["stylelint-config-standard", "virtual:eeaffbe8cab62251fde6113cf20e3aa2e4de4030272c0a9d027eb8d247be0776d5130a584427a1570b1eb544ab4be5400b1f6ad4338fdd6eefa19799ca30d6f7#npm:36.0.1"]\
         ],\
         "packagePeers": [\
           "@types/stylelint",\
@@ -19332,7 +19373,7 @@ const RAW_RUNTIME_STATE =
           ["postcss", "npm:8.5.6"],\
           ["stylelint", "npm:16.26.1"],\
           ["stylelint-config-recommended-scss", "virtual:eeaffbe8cab62251fde6113cf20e3aa2e4de4030272c0a9d027eb8d247be0776d5130a584427a1570b1eb544ab4be5400b1f6ad4338fdd6eefa19799ca30d6f7#npm:14.1.0"],\
-          ["stylelint-config-standard", "virtual:43ba2d5dbef19a54a56a4416410f3628ef094a5369cee84e80003b3b58a58b3de92035ac3067a897afe2a40bd212252e5fd435207fdd55e6f076908b009d1ab7#npm:36.0.1"],\
+          ["stylelint-config-standard", "virtual:eeaffbe8cab62251fde6113cf20e3aa2e4de4030272c0a9d027eb8d247be0776d5130a584427a1570b1eb544ab4be5400b1f6ad4338fdd6eefa19799ca30d6f7#npm:36.0.1"],\
           ["stylelint-config-standard-scss", "virtual:43ba2d5dbef19a54a56a4416410f3628ef094a5369cee84e80003b3b58a58b3de92035ac3067a897afe2a40bd212252e5fd435207fdd55e6f076908b009d1ab7#npm:13.1.0"]\
         ],\
         "packagePeers": [\
