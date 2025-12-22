@@ -78,7 +78,7 @@ const RAW_RUNTIME_STATE =
           ["eslint-plugin-jest", "virtual:43ba2d5dbef19a54a56a4416410f3628ef094a5369cee84e80003b3b58a58b3de92035ac3067a897afe2a40bd212252e5fd435207fdd55e6f076908b009d1ab7#npm:29.9.0"],\
           ["express", "npm:5.2.1"],\
           ["express-nunjucks", "virtual:43ba2d5dbef19a54a56a4416410f3628ef094a5369cee84e80003b3b58a58b3de92035ac3067a897afe2a40bd212252e5fd435207fdd55e6f076908b009d1ab7#npm:3.1.2"],\
-          ["express-rate-limit", "virtual:43ba2d5dbef19a54a56a4416410f3628ef094a5369cee84e80003b3b58a58b3de92035ac3067a897afe2a40bd212252e5fd435207fdd55e6f076908b009d1ab7#npm:7.5.1"],\
+          ["express-rate-limit", "virtual:43ba2d5dbef19a54a56a4416410f3628ef094a5369cee84e80003b3b58a58b3de92035ac3067a897afe2a40bd212252e5fd435207fdd55e6f076908b009d1ab7#npm:8.2.1"],\
           ["glob", "npm:10.4.5"],\
           ["govuk-frontend", "npm:5.13.0"],\
           ["helmet", "npm:8.1.0"],\
@@ -11141,19 +11141,20 @@ const RAW_RUNTIME_STATE =
       }]\
     ]],\
     ["express-rate-limit", [\
-      ["npm:7.5.1", {\
-        "packageLocation": "./.yarn/cache/express-rate-limit-npm-7.5.1-d29d074dcb-357c339845.zip/node_modules/express-rate-limit/",\
+      ["npm:8.2.1", {\
+        "packageLocation": "./.yarn/cache/express-rate-limit-npm-8.2.1-c7cb936ff6-7cbf70df2e.zip/node_modules/express-rate-limit/",\
         "packageDependencies": [\
-          ["express-rate-limit", "npm:7.5.1"]\
+          ["express-rate-limit", "npm:8.2.1"]\
         ],\
         "linkType": "SOFT"\
       }],\
-      ["virtual:43ba2d5dbef19a54a56a4416410f3628ef094a5369cee84e80003b3b58a58b3de92035ac3067a897afe2a40bd212252e5fd435207fdd55e6f076908b009d1ab7#npm:7.5.1", {\
-        "packageLocation": "./.yarn/__virtual__/express-rate-limit-virtual-23226e351c/0/cache/express-rate-limit-npm-7.5.1-d29d074dcb-357c339845.zip/node_modules/express-rate-limit/",\
+      ["virtual:43ba2d5dbef19a54a56a4416410f3628ef094a5369cee84e80003b3b58a58b3de92035ac3067a897afe2a40bd212252e5fd435207fdd55e6f076908b009d1ab7#npm:8.2.1", {\
+        "packageLocation": "./.yarn/__virtual__/express-rate-limit-virtual-82ccdb0116/0/cache/express-rate-limit-npm-8.2.1-c7cb936ff6-7cbf70df2e.zip/node_modules/express-rate-limit/",\
         "packageDependencies": [\
           ["@types/express", "npm:5.0.6"],\
           ["express", "npm:5.2.1"],\
-          ["express-rate-limit", "virtual:43ba2d5dbef19a54a56a4416410f3628ef094a5369cee84e80003b3b58a58b3de92035ac3067a897afe2a40bd212252e5fd435207fdd55e6f076908b009d1ab7#npm:7.5.1"]\
+          ["express-rate-limit", "virtual:43ba2d5dbef19a54a56a4416410f3628ef094a5369cee84e80003b3b58a58b3de92035ac3067a897afe2a40bd212252e5fd435207fdd55e6f076908b009d1ab7#npm:8.2.1"],\
+          ["ip-address", "npm:10.0.1"]\
         ],\
         "packagePeers": [\
           "@types/express",\
@@ -12754,6 +12755,13 @@ const RAW_RUNTIME_STATE =
       }]\
     ]],\
     ["ip-address", [\
+      ["npm:10.0.1", {\
+        "packageLocation": "./.yarn/cache/ip-address-npm-10.0.1-862be6199a-09731acda3.zip/node_modules/ip-address/",\
+        "packageDependencies": [\
+          ["ip-address", "npm:10.0.1"]\
+        ],\
+        "linkType": "HARD"\
+      }],\
       ["npm:9.0.5", {\
         "packageLocation": "./.yarn/cache/ip-address-npm-9.0.5-9fa024d42a-1ed81e0672.zip/node_modules/ip-address/",\
         "packageDependencies": [\
@@ -14349,7 +14357,7 @@ const RAW_RUNTIME_STATE =
           ["eslint-plugin-jest", "virtual:43ba2d5dbef19a54a56a4416410f3628ef094a5369cee84e80003b3b58a58b3de92035ac3067a897afe2a40bd212252e5fd435207fdd55e6f076908b009d1ab7#npm:29.9.0"],\
           ["express", "npm:5.2.1"],\
           ["express-nunjucks", "virtual:43ba2d5dbef19a54a56a4416410f3628ef094a5369cee84e80003b3b58a58b3de92035ac3067a897afe2a40bd212252e5fd435207fdd55e6f076908b009d1ab7#npm:3.1.2"],\
-          ["express-rate-limit", "virtual:43ba2d5dbef19a54a56a4416410f3628ef094a5369cee84e80003b3b58a58b3de92035ac3067a897afe2a40bd212252e5fd435207fdd55e6f076908b009d1ab7#npm:7.5.1"],\
+          ["express-rate-limit", "virtual:43ba2d5dbef19a54a56a4416410f3628ef094a5369cee84e80003b3b58a58b3de92035ac3067a897afe2a40bd212252e5fd435207fdd55e6f076908b009d1ab7#npm:8.2.1"],\
           ["glob", "npm:10.4.5"],\
           ["govuk-frontend", "npm:5.13.0"],\
           ["helmet", "npm:8.1.0"],\
