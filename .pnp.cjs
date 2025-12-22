@@ -73,7 +73,7 @@ const RAW_RUNTIME_STATE =
           ["csurf", "npm:1.11.0"],\
           ["debug", "virtual:79691d0c2acc36a90db65e29df3260804bc6dbae4d0383e5aa99e42134a08bb3c71f0eb74bbfe41a6ea83a24046391c8e43ae628ae2e6ea98331d2c42c76dc03#npm:4.4.3"],\
           ["eslint", "npm:8.57.1"],\
-          ["eslint-config-prettier", "virtual:43ba2d5dbef19a54a56a4416410f3628ef094a5369cee84e80003b3b58a58b3de92035ac3067a897afe2a40bd212252e5fd435207fdd55e6f076908b009d1ab7#npm:8.10.2"],\
+          ["eslint-config-prettier", "virtual:43ba2d5dbef19a54a56a4416410f3628ef094a5369cee84e80003b3b58a58b3de92035ac3067a897afe2a40bd212252e5fd435207fdd55e6f076908b009d1ab7#npm:10.1.8"],\
           ["eslint-plugin-import", "virtual:43ba2d5dbef19a54a56a4416410f3628ef094a5369cee84e80003b3b58a58b3de92035ac3067a897afe2a40bd212252e5fd435207fdd55e6f076908b009d1ab7#npm:2.32.0"],\
           ["eslint-plugin-jest", "virtual:43ba2d5dbef19a54a56a4416410f3628ef094a5369cee84e80003b3b58a58b3de92035ac3067a897afe2a40bd212252e5fd435207fdd55e6f076908b009d1ab7#npm:27.9.0"],\
           ["express", "npm:5.1.0"],\
@@ -10622,19 +10622,19 @@ const RAW_RUNTIME_STATE =
       }]\
     ]],\
     ["eslint-config-prettier", [\
-      ["npm:8.10.2", {\
-        "packageLocation": "./.yarn/cache/eslint-config-prettier-npm-8.10.2-2e293fd4f2-9818f26eeb.zip/node_modules/eslint-config-prettier/",\
+      ["npm:10.1.8", {\
+        "packageLocation": "./.yarn/cache/eslint-config-prettier-npm-10.1.8-c1c834370f-03f8e6ea1a.zip/node_modules/eslint-config-prettier/",\
         "packageDependencies": [\
-          ["eslint-config-prettier", "npm:8.10.2"]\
+          ["eslint-config-prettier", "npm:10.1.8"]\
         ],\
         "linkType": "SOFT"\
       }],\
-      ["virtual:43ba2d5dbef19a54a56a4416410f3628ef094a5369cee84e80003b3b58a58b3de92035ac3067a897afe2a40bd212252e5fd435207fdd55e6f076908b009d1ab7#npm:8.10.2", {\
-        "packageLocation": "./.yarn/__virtual__/eslint-config-prettier-virtual-3c5f5ce416/0/cache/eslint-config-prettier-npm-8.10.2-2e293fd4f2-9818f26eeb.zip/node_modules/eslint-config-prettier/",\
+      ["virtual:43ba2d5dbef19a54a56a4416410f3628ef094a5369cee84e80003b3b58a58b3de92035ac3067a897afe2a40bd212252e5fd435207fdd55e6f076908b009d1ab7#npm:10.1.8", {\
+        "packageLocation": "./.yarn/__virtual__/eslint-config-prettier-virtual-3204b79fe2/0/cache/eslint-config-prettier-npm-10.1.8-c1c834370f-03f8e6ea1a.zip/node_modules/eslint-config-prettier/",\
         "packageDependencies": [\
           ["@types/eslint", null],\
           ["eslint", "npm:8.57.1"],\
-          ["eslint-config-prettier", "virtual:43ba2d5dbef19a54a56a4416410f3628ef094a5369cee84e80003b3b58a58b3de92035ac3067a897afe2a40bd212252e5fd435207fdd55e6f076908b009d1ab7#npm:8.10.2"]\
+          ["eslint-config-prettier", "virtual:43ba2d5dbef19a54a56a4416410f3628ef094a5369cee84e80003b3b58a58b3de92035ac3067a897afe2a40bd212252e5fd435207fdd55e6f076908b009d1ab7#npm:10.1.8"]\
         ],\
         "packagePeers": [\
           "@types/eslint",\
@@ -14284,7 +14284,7 @@ const RAW_RUNTIME_STATE =
           ["csurf", "npm:1.11.0"],\
           ["debug", "virtual:79691d0c2acc36a90db65e29df3260804bc6dbae4d0383e5aa99e42134a08bb3c71f0eb74bbfe41a6ea83a24046391c8e43ae628ae2e6ea98331d2c42c76dc03#npm:4.4.3"],\
           ["eslint", "npm:8.57.1"],\
-          ["eslint-config-prettier", "virtual:43ba2d5dbef19a54a56a4416410f3628ef094a5369cee84e80003b3b58a58b3de92035ac3067a897afe2a40bd212252e5fd435207fdd55e6f076908b009d1ab7#npm:8.10.2"],\
+          ["eslint-config-prettier", "virtual:43ba2d5dbef19a54a56a4416410f3628ef094a5369cee84e80003b3b58a58b3de92035ac3067a897afe2a40bd212252e5fd435207fdd55e6f076908b009d1ab7#npm:10.1.8"],\
           ["eslint-plugin-import", "virtual:43ba2d5dbef19a54a56a4416410f3628ef094a5369cee84e80003b3b58a58b3de92035ac3067a897afe2a40bd212252e5fd435207fdd55e6f076908b009d1ab7#npm:2.32.0"],\
           ["eslint-plugin-jest", "virtual:43ba2d5dbef19a54a56a4416410f3628ef094a5369cee84e80003b3b58a58b3de92035ac3067a897afe2a40bd212252e5fd435207fdd55e6f076908b009d1ab7#npm:27.9.0"],\
           ["express", "npm:5.1.0"],\
