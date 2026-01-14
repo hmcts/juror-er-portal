@@ -4,5 +4,6 @@ src/main/public/main*.css
 src/main/public/main*.js
 .pnp.*
 src/main/views/govuk
+src/main/views/moj
 .yarn/
 catalog-info.yaml
