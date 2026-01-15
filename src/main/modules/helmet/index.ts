@@ -1,3 +1,5 @@
+import { randomBytes } from 'crypto';
+
 import * as express from 'express';
 import helmet from 'helmet';
 
@@ -15,8 +17,13 @@ export class Helmet {
 
   public enableFor(app: express.Express): void {
     // include default helmet functions
-    // TODO: SHOULDNT LEAVE LIKE THIS! NEED TO ADD NONCE SUPPORT
-    const scriptSrc = [self, googleAnalyticsDomain, "'unsafe-inline'"];
+    const scriptSrc = [self, googleAnalyticsDomain, "'sha256-+6WnXIl4mbFTCARd8N3COQmT3bJJmo32N8q8ZSQAIcU='"];
+
+    app.use((req, res, next) => {
+      res.locals.nonce = randomBytes(16).toString('base64');
+      scriptSrc.push(`'nonce-${res.locals.nonce}'`);
+      next();
+    });
 
     if (this.developmentMode) {
       // Uncaught EvalError: Refused to evaluate a string as JavaScript because 'unsafe-eval'
