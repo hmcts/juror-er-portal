@@ -19,7 +19,7 @@
     }) }}
 
     {% if env === "development" or skipSSO === true %}
-      <form action="#" method="POST" id="emailAuth">
+      <form action="{{ devLoginUrl }}" method="POST" id="emailAuth">
 
         {{ govukInput({
           label: {
