@@ -10,5 +10,11 @@
       "includeSubDomains": true,
       "preload": true
     }
+  },
+  "secrets": {
+    "juror": {
+      "er-portal-sessionSecret": "[super-secret-key][super-secret-key][super-secret-key]",
+      "app-insights-connection-string": "very-secure-key"
+    }
   }
 }
