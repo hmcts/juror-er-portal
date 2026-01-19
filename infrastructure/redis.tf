@@ -1,8 +1,3 @@
-locals {
-  resourceName = "${var.product}-${var.env}-rg"
-  vaultName    = "${var.product}-${var.env}"
-  cacheName    = "${var.product}-${var.component}-redis-cache"
-}
 
 module "juror-er-redis" {
   source                        = "git@github.com:hmcts/cnp-module-redis?ref=master"
@@ -17,11 +12,6 @@ module "juror-er-redis" {
   sku_name                      = var.sku_name
   family                        = var.family
   capacity                      = var.capacity
-}
-
-data "azurerm_key_vault" "juror" {
-  name                = local.vaultName
-  resource_group_name = local.resourceName
 }
 
 resource "azurerm_key_vault_secret" "redis_connection_string" {
