@@ -1,0 +1,16 @@
+{% from "moj/components/sub-navigation/macro.njk" import mojSubNavigation %}
+
+{{ mojSubNavigation({
+  label: "Sub navigation",
+  items: [{
+    text: "Data upload",
+    href: "#1",
+    active: true
+  }, {
+    text: "Upload guidance",
+    href: "#2"
+  }, {
+    text: "Account details",
+    href: "#3"
+  }]
+}) }}

@@ -1,3 +1,37 @@
 
 @use "govuk-frontend/dist/govuk/index" as *;
-@forward "@ministryofjustice/frontend/moj/all";
+@use "@ministryofjustice/frontend/moj/all" as moj;
+
+.selected-la-banner {
+  width: 100%;
+  height: 10px;
+  background-color: govuk-colour("blue");
+  
+  &__with-name {
+    height: 50px;
+    background-color: govuk-colour("blue");
+  }
+  
+  &__container {
+    @include moj.moj-width-container;
+    @include govuk-clearfix;
+    position: relative;
+    padding-top: 8px; // hard coded to center the text
+    
+    &-title {
+      color: govuk-colour("white");
+    }
+  }
+}
+
+.sub-nav {
+  &__container {
+    @include moj.moj-width-container;
+    @include govuk-clearfix;
+    position: relative;
+  }
+}
+
+.juror-er-header {
+  background-color: govuk-colour("blue") !important;
+}

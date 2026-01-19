@@ -1,0 +1,45 @@
+{% extends "./govuk-template.njk" %}
+
+{% from "moj/components/sub-navigation/macro.njk" import mojSubNavigation %}
+
+{% block head %}
+  {% include "webpack/css.njk" %}
+{% endblock %}
+
+{% block selectedLocalAuthority %}
+  {# TODO FIX THIS TO WORK PROPERLY WHEN LOGGING IN AS LA #}
+  {% if currentApp %}
+    <div class="selected-la-banner__with-name">
+      <div class="selected-la-banner__container">
+        <span class="govuk-heading-s selected-la-banner__container-title">Manchester City Council</span>
+      </div>
+    </div>
+  {% endif %}
+{% endblock %}
+
+{% block subNavigation %}
+  {% if currentApp %}
+    {{ mojSubNavigation({
+      label: "Sub navigation",
+      items: [{
+        text: "Data upload",
+        href: "/data-upload",
+        active: currentApp == "data-upload"
+      }, {
+        text: "Upload guidance",
+        href: "/upload-guidance",
+        active: currentApp == "upload-guidance"
+      }, {
+        text: "Account details",
+        href: "/account-details",
+        active: currentApp == "account-details"
+      }],
+      classes: "sub-nav__container"
+    }) }}
+  {% endif %}
+{% endblock %}
+
+{% block bodyEnd %}
+  {# Run JavaScript at end of the <body>, to avoid blocking the initial render. #}
+  {% include "webpack/js.njk" %}
+{% endblock %}

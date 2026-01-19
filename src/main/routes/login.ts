@@ -14,12 +14,12 @@ export default function (app: Application): void {
   });
 
   app.post('/dev-login', (req, res) => {
-    app.logger.crit('Dev login request', {
+    app.logger.info('Dev login request', {
       email: req.body.email,
     });
     req.session.user = {
       email: req.body.email,
     };
-    return res.redirect('/');
+    return res.redirect('/data-upload');
   });
 }
