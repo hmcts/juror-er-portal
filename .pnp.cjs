@@ -66,7 +66,7 @@ const RAW_RUNTIME_STATE =
           ["chai-as-promised", "virtual:43ba2d5dbef19a54a56a4416410f3628ef094a5369cee84e80003b3b58a58b3de92035ac3067a897afe2a40bd212252e5fd435207fdd55e6f076908b009d1ab7#npm:8.0.2"],\
           ["chokidar", "npm:5.0.0"],\
           ["codeceptjs", "npm:3.7.6"],\
-          ["config", "npm:4.1.1"],\
+          ["config", "npm:4.2.0"],\
           ["cookie-parser", "npm:1.4.7"],\
           ["copy-webpack-plugin", "virtual:43ba2d5dbef19a54a56a4416410f3628ef094a5369cee84e80003b3b58a58b3de92035ac3067a897afe2a40bd212252e5fd435207fdd55e6f076908b009d1ab7#npm:9.1.0"],\
           ["css-loader", "virtual:43ba2d5dbef19a54a56a4416410f3628ef094a5369cee84e80003b3b58a58b3de92035ac3067a897afe2a40bd212252e5fd435207fdd55e6f076908b009d1ab7#npm:7.1.2"],\
@@ -9597,10 +9597,10 @@ const RAW_RUNTIME_STATE =
       }]\
     ]],\
     ["config", [\
-      ["npm:4.1.1", {\
-        "packageLocation": "./.yarn/cache/config-npm-4.1.1-59fd6fcb8f-46bbe8cf10.zip/node_modules/config/",\
+      ["npm:4.2.0", {\
+        "packageLocation": "./.yarn/cache/config-npm-4.2.0-7bc75aa05e-54cff89fd3.zip/node_modules/config/",\
         "packageDependencies": [\
-          ["config", "npm:4.1.1"],\
+          ["config", "npm:4.2.0"],\
           ["json5", "npm:2.2.3"]\
         ],\
         "linkType": "HARD"\
@@ -15128,7 +15128,7 @@ const RAW_RUNTIME_STATE =
           ["chai-as-promised", "virtual:43ba2d5dbef19a54a56a4416410f3628ef094a5369cee84e80003b3b58a58b3de92035ac3067a897afe2a40bd212252e5fd435207fdd55e6f076908b009d1ab7#npm:8.0.2"],\
           ["chokidar", "npm:5.0.0"],\
           ["codeceptjs", "npm:3.7.6"],\
-          ["config", "npm:4.1.1"],\
+          ["config", "npm:4.2.0"],\
           ["cookie-parser", "npm:1.4.7"],\
           ["copy-webpack-plugin", "virtual:43ba2d5dbef19a54a56a4416410f3628ef094a5369cee84e80003b3b58a58b3de92035ac3067a897afe2a40bd212252e5fd435207fdd55e6f076908b009d1ab7#npm:9.1.0"],\
           ["css-loader", "virtual:43ba2d5dbef19a54a56a4416410f3628ef094a5369cee84e80003b3b58a58b3de92035ac3067a897afe2a40bd212252e5fd435207fdd55e6f076908b009d1ab7#npm:7.1.2"],\
