@@ -1,12 +1,1 @@
-{
-  "secrets": {
-    "juror": {
-      "er-portal-sessionSecret": "[super-secret-key][super-secret-key][super-secret-key]",
-      "app-insights-connection-string": "very-secure-key",
-      "er-portal-redisConnection": "redis://localhost:6379"
-    }
-  },
-  "logger": {
-    "logConsole": "trace"
-  }
-}
+{}

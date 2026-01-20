@@ -1,7 +1,1 @@
-{
-  "secrets": {
-    "juror": {
-      "er-portal-sessionSecret": "[super-secret-key][super-secret-key][super-secret-key]"
-    }
-  }
-}
+{}
