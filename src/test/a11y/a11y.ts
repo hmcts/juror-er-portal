@@ -89,5 +89,3 @@ function testAccessibility(url: string): void {
     }, 150000);
   });
 }
-
-// testAccessibility('/');
