@@ -1,8 +1,5 @@
 {
   "useCSRFProtection": true,
-  "appInsights": {
-    "instrumentationKey": false
-  },
   "security": {
     "referrerPolicy": "same-origin",
     "hsts": {
@@ -16,7 +13,8 @@
   },
   "secrets": {
     "juror": {
-      "er-portal-sessionSecret": "default"
+      "er-portal-sessionSecret": "default",
+      "app-insights-connection-string": false
     }
   }
 }
