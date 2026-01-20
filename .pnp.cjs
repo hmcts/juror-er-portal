@@ -111,7 +111,7 @@ const RAW_RUNTIME_STATE =
           ["stylelint-config-standard", "virtual:43ba2d5dbef19a54a56a4416410f3628ef094a5369cee84e80003b3b58a58b3de92035ac3067a897afe2a40bd212252e5fd435207fdd55e6f076908b009d1ab7#npm:40.0.0"],\
           ["stylelint-config-standard-scss", "virtual:43ba2d5dbef19a54a56a4416410f3628ef094a5369cee84e80003b3b58a58b3de92035ac3067a897afe2a40bd212252e5fd435207fdd55e6f076908b009d1ab7#npm:16.0.0"],\
           ["superagent", "npm:10.3.0"],\
-          ["supertest", "npm:7.1.4"],\
+          ["supertest", "npm:7.2.2"],\
           ["ts-jest", "virtual:43ba2d5dbef19a54a56a4416410f3628ef094a5369cee84e80003b3b58a58b3de92035ac3067a897afe2a40bd212252e5fd435207fdd55e6f076908b009d1ab7#npm:29.1.0"],\
           ["ts-loader", "virtual:43ba2d5dbef19a54a56a4416410f3628ef094a5369cee84e80003b3b58a58b3de92035ac3067a897afe2a40bd212252e5fd435207fdd55e6f076908b009d1ab7#npm:9.5.4"],\
           ["ts-node", "virtual:43ba2d5dbef19a54a56a4416410f3628ef094a5369cee84e80003b3b58a58b3de92035ac3067a897afe2a40bd212252e5fd435207fdd55e6f076908b009d1ab7#npm:10.9.2"],\
@@ -15181,7 +15181,7 @@ const RAW_RUNTIME_STATE =
           ["stylelint-config-standard", "virtual:43ba2d5dbef19a54a56a4416410f3628ef094a5369cee84e80003b3b58a58b3de92035ac3067a897afe2a40bd212252e5fd435207fdd55e6f076908b009d1ab7#npm:40.0.0"],\
           ["stylelint-config-standard-scss", "virtual:43ba2d5dbef19a54a56a4416410f3628ef094a5369cee84e80003b3b58a58b3de92035ac3067a897afe2a40bd212252e5fd435207fdd55e6f076908b009d1ab7#npm:16.0.0"],\
           ["superagent", "npm:10.3.0"],\
-          ["supertest", "npm:7.1.4"],\
+          ["supertest", "npm:7.2.2"],\
           ["ts-jest", "virtual:43ba2d5dbef19a54a56a4416410f3628ef094a5369cee84e80003b3b58a58b3de92035ac3067a897afe2a40bd212252e5fd435207fdd55e6f076908b009d1ab7#npm:29.1.0"],\
           ["ts-loader", "virtual:43ba2d5dbef19a54a56a4416410f3628ef094a5369cee84e80003b3b58a58b3de92035ac3067a897afe2a40bd212252e5fd435207fdd55e6f076908b009d1ab7#npm:9.5.4"],\
           ["ts-node", "virtual:43ba2d5dbef19a54a56a4416410f3628ef094a5369cee84e80003b3b58a58b3de92035ac3067a897afe2a40bd212252e5fd435207fdd55e6f076908b009d1ab7#npm:10.9.2"],\
@@ -19902,12 +19902,13 @@ const RAW_RUNTIME_STATE =
       }]\
     ]],\
     ["supertest", [\
-      ["npm:7.1.4", {\
-        "packageLocation": "./.yarn/cache/supertest-npm-7.1.4-7caf1d38d9-ecb5d41f2b.zip/node_modules/supertest/",\
+      ["npm:7.2.2", {\
+        "packageLocation": "./.yarn/cache/supertest-npm-7.2.2-f014d10061-41b29e005b.zip/node_modules/supertest/",\
         "packageDependencies": [\
+          ["cookie-signature", "npm:1.2.2"],\
           ["methods", "npm:1.1.2"],\
           ["superagent", "npm:10.3.0"],\
-          ["supertest", "npm:7.1.4"]\
+          ["supertest", "npm:7.2.2"]\
         ],\
         "linkType": "HARD"\
       }]\
