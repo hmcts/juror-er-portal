@@ -13,5 +13,10 @@
   },
   "logger": {
     "logConsole": "debug"
+  },
+  "secrets": {
+    "juror": {
+      "er-portal-sessionSecret": "default"
+    }
   }
 }
