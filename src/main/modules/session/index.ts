@@ -35,11 +35,11 @@ export class SessionConfig {
     });
 
     this._redisClient.connect().catch((error: unknown) => {
-      Logger.instance.error('Error connecting redis client: ', error);
+      Logger.instance.crit('Error connecting redis client: ', error);
     });
 
     this._redisClient.on('error', (err: unknown) => {
-      Logger.instance.error(`Could not connect to redis: ${String(err)}`);
+      Logger.instance.crit(`Could not connect to redis: ${String(err)}`);
     });
     this._redisClient.on('connect', () => {
       Logger.instance.info('Connected to redis successfully');
