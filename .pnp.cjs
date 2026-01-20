@@ -91,7 +91,7 @@ const RAW_RUNTIME_STATE =
           ["juror-er-portal", "workspace:."],\
           ["lint-staged", "npm:16.2.7"],\
           ["lodash", "npm:4.17.21"],\
-          ["mini-css-extract-plugin", "virtual:43ba2d5dbef19a54a56a4416410f3628ef094a5369cee84e80003b3b58a58b3de92035ac3067a897afe2a40bd212252e5fd435207fdd55e6f076908b009d1ab7#npm:2.9.4"],\
+          ["mini-css-extract-plugin", "virtual:43ba2d5dbef19a54a56a4416410f3628ef094a5369cee84e80003b3b58a58b3de92035ac3067a897afe2a40bd212252e5fd435207fdd55e6f076908b009d1ab7#npm:2.10.0"],\
           ["nock", "npm:14.0.10"],\
           ["nodemon", "npm:3.1.11"],\
           ["nunjucks", "virtual:43ba2d5dbef19a54a56a4416410f3628ef094a5369cee84e80003b3b58a58b3de92035ac3067a897afe2a40bd212252e5fd435207fdd55e6f076908b009d1ab7#npm:3.2.4"],\
@@ -15161,7 +15161,7 @@ const RAW_RUNTIME_STATE =
           ["juror-er-portal", "workspace:."],\
           ["lint-staged", "npm:16.2.7"],\
           ["lodash", "npm:4.17.21"],\
-          ["mini-css-extract-plugin", "virtual:43ba2d5dbef19a54a56a4416410f3628ef094a5369cee84e80003b3b58a58b3de92035ac3067a897afe2a40bd212252e5fd435207fdd55e6f076908b009d1ab7#npm:2.9.4"],\
+          ["mini-css-extract-plugin", "virtual:43ba2d5dbef19a54a56a4416410f3628ef094a5369cee84e80003b3b58a58b3de92035ac3067a897afe2a40bd212252e5fd435207fdd55e6f076908b009d1ab7#npm:2.10.0"],\
           ["nock", "npm:14.0.10"],\
           ["nodemon", "npm:3.1.11"],\
           ["nunjucks", "virtual:43ba2d5dbef19a54a56a4416410f3628ef094a5369cee84e80003b3b58a58b3de92035ac3067a897afe2a40bd212252e5fd435207fdd55e6f076908b009d1ab7#npm:3.2.4"],\
@@ -16126,18 +16126,18 @@ const RAW_RUNTIME_STATE =
       }]\
     ]],\
     ["mini-css-extract-plugin", [\
-      ["npm:2.9.4", {\
-        "packageLocation": "./.yarn/cache/mini-css-extract-plugin-npm-2.9.4-9bd74fa138-24a0418dc4.zip/node_modules/mini-css-extract-plugin/",\
+      ["npm:2.10.0", {\
+        "packageLocation": "./.yarn/cache/mini-css-extract-plugin-npm-2.10.0-17ef9eed6b-bae5350ab8.zip/node_modules/mini-css-extract-plugin/",\
         "packageDependencies": [\
-          ["mini-css-extract-plugin", "npm:2.9.4"]\
+          ["mini-css-extract-plugin", "npm:2.10.0"]\
         ],\
         "linkType": "SOFT"\
       }],\
-      ["virtual:43ba2d5dbef19a54a56a4416410f3628ef094a5369cee84e80003b3b58a58b3de92035ac3067a897afe2a40bd212252e5fd435207fdd55e6f076908b009d1ab7#npm:2.9.4", {\
-        "packageLocation": "./.yarn/__virtual__/mini-css-extract-plugin-virtual-d56bdeadc4/0/cache/mini-css-extract-plugin-npm-2.9.4-9bd74fa138-24a0418dc4.zip/node_modules/mini-css-extract-plugin/",\
+      ["virtual:43ba2d5dbef19a54a56a4416410f3628ef094a5369cee84e80003b3b58a58b3de92035ac3067a897afe2a40bd212252e5fd435207fdd55e6f076908b009d1ab7#npm:2.10.0", {\
+        "packageLocation": "./.yarn/__virtual__/mini-css-extract-plugin-virtual-a2e710dd19/0/cache/mini-css-extract-plugin-npm-2.10.0-17ef9eed6b-bae5350ab8.zip/node_modules/mini-css-extract-plugin/",\
         "packageDependencies": [\
           ["@types/webpack", null],\
-          ["mini-css-extract-plugin", "virtual:43ba2d5dbef19a54a56a4416410f3628ef094a5369cee84e80003b3b58a58b3de92035ac3067a897afe2a40bd212252e5fd435207fdd55e6f076908b009d1ab7#npm:2.9.4"],\
+          ["mini-css-extract-plugin", "virtual:43ba2d5dbef19a54a56a4416410f3628ef094a5369cee84e80003b3b58a58b3de92035ac3067a897afe2a40bd212252e5fd435207fdd55e6f076908b009d1ab7#npm:2.10.0"],\
           ["schema-utils", "npm:4.3.0"],\
           ["tapable", "npm:2.3.0"],\
           ["webpack", "virtual:43ba2d5dbef19a54a56a4416410f3628ef094a5369cee84e80003b3b58a58b3de92035ac3067a897afe2a40bd212252e5fd435207fdd55e6f076908b009d1ab7#npm:5.104.1"]\
