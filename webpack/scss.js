@@ -11,7 +11,7 @@ const miniCss = new MiniCssExtractPlugin({
   chunkFilename: '[id].css',
 });
 
-const path = require("path");
+const path = require('path');
 
 module.exports = {
   rules: [
@@ -36,7 +36,7 @@ module.exports = {
           options: {
             sassOptions: {
               quietDeps: true,
-              loadPaths: [path.resolve(__dirname, "..")],
+              loadPaths: [path.resolve(__dirname, '..')],
             },
           },
         },
