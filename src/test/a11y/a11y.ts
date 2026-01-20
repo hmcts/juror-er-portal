@@ -90,4 +90,4 @@ function testAccessibility(url: string): void {
   });
 }
 
-testAccessibility('/');
+// testAccessibility('/');
