@@ -39,10 +39,10 @@ export class SessionConfig {
     });
 
     this._redisClient.on('error', (err: unknown) => {
-      Logger.instance.error(`${new Date().toLocaleString()} - Could not connect to redis ${String(err)}`);
+      Logger.instance.error(`Could not connect to redis: ${String(err)}`);
     });
     this._redisClient.on('connect', () => {
-      Logger.instance.info(`${new Date().toLocaleString()} - Connected to redis successfully`);
+      Logger.instance.info('Connected to redis successfully');
     });
   }
 
