@@ -4,15 +4,17 @@ import * as express from 'express';
 import session, { SessionOptions } from 'express-session';
 import { RedisClientType, createClient } from 'redis';
 
+import { Logger } from '../logger';
+
 export class SessionConfig {
   private _sessionExpires: number = 10 * 60 * 60; // seconds
   private _redisClient?: RedisClientType;
 
   public start(app: express.Express): void {
     const secret: string = secretsConfig.get('secrets.juror.er-portal-sessionSecret');
-    
+
     const redisConnectionString = this._getRedisConnectionString();
-    
+
     const config = this._config(secret);
 
     if (redisConnectionString) {
@@ -32,16 +34,15 @@ export class SessionConfig {
       },
     });
 
-    this._redisClient.connect()
-      .catch((error: unknown) => {
-        console.log('Error connecting redis client: ', error);
-      });
+    this._redisClient.connect().catch((error: unknown) => {
+      Logger.instance.error('Error connecting redis client: ', error);
+    });
 
     this._redisClient.on('error', (err: unknown) => {
-      console.log(new Date().toLocaleString() + ' - ' + 'Could not connect to redis ' + String(err));
+      Logger.instance.error(`${new Date().toLocaleString()} - Could not connect to redis ${String(err)}`);
     });
     this._redisClient.on('connect', () => {
-      console.log(new Date().toLocaleString() + ' - ' + 'Connected to redis successfully');
+      Logger.instance.info(`${new Date().toLocaleString()} - Connected to redis successfully`);
     });
   }
 
@@ -59,7 +60,7 @@ export class SessionConfig {
       redisConnectionString = secretsConfig.get('secrets.juror.er-portal-redisConnection');
       return redisConnectionString;
     } catch (err) {
-      console.log('Redis connection string is not available... setting in memory sessions');
+      Logger.instance.warn('Redis connection string is not available... setting in memory sessions');
       return;
     }
   }

@@ -15,9 +15,7 @@ import { Nunjucks } from './modules/nunjucks';
 import { PropertiesVolume } from './modules/properties-volume';
 import { SessionConfig } from './modules/session';
 
-
 const { setupDev } = require('./development');
-
 
 const env = process.env.NODE_ENV || 'development';
 const developmentMode = env === 'development';

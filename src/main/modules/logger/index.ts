@@ -24,7 +24,7 @@ const levels = {
   trace: 5,
 };
 
-const checkDirectoryCreate = (dir : string) => {
+const checkDirectoryCreate = (dir: string) => {
   try {
     fse.ensureDirSync(dir);
     return true;
@@ -42,25 +42,27 @@ export class Logger {
     this.transports = [];
   }
 
-  initLogger(app: express.Express) : void {
+  initLogger(app: express.Express): void {
     // Add custom colors
     winston.addColors(customColors);
     // Setup the actual logger
     Logger.instance = winston.createLogger({
       levels,
-      transports: this.transports.length ? this.transports : [
-        new winston.transports.Console({
-          level: this.config.logConsole || 'info',
-          format: winston.format.combine(
-            winston.format.colorize(),
-            winston.format.timestamp(),
-            winston.format.printf(({ timestamp, level, message, ...meta }) => {
-              const metaString = Object.keys(meta).length ? ` ${JSON.stringify(meta)}` : '';
-              return `${timestamp} ${level}: ${message} ${metaString}`;
+      transports: this.transports.length
+        ? this.transports
+        : [
+            new winston.transports.Console({
+              level: this.config.logConsole || 'info',
+              format: winston.format.combine(
+                winston.format.colorize(),
+                winston.format.timestamp(),
+                winston.format.printf(({ timestamp, level, message, ...meta }) => {
+                  const metaString = Object.keys(meta).length ? ` ${JSON.stringify(meta)}` : '';
+                  return `${timestamp} ${level}: ${message} ${metaString}`;
+                })
+              ),
             }),
-          ),
-        }),
-      ],
+          ],
     });
 
     // Ensure log directory exists

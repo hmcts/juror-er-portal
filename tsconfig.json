@@ -19,10 +19,7 @@
       "router/*": ["router/*"],
       "routes/*": ["routes/*"]
     },
-    "typeRoots": [
-      "./src/main/types",
-      "./node_modules/@types"
-]
+    "typeRoots": ["./src/main/types", "./node_modules/@types"]
   },
   "exclude": ["**/*.test.ts", "**/codecept.conf.ts", "**/__mocks__/*"]
 }

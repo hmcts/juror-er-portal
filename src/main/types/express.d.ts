@@ -1,5 +1,5 @@
 import * as express from 'express';
-import winston from 'winston'; 
+import winston from 'winston';
 
 // Extend Express namespace to add 'logger' property
 declare global {
