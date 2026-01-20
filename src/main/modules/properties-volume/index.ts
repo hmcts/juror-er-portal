@@ -9,7 +9,6 @@ export class PropertiesVolume {
       propertiesVolume.addTo(config);
 
       this.setSecret('secrets.juror.app-insights-connection-string', 'app-insights-connection-string');
-      this.setSecret('secrets.juror.er-portal-sessionSecret', 'er-portal-sessionSecret');
     }
   }
 
