@@ -36,7 +36,7 @@ const RAW_RUNTIME_STATE =
           ["@hmcts/info-provider", "npm:1.2.3"],\
           ["@hmcts/nodejs-healthcheck", "npm:1.8.6"],\
           ["@hmcts/nodejs-logging", "npm:4.0.4"],\
-          ["@hmcts/properties-volume", "npm:1.2.0"],\
+          ["@hmcts/properties-volume", "npm:1.3.0"],\
           ["@types/body-parser", "npm:1.19.6"],\
           ["@types/chai", "npm:5.2.3"],\
           ["@types/chai-as-promised", "npm:8.0.2"],\
@@ -4083,14 +4083,14 @@ const RAW_RUNTIME_STATE =
       }]\
     ]],\
     ["@hmcts/properties-volume", [\
-      ["npm:1.2.0", {\
-        "packageLocation": "./.yarn/cache/@hmcts-properties-volume-npm-1.2.0-3245eeab8f-d808737225.zip/node_modules/@hmcts/properties-volume/",\
+      ["npm:1.3.0", {\
+        "packageLocation": "./.yarn/cache/@hmcts-properties-volume-npm-1.3.0-87e64a3a99-e88ed2a3e8.zip/node_modules/@hmcts/properties-volume/",\
         "packageDependencies": [\
           ["@azure/identity", "npm:4.13.0"],\
           ["@azure/keyvault-secrets", "npm:4.10.0"],\
           ["@hmcts/nodejs-logging", "npm:4.0.4"],\
-          ["@hmcts/properties-volume", "npm:1.2.0"],\
-          ["js-yaml", "npm:4.1.0"],\
+          ["@hmcts/properties-volume", "npm:1.3.0"],\
+          ["js-yaml", "npm:4.1.1"],\
           ["lodash", "npm:4.17.21"]\
         ],\
         "linkType": "HARD"\
@@ -14883,6 +14883,14 @@ const RAW_RUNTIME_STATE =
           ["js-yaml", "npm:4.1.0"]\
         ],\
         "linkType": "HARD"\
+      }],\
+      ["npm:4.1.1", {\
+        "packageLocation": "./.yarn/cache/js-yaml-npm-4.1.1-86ec786790-a52d0519f0.zip/node_modules/js-yaml/",\
+        "packageDependencies": [\
+          ["argparse", "npm:2.0.1"],\
+          ["js-yaml", "npm:4.1.1"]\
+        ],\
+        "linkType": "HARD"\
       }]\
     ]],\
     ["js2xmlparser", [\
@@ -15098,7 +15106,7 @@ const RAW_RUNTIME_STATE =
           ["@hmcts/info-provider", "npm:1.2.3"],\
           ["@hmcts/nodejs-healthcheck", "npm:1.8.6"],\
           ["@hmcts/nodejs-logging", "npm:4.0.4"],\
-          ["@hmcts/properties-volume", "npm:1.2.0"],\
+          ["@hmcts/properties-volume", "npm:1.3.0"],\
           ["@types/body-parser", "npm:1.19.6"],\
           ["@types/chai", "npm:5.2.3"],\
           ["@types/chai-as-promised", "npm:8.0.2"],\
