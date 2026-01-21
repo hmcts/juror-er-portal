@@ -6,7 +6,7 @@
     "node": ">=12.0.0"
   },
   "scripts": {
-    "start": "NODE_ENV=production ts-node -r tsconfig-paths/register src/main/server.ts",
+    "start": "NODE_ENV=production tsx src/main/server.ts",
     "start:dev": "nodemon --config nodemon.json",
     "lint": "stylelint **/*.scss -v -q && eslint . --ext .js,.ts && prettier --check .",
     "lint:fix": "prettier --write . .github && eslint --fix .",
@@ -65,8 +65,8 @@
     "stylelint-config-standard": "^40.0.0",
     "stylelint-config-standard-scss": "^16.0.0",
     "superagent": "^10.2.1",
-    "ts-node": "10.9.2",
     "tsconfig-paths": "4.2.0",
+    "tsx": "^4.21.0",
     "typescript": "5.9.3",
     "winston": "^3.19.0"
   },
