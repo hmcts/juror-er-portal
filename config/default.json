@@ -15,7 +15,7 @@
     "juror": {
       "er-portal-sessionSecret": "default",
       "app-insights-connection-string": false,
-      "er-portal-redisConnection": "default"
+      "er-portal-redisConnection": false
     }
   }
 }
