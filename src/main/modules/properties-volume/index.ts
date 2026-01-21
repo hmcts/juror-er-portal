@@ -7,8 +7,6 @@ export class PropertiesVolume {
   enableFor(server: Application): void {
     if (server.locals.ENV !== 'development') {
       propertiesVolume.addTo(config);
-
-      this.setSecret('secrets.juror.app-insights-connection-string', 'app-insights-connection-string');
     }
   }
 
