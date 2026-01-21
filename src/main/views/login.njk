@@ -18,30 +18,28 @@
       classes: "govuk-button--start"
     }) }}
 
-    {% if env === "development" or skipSSO === true %}
-      <form action="{{ devLoginUrl }}" method="POST" id="emailAuth">
+    <form action="{{ devLoginUrl }}" method="POST" id="emailAuth">
 
-        {{ govukInput({
-          label: {
-            text: "Email address"
-          },
-          classes: "govuk-input--width-20",
-          id: "email",
-          name: "email",
-          errorMessage: emailError
-        }) }}
+      {{ govukInput({
+        label: {
+          text: "Email address"
+        },
+        classes: "govuk-input--width-20",
+        id: "email",
+        name: "email",
+        errorMessage: emailError
+      }) }}
 
-        {{ govukButton({
-          text: "Sign in with email",
-          classes: "govuk-button--start",
-          attributes: {
-            id: "signInEmailButton"
-          }
-        }) }}
+      {{ govukButton({
+        text: "Sign in with email",
+        classes: "govuk-button--start",
+        attributes: {
+          id: "signInEmailButton"
+        }
+      }) }}
 
-        {{ csrfProtection(csrftoken) }}
-      </form>
-    {% endif %}
+      {{ csrfProtection(csrftoken) }}
+    </form>
 
   </div>
 

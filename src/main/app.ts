@@ -18,6 +18,7 @@ import { SessionConfig } from './modules/session';
 const { setupDev } = require('./development');
 
 const env = process.env.NODE_ENV || 'development';
+const skipSSO = !!process.env.SKIP_SSO || false;
 const developmentMode = env === 'development';
 
 const limiter = RateLimit({
@@ -27,6 +28,7 @@ const limiter = RateLimit({
 
 export const app = express();
 app.locals.ENV = env;
+app.locals.skipSSO = skipSSO;
 
 new Logger(config.get('logger')).initLogger(app);
 new PropertiesVolume().enableFor(app);
