@@ -1,3 +1,5 @@
+import { randomBytes } from 'crypto';
+
 import * as express from 'express';
 import helmet from 'helmet';
 
@@ -17,6 +19,12 @@ export class Helmet {
     // include default helmet functions
     const scriptSrc = [self, googleAnalyticsDomain, "'sha256-+6WnXIl4mbFTCARd8N3COQmT3bJJmo32N8q8ZSQAIcU='"];
 
+    app.use((req, res, next) => {
+      res.locals.nonce = randomBytes(16).toString('base64');
+      scriptSrc.push(`'nonce-${res.locals.nonce}'`);
+      next();
+    });
+
     if (this.developmentMode) {
       // Uncaught EvalError: Refused to evaluate a string as JavaScript because 'unsafe-eval'
       // is not an allowed source of script in the following Content Security Policy directive:
@@ -34,6 +42,7 @@ export class Helmet {
             fontSrc: [self, 'data:'],
             imgSrc: [self, googleAnalyticsDomain],
             objectSrc: [self],
+            manifestSrc: [self],
             scriptSrc,
             styleSrc: [self],
           },

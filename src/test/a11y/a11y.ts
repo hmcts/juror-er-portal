@@ -1,9 +1,9 @@
 import { Server } from 'http';
 import { AddressInfo } from 'net';
 
-import { app } from '../../main/app';
-
 import supertest from 'supertest';
+
+import { app } from '../../main/app';
 
 const pa11y = require('pa11y');
 
@@ -65,7 +65,7 @@ function ensurePageCallWillSucceed(url: string): Promise<void> {
 function runPally(url: string): Promise<Pa11yResult> {
   const fullUrl = `http://localhost:${port}${url}`;
   return pa11y(fullUrl, {
-    hideElements: '.govuk-footer__licence-logo, .govuk-header__logotype-crown',
+    hideElements: '.govuk-footer__licence-logo, .govuk-header__logotype-crown, .govuk-footer__crown',
     timeout: 120000,
     chromeLaunchConfig: { args: ['--no-sandbox', '--disable-setuid-sandbox'] },
   });

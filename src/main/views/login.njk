@@ -1,0 +1,46 @@
+{% extends "layouts/default.njk" %}
+
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/input/macro.njk" import govukInput %}
+{% from "macros/csrf.njk" import csrfProtection %}
+
+{% block page_title %}{{ serviceName }} - Sign in{% endblock %}
+{% block page_identifier %}Sign in{% endblock %}
+
+{% block content %}
+
+  <div>
+    <h1 class="govuk-heading-l">Sign in</h1>
+
+    {{ govukButton({
+      text: "Sign in",
+      href: "#",
+      classes: "govuk-button--start"
+    }) }}
+
+    <form action="{{ devLoginUrl }}" method="POST" id="emailAuth">
+
+      {{ govukInput({
+        label: {
+          text: "Email address"
+        },
+        classes: "govuk-input--width-20",
+        id: "email",
+        name: "email",
+        errorMessage: emailError
+      }) }}
+
+      {{ govukButton({
+        text: "Sign in with email",
+        classes: "govuk-button--start",
+        attributes: {
+          id: "signInEmailButton"
+        }
+      }) }}
+
+      {{ csrfProtection(csrftoken) }}
+    </form>
+
+  </div>
+
+{% endblock %}

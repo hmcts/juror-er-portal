@@ -21,6 +21,11 @@ export class Nunjucks {
 
     app.use((req, res, next) => {
       res.locals.pagePath = req.path;
+      res.locals.csrftoken = req.csrfToken;
+      res.locals.organisationName = 'HMCTS';
+      res.locals.serviceName = 'Electoral roll data portal';
+      res.locals.env = app.locals.ENV;
+      res.locals.govukRebrand = true;
       next();
     });
   }

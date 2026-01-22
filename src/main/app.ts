@@ -1,11 +1,5 @@
 import * as path from 'path';
 
-import { HTTPError } from './HttpError';
-import { AppInsights } from './modules/appinsights';
-import { Helmet } from './modules/helmet';
-import { Nunjucks } from './modules/nunjucks';
-import { PropertiesVolume } from './modules/properties-volume';
-
 import * as bodyParser from 'body-parser';
 import config = require('config');
 import cookieParser from 'cookie-parser';
@@ -13,11 +7,18 @@ import express from 'express';
 import RateLimit from 'express-rate-limit';
 import { glob } from 'glob';
 
+import { HTTPError } from './HttpError';
+import { AppInsights } from './modules/appinsights';
+import { Helmet } from './modules/helmet';
+import { Logger } from './modules/logger';
+import { Nunjucks } from './modules/nunjucks';
+import { PropertiesVolume } from './modules/properties-volume';
+import { SessionConfig } from './modules/session';
+
 const { setupDev } = require('./development');
 
-const { Logger } = require('@hmcts/nodejs-logging');
-
 const env = process.env.NODE_ENV || 'development';
+const skipSSO = !!process.env.SKIP_SSO || false;
 const developmentMode = env === 'development';
 
 const limiter = RateLimit({
@@ -27,14 +28,15 @@ const limiter = RateLimit({
 
 export const app = express();
 app.locals.ENV = env;
+app.locals.skipSSO = skipSSO;
 
-const logger = Logger.getLogger('app');
-
+new Logger(config.get('logger')).initLogger(app);
 new PropertiesVolume().enableFor(app);
 new AppInsights().enable();
 new Nunjucks(developmentMode).enableFor(app);
 // secure the application by adding various HTTP headers to its responses
 new Helmet(config.get('security')).enableFor(app);
+new SessionConfig().start(app);
 
 app.get('/favicon.ico', limiter, (req, res) => {
   res.sendFile(path.join(__dirname, '/public/assets/images/favicon.ico'));
@@ -63,7 +65,7 @@ app.use((req, res) => {
 
 // error handler
 app.use((err: HTTPError, req: express.Request, res: express.Response, _next: express.NextFunction) => {
-  logger.error(`${err.stack || err}`);
+  app.logger.crit(`${err.stack || err}`);
 
   // set locals, only providing error in development
   res.locals.message = err.message;

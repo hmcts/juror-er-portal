@@ -1,14 +1,21 @@
 {
   "useCSRFProtection": true,
-  "appInsights": {
-    "instrumentationKey": false
-  },
   "security": {
     "referrerPolicy": "same-origin",
     "hsts": {
       "maxAge": 31536000,
       "includeSubDomains": true,
       "preload": true
+    }
+  },
+  "logger": {
+    "logConsole": "debug"
+  },
+  "secrets": {
+    "juror": {
+      "er-portal-sessionSecret": "default",
+      "app-insights-connection-string": false,
+      "er-portal-redisConnection": false
     }
   }
 }

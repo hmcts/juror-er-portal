@@ -1,7 +1,7 @@
 import { Application } from 'express';
 
 export default function (app: Application): void {
-  app.get('/', (req, res) => {
-    res.render('home');
+  app.get('/data-upload', (req, res) => {
+    res.render('data-upload/data-upload.njk');
   });
 }

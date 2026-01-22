@@ -6,7 +6,7 @@ import { expect } from 'chai';
 const testUrl = process.env.TEST_URL || 'http://localhost:3000';
 
 describe('Smoke Test', () => {
-  describe('Home page loads', () => {
+  describe('Login page loads', () => {
     test('with correct content', async () => {
       try {
         const response: AxiosResponse = await axios.get(testUrl, {
@@ -14,7 +14,7 @@ describe('Smoke Test', () => {
             'Accept-Encoding': 'gzip',
           },
         });
-        expect(response.data).includes('<h1 class="govuk-heading-xl">Default page template</h1>');
+        expect(response.data).includes('<h1 class="govuk-heading-l">Sign in</h1>');
       } catch {
         fail('Heading not present and/or correct');
       }

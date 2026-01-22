@@ -1,3 +1,5 @@
-require('ts-node').register({ project: 'src/test/tsconfig.json' });
+const tsx = require('tsx/cjs/api');
+
+tsx.register();
 
 module.exports = require('./codecept.conf.ts');
