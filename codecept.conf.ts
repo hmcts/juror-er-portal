@@ -1,4 +1,4 @@
-import { config as testConfig } from './src/test/config';
+import { config as testConfig } from './src/test/config.ts';
 
 const { setHeadlessWhen } = require('@codeceptjs/configure');
 
