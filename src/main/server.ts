@@ -3,8 +3,12 @@ import * as fs from 'fs';
 import * as https from 'https';
 import * as path from 'path';
 
+import { padEnd } from 'lodash';
+
 import { app } from './app';
 import { Logger } from './modules/logger';
+
+const pkg = require('../../package.json');
 
 let httpsServer: https.Server | null = null;
 
@@ -13,6 +17,15 @@ app.locals.shutdown = false;
 
 // TODO: set the right port for your application
 const port: number = parseInt(process.env.PORT || '3000', 10);
+
+console.info('\n\n');
+console.info('################################');
+console.info('##    Juror-ER-Portal v' + padEnd(pkg.version, 7, ' ') + '##');
+console.info('################################');
+console.info('\n\n');
+
+console.info('app name: ' + pkg.name);
+console.info('app version: ' + pkg.version);
 
 if (app.locals.ENV === 'development') {
   const sslDirectory = path.join(__dirname, 'resources', 'localhost-ssl');
