@@ -3846,6 +3846,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/jsonwebtoken@npm:^9":
+  version: 9.0.10
+  resolution: "@types/jsonwebtoken@npm:9.0.10"
+  dependencies:
+    "@types/ms": "npm:*"
+    "@types/node": "npm:*"
+  checksum: 10/d7960d995ad815511c7f4e7f09d91522dfe16e7e800cdd6226c8b1b624c534e0f3b8f8f3beb60e3189865269f028002f1a490189beca5afd02bc96ef1d68f21f
+  languageName: node
+  linkType: hard
+
 "@types/lodash@npm:4.17.23":
   version: 4.17.23
   resolution: "@types/lodash@npm:4.17.23"
@@ -11190,7 +11200,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"jsonwebtoken@npm:^9.0.0":
+"jsonwebtoken@npm:^9.0.0, jsonwebtoken@npm:^9.0.3":
   version: 9.0.3
   resolution: "jsonwebtoken@npm:9.0.3"
   dependencies:
@@ -11247,6 +11257,7 @@ __metadata:
     "@types/glob": "npm:8.1.0"
     "@types/helmet": "npm:^4.0.0"
     "@types/jest": "npm:^30.0.0"
+    "@types/jsonwebtoken": "npm:^9"
     "@types/lodash": "npm:4.17.23"
     "@types/node": "npm:^24.0.0"
     "@types/nunjucks": "npm:3.2.6"
@@ -11290,6 +11301,7 @@ __metadata:
     jest-html-reporter: "npm:4.3.0"
     jest-junit: "npm:16.0.0"
     jquery: "npm:3.7.1"
+    jsonwebtoken: "npm:^9.0.3"
     lint-staged: "npm:16.2.7"
     lodash: "npm:4.17.21"
     mini-css-extract-plugin: "npm:2.10.0"
