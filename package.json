@@ -39,7 +39,7 @@
     "@types/nunjucks": "3.2.6",
     "@types/require-directory": "2.1.7",
     "applicationinsights": "3.13.0",
-    "axios": "1.13.2",
+    "axios": "1.13.3",
     "body-parser": "2.2.2",
     "config": "4.2.0",
     "connect-redis": "^9.0.0",
