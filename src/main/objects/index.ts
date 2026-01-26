@@ -6,6 +6,7 @@ const jwt = require('jsonwebtoken');
 
 const { axiosInstance } = require('./axios-instance');
 
+// TODO: OBJECT DEFINITION TEMPLATE TO BE REMOVED LATER AS NOT NEEDED
 export const appSettingsObj = {
   resource: 'auth/settings',
   get: (app: Application): Promise<AxiosResponse['data']> => {
