@@ -1,0 +1,12 @@
+{
+  "PAGE_HEADING": "Data upload",
+  "DEADLINE_LABEL": "Deadline:",
+  "DAYS_REMAINING_LABEL": "Days remaining",
+  "STATUS_LABEL": "Status",
+
+  "UPLOAD_SUB_HEADING": "Upload a file",
+  "UPLOAD_INSTRUCTIONS": "Include all registered electors as of 1 December. Ensure all required fields are present and correctly formatted...",
+
+  "FORMAT_SUB_HEADING": "Data format",
+  "FORMAT_INSTRUCTIONS": "Select which electoral register system generated the data."
+}
