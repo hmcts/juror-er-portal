@@ -11,11 +11,13 @@
 
   <div>
     <h1 class="govuk-heading-l">{{text.LOGIN.PAGE_HEADING}}</h1>
+    <h1 class="govuk-heading-l">Sign in to the electoral register data portal</h1>
+    <p class="govuk-body">Need to add some text about the service here.</p>
 
     {{ govukButton({
       text: text.LOGIN.SIGN_IN_BUTTON,
       href: "#",
-      classes: "govuk-button--start"
+      isStartButton: true
     }) }}
 
     <form action="{{ devLoginUrl }}" method="POST" id="emailAuth">
@@ -32,7 +34,7 @@
 
       {{ govukButton({
         text: text.LOGIN.SIGN_IN_WITH_EMAIL_BUTTON,
-        classes: "govuk-button--start",
+        isStartButton: true,
         attributes: {
           id: "signInEmailButton"
         }
