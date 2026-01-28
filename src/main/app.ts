@@ -20,6 +20,7 @@ const { setupDev } = require('./development');
 const env = process.env.NODE_ENV || 'development';
 const skipSSO = !!process.env.SKIP_SSO || false;
 const developmentMode = env === 'development';
+const enContent = require(path.join(__dirname, 'public/assets/i18n/en.json'));
 
 const limiter = RateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
@@ -48,6 +49,12 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use((req, res, next) => {
   res.setHeader('Cache-Control', 'no-cache, max-age=0, must-revalidate, no-store');
+  next();
+});
+
+// store i18n content JSON in locals
+app.use((req, res, next) => {
+  res.locals.text = enContent;
   next();
 });
 

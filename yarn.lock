@@ -12079,6 +12079,7 @@ __metadata:
     webpack-cli: "npm:6.0.1"
     webpack-dev-middleware: "npm:7.4.5"
     webpack-node-externals: "npm:3.0.0"
+    webpack-shell-plugin-next: "npm:^2.3.3"
     winston: "npm:^3.19.0"
   languageName: unknown
   linkType: soft
@@ -17264,6 +17265,15 @@ __metadata:
   version: 3.0.0
   resolution: "webpack-node-externals@npm:3.0.0"
   checksum: 10/1a08102f73be2d6e787d16cf677f98c413076f35f379d64a4c83aa83769099b38091a4592953fac5b2eb0c7e3eb1977f6b901ef2cba531d458e32665314b8025
+  languageName: node
+  linkType: hard
+
+"webpack-shell-plugin-next@npm:^2.3.3":
+  version: 2.3.3
+  resolution: "webpack-shell-plugin-next@npm:2.3.3"
+  peerDependencies:
+    webpack: ^5.18.0
+  checksum: 10/55c95d4d576217324f53881f9761deb1d295ecc3fc28bb3a0e0cbc2aaf4f6d0cdad39071b2105f3ce0aaaffe6ecb78b9186a768a3768af60762a3472063153a7
   languageName: node
   linkType: hard
 
