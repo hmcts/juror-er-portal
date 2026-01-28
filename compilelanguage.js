@@ -17,11 +17,10 @@ function createSaveDir() {
 }
 
 function loadLanguages() {
-
   try {
     var dirResults = fs.readdirSync(languageBaseDir);
 
-    return dirResults.filter(function(dirItem) {
+    return dirResults.filter(function (dirItem) {
       if (fs.lstatSync(path.resolve(languageBaseDir, dirItem)).isDirectory()) {
         return true;
       }
@@ -30,26 +29,23 @@ function loadLanguages() {
     console.log(e);
     return [];
   }
-
 }
 
 function loadLanguageFiles(availableLanguages) {
   var languageFiles = {};
 
-  availableLanguages.forEach(function(languageName) {
-
+  availableLanguages.forEach(function (languageName) {
     var languageDirectory = path.resolve(languageBaseDir, languageName);
     var languageFilesTmp = fs.readdirSync(languageDirectory);
 
     try {
       languageFiles[languageName] = [];
-      languageFilesTmp.forEach(function(file) {
+      languageFilesTmp.forEach(function (file) {
         languageFiles[languageName].push(path.resolve(languageDirectory, file));
       });
     } catch (e) {
       console.log(e);
     }
-
   });
 
   return languageFiles;
@@ -58,12 +54,10 @@ function loadLanguageFiles(availableLanguages) {
 function generateLanguageOutput(languageFiles) {
   var returnedObj = {};
 
-  Object.keys(languageFiles).forEach(function(languageName) {
-
+  Object.keys(languageFiles).forEach(function (languageName) {
     var outputLanguage = {};
 
-    languageFiles[languageName].forEach(function(languageFile) {
-
+    languageFiles[languageName].forEach(function (languageFile) {
       try {
         var languageFileContents = fs.readJsonSync(languageFile);
 
@@ -75,19 +69,16 @@ function generateLanguageOutput(languageFiles) {
         console.log('Could not load language file, likely caused by invalid JSON:');
         console.log(languageFile);
       }
-
     });
 
     returnedObj[languageName] = outputLanguage;
-
   });
 
   return returnedObj;
 }
 
 function storeCombinedOutput(combinedContents) {
-  Object.keys(languageFiles).forEach(function(languageName) {
-
+  Object.keys(languageFiles).forEach(function (languageName) {
     var saveFileName = path.resolve(languageSaveDir, languageName + '.json');
     var saveContents = combinedContents[languageName];
 

@@ -12,7 +12,13 @@ const fileNameSuffix = devMode ? '-dev' : '.[contenthash]';
 const filename = `[name]${fileNameSuffix}.js`;
 
 module.exports = {
-  plugins: [...govukFrontend.plugins, ...mojFrontend.plugins, ...scss.plugins, ...HtmlWebpack.plugins, ...translation.plugins],
+  plugins: [
+    ...govukFrontend.plugins,
+    ...mojFrontend.plugins,
+    ...scss.plugins,
+    ...HtmlWebpack.plugins,
+    ...translation.plugins,
+  ],
   entry: path.resolve(sourcePath, 'index.ts'),
   mode: devMode ? 'development' : 'production',
   module: {

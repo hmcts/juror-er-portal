@@ -56,7 +56,7 @@ app.use((req, res, next) => {
 app.use((req, res, next) => {
   res.locals.text = enContent;
   next();
-})
+});
 
 glob
   .sync(__dirname + '/routes/**/*.+(ts|js)')
