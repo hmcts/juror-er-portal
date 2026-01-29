@@ -8,6 +8,10 @@ module "storage" {
   account_replication_type   = "ZRS"
   common_tags                = var.common_tags
   private_endpoint_subnet_id = data.azurerm_subnet.private_endpoints.id
+  containers = [{
+    name        = var.component
+    access_type = "private"
+  }]
 }
 
 resource "azurerm_key_vault_secret" "storage_endpoint" {
