@@ -1,16 +1,19 @@
 {% from "moj/components/sub-navigation/macro.njk" import mojSubNavigation %}
 
 {{ mojSubNavigation({
-  label: "Sub navigation",
-  items: [{
-    text: text.NAVIGATION.DATA_UPLOAD,
-    href: "#1",
-    active: true
-  }, {
-    text: text.NAVIGATION.UPLOAD_GUIDANCE,
-    href: "#2"
-  }, {
-    text: text.NAVIGATION.ACCOUNT_DETAILS,
-    href: "#3"
-  }]
-}) }}
+      label: "Sub navigation",
+      items: [{
+        text: text.NAVIGATION.DATA_UPLOAD,
+        href: "/data-upload",
+        active: currentApp == "data-upload"
+      }, {
+        text: text.NAVIGATION.UPLOAD_GUIDANCE,
+        href: "/upload-guidance",
+        active: currentApp == "upload-guidance"
+      }, {
+        text: text.NAVIGATION.ACCOUNT_DETAILS,
+        href: "/account-details",
+        active: currentApp == "account-details"
+      }],
+      classes: "sub-nav__container"
+    }) }}

@@ -19,23 +19,7 @@
 
 {% block subNavigation %}
   {% if currentApp %}
-    {{ mojSubNavigation({
-      label: "Sub navigation",
-      items: [{
-        text: "Data upload",
-        href: "/data-upload",
-        active: currentApp == "data-upload"
-      }, {
-        text: "Upload guidance",
-        href: "/upload-guidance",
-        active: currentApp == "upload-guidance"
-      }, {
-        text: "Account details",
-        href: "/account-details",
-        active: currentApp == "account-details"
-      }],
-      classes: "sub-nav__container"
-    }) }}
+    {% include "./sub-navigation.njk" %}
   {% endif %}
 {% endblock %}
 
