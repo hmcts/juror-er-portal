@@ -31,5 +31,3 @@ resource "azurerm_key_vault_secret" "storage_key" {
   value        = module.storage.storageaccount_primary_access_key
   key_vault_id = data.azurerm_key_vault.juror.id
 }
-
-
