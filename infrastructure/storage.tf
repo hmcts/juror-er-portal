@@ -8,6 +8,9 @@ module "storage" {
   account_replication_type   = "ZRS"
   common_tags                = var.common_tags
   private_endpoint_subnet_id = data.azurerm_subnet.private_endpoints.id
+  managed_identity_object_id = data.azurerm_user_assigned_identity.managed_identity.principal_id
+  defender_enabled           = var.defender_enabled
+
   containers = [{
     name        = var.component
     access_type = "private"

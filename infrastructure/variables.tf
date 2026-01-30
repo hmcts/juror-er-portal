@@ -49,3 +49,8 @@ variable "capacity" {
   default     = "1"
   description = "The size of the Redis cache to deploy. Valid values are 1, 2, 3, 4, 5"
 }
+
+variable "defender_enabled" {
+  default     = false
+  description = "Enable Defender for Cloud, it costs $10per month / storage account and $0.15/GB scanned for On-Upload Malware Scanning, intended for production only"
+}

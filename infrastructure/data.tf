@@ -8,3 +8,8 @@ data "azurerm_subnet" "private_endpoints" {
   virtual_network_name = local.private_endpoint_vnet_name
   name                 = "private-endpoints"
 }
+
+data "azurerm_user_assigned_identity" "managed_identity" {
+  name                = "${var.product}-${var.env}-mi"
+  resource_group_name = "managed-identities-${var.env}-rg"
+}
