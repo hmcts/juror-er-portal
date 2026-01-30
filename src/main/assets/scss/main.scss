@@ -35,3 +35,11 @@
 .juror-er-header {
   background-color: govuk-colour('blue') !important;
 }
+
+.govuk-inset-text--green {
+  border-left-color: govuk-colour("green");
+}
+
+.govuk-inset-text--red {
+  border-left-color: govuk-colour("red");
+}

@@ -9,128 +9,108 @@
 
   <div class="govuk-width-container">
    <main class="govuk-main-wrapper">
-      <h1 class="govuk-heading-xl">File upload guidance</h1>
+      <h1 class="govuk-heading-xl">{{text.UPLOAD_GUIDANCE.PAGE_HEADING}}</h1>
 
       <!-- File type -->
       <section>
-        <h2 class="govuk-heading-m">File type</h2>
+        <h2 class="govuk-heading-m">{{ text.UPLOAD_GUIDANCE.FILE_TYPE_HEADING}}</h2>
 
-        <p class="govuk-body">
-          We accept the following file types:
-        </p>
+        <p class="govuk-body">{{text.UPLOAD_GUIDANCE.FILE_TYPE_BODY}}</p>
 
-        <ul class="govuk-list tabbed-list">
-          <li><strong>CSV</strong>(Comma Separated Values) – preferred format</li>
-          <li><strong>TXT</strong>(Text file)</li>
-          <li><strong>XLS </strong> or <strong> XLSX</strong>(Excel spreadsheet)</li>
-          <li><strong>ZIP</strong>(Compressed archive containing any of the above)</li>
+        <ul class="govuk-list govuk-list--bullet">
+          <li>
+            {{text.UPLOAD_GUIDANCE.FILE_TYPE_LIST_ITEM_1}}<br><div class="govuk-hint">{{text.UPLOAD_GUIDANCE.FILE_TYPE_LIST_ITEM_1B}}</div>
+          </li>
+          <li>
+            {{text.UPLOAD_GUIDANCE.FILE_TYPE_LIST_ITEM_2}}<br><div class="govuk-hint">{{text.UPLOAD_GUIDANCE.FILE_TYPE_LIST_ITEM_2B}}</div>
+          </li>
+          <li>
+            {{text.UPLOAD_GUIDANCE.FILE_TYPE_LIST_ITEM_3}}<br><div class="govuk-hint">{{text.UPLOAD_GUIDANCE.FILE_TYPE_LIST_ITEM_3B}}</div>
+          </li>
+          <li>
+            {{text.UPLOAD_GUIDANCE.FILE_TYPE_LIST_ITEM_4}}<br><div class="govuk-hint">{{text.UPLOAD_GUIDANCE.FILE_TYPE_LIST_ITEM_4B}}</div>
+          </li>
         </ul>
 
         <!-- Highlight -->
-        <div class="govuk-inset-text">
-          <strong>Recommendation:</strong>
-          Use CSV files where possible for electoral data.
-        </div>
+        <div class="govuk-inset-text">{{text.UPLOAD_GUIDANCE.FILE_TYPE_INSET_TEXT}}</div>
 
-        <hr class="govuk-section-break govuk-section-break--visible">
       </section>
 
       <!-- File format -->
       <section>
-        <h2 class="govuk-heading-m">File format</h2>
+        <h2 class="govuk-heading-m">{{text.UPLOAD_GUIDANCE.FILE_FORMAT_HEADING}}</h2>
 
-        <p class="govuk-body">
-          We can process electoral register data from the following electoral management systems:
-        </p>
+        <p class="govuk-body">{{text.UPLOAD_GUIDANCE.FILE_FORMAT_BODY}}</p>
 
         <ul class="govuk-list govuk-list--bullet">
-          <li>Express</li>
-          <li>Strand</li>
-          <li>Halarose</li>
-          <li>Xpress Software Solutions</li>
-          <li>Other compatible formats</li>
+          <li>{{text.UPLOAD_GUIDANCE.FILE_FORMAT_LIST_ITEM_1}}</li>
+          <li>{{text.UPLOAD_GUIDANCE.FILE_FORMAT_LIST_ITEM_2}}</li>
+          <li>{{text.UPLOAD_GUIDANCE.FILE_FORMAT_LIST_ITEM_3}}</li>
+          <li>{{text.UPLOAD_GUIDANCE.FILE_FORMAT_LIST_ITEM_4}}</li>
+          <li>{{text.UPLOAD_GUIDANCE.FILE_FORMAT_LIST_ITEM_5}}</li>
         </ul>
 
-        <p class="govuk-body govuk-hint">
-          If you are unsure whether your system format is compatible, contact the Jury Central Summoning Bureau before uploading.
-        </p>
-
-        <hr class="govuk-section-break govuk-section-break--visible">
+        <p class="govuk-body govuk-hint">{{text.UPLOAD_GUIDANCE.FILE_FORMAT_HINT_TEXT}}</p>
       </section>
 
       <!-- Over 76's Flag -->
       <section>
-        <h2 class="govuk-heading-m">Over 76's flag</h2>
+        <h2 class="govuk-heading-m">{{text.UPLOAD_GUIDANCE.OVER_76_TITLE}}</h2>
 
-        <p class="govuk-body">
-          If your electoral management system includes an 'Over 76's' flag or marker, ensure this is included in your data file. 
-          This helps identify electors who are not required to serve on a jury.
-        </p>
+        <p class="govuk-body">{{text.UPLOAD_GUIDANCE.OVER_76_BODY}}</p>
 
-        <h2 class="govuk-heading-m">Other markers</h2>
+        <h2 class="govuk-heading-m">{{text.UPLOAD_GUIDANCE.OTHER_MARKERS_HEADING}}</h2>
 
-        <p class="govuk-body">
-          Your file may include other markers or flags that identify specific elector types.
-          Common markers include:
-        </p>
+        <p class="govuk-body">{{text.UPLOAD_GUIDANCE.OTHER_MARKERS_BODY}}</p>
 
         <ul class="govuk-list govuk-list--bullet">
-          <li><strong>a</strong>- European Elector</li>
-          <li><strong>b</strong>- Overseas Elector</li>
-          <li><strong>f</strong>- Peer</li>
+          <li>{{text.UPLOAD_GUIDANCE.OTHER_MARKERS_LIST_ITEM_1}}</li>
+          <li>{{text.UPLOAD_GUIDANCE.OTHER_MARKERS_LIST_ITEM_2}}</li>
+          <li>{{text.UPLOAD_GUIDANCE.OTHER_MARKERS_LIST_ITEM_3}}</li>
         </ul>
 
-        <p class="govuk-body">
-          Include all markers present in your electoral register data.
-          If your system uses different marker codes, contact the Jury Central Summoning Bureau for guidance.
-        </p>
-
-        <hr class="govuk-section-break govuk-section-break--visible">
+        <p class="govuk-body">{{text.UPLOAD_GUIDANCE.OTHER_MARKERS_BODY_2}}</p>
       </section>
 
       <!-- Important information on ZIP files -->
       <section>
-          <h2 class="govuk-heading-m">Important information on ZIP files</h2>
+          <h2 class="govuk-heading-m">{{text.UPLOAD_GUIDANCE.IMPORTANT_ZIP_HEADING}}</h2>
 
-          <p class="govuk-body">
-            If you are using a ZIP file format to upload your data, note the following:
-          </p>
+          <p class="govuk-body">{{text.UPLOAD_GUIDANCE.IMPORTANT_ZIP_BODY}}</p>
 
-          <div class="govuk-inset-text">
-            <p class="govuk-body"><strong>ZIP files must only contain:</strong></p>
-            <ul class="govuk-list tabbed-list">
-              <li>CSV files</li>
-              <li>TXT files</li>
-              <li>XLS or XLSX files</li>
+          <div class="govuk-inset-text govuk-inset-text--green">
+            {{text.UPLOAD_GUIDANCE.IMPORTANT_ZIP_INSET_TEXT_1}}
+            <ul class="govuk-list govuk-list--bullet">
+              <li>{{text.UPLOAD_GUIDANCE.IMPORTANT_ZIP_LIST_ITEM_1}}</li>
+              <li>{{text.UPLOAD_GUIDANCE.IMPORTANT_ZIP_LIST_ITEM_2}}</li>
+              <li>{{text.UPLOAD_GUIDANCE.IMPORTANT_ZIP_LIST_ITEM_3}}</li>
             </ul>
           </div>
 
-          <div class="govuk-inset-text">
-            <strong>ZIP files must not contain:</strong>
-            <ul class="govuk-list tabbed-list">
-              <li>XML files</li>
-              <li>HTML files</li>
-              <li>Outlook files (.msg, .eml)</li>
+          <div class="govuk-inset-text govuk-inset-text--red">
+            {{text.UPLOAD_GUIDANCE.IMPORTANT_ZIP_INSET_TEXT_2}}
+            <ul class="govuk-list govuk-list--bullet">
+              <li>{{text.UPLOAD_GUIDANCE.IMPORTANT_ZIP_LIST_ITEM_4}}</li>
+              <li>{{text.UPLOAD_GUIDANCE.IMPORTANT_ZIP_LIST_ITEM_5}}</li>
+              <li>{{text.UPLOAD_GUIDANCE.IMPORTANT_ZIP_LIST_ITEM_6}}</li>
             </ul>
-            These file types cannot be processed and will cause your upload to be rejected.
+            {{text.UPLOAD_GUIDANCE.IMPORTANT_ZIP_INSET_TEXT_3}}<br><br>
+            {{text.UPLOAD_GUIDANCE.IMPORTANT_ZIP_INSET_TEXT_4}}
           </div>
-
-          <div class="govuk-inset-text">
-            <p class="govuk-body">
-              <strong> Important: </strong> ZIP files must not be password protected. The portal will no longer accept password protected files.
-            </p>
-          </div>
-          <hr class="govuk-section-break govuk-section-break--visible">
       </section>
 
       <!-- Contact for Jury Central Summoning Bureau -->
       <section>
-        <h2 class="govuk-heading-m">Contact details for Jury Central Summoning Bureau</h2>
-        <p class="govuk-body">Phone</p>
-        <a class="govuk-link govuk-link--no-underline" href="tel:01234567890">01234 567 890</a>
-
-        <p class="govuk-body">Email</p>
-        <a class="govuk-link govuk-link--no-visited-state" href="mailto:laelectoralregister@Justice.gov.uk">LAelectoralregister@Justice.gov.uk</a>
+        <h2 class="govuk-heading-m">{{text.UPLOAD_GUIDANCE.CONTACT_DETAILS_HEADING}}</h2>
+        <p class="govuk-body">
+          {{text.UPLOAD_GUIDANCE.CONTACT_NAME}}<br><br>
+          <a class="govuk-link govuk-link--no-visited-state" href="mailto:{{text.UPLOAD_GUIDANCE.CONTACT_EMAIL}}">{{text.UPLOAD_GUIDANCE.CONTACT_EMAIL}}</a><br><br>
+          {{text.UPLOAD_GUIDANCE.CONTACT_TELEPHONE}}<br>
+          {{text.UPLOAD_GUIDANCE.CONTACT_OPENING_HOURS}}<br>
+          {{text.UPLOAD_GUIDANCE.CONTACT_OPENING_HOURS_2}}<br>
+          {{text.UPLOAD_GUIDANCE.CONTACT_OPENING_HOURS_3}}<br>
+        </p>
       </section>
     </main>
   </div>
