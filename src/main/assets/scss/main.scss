@@ -28,6 +28,7 @@
     @include moj.moj-width-container;
     @include govuk-clearfix;
     position: relative;
+    margin-bottom: govuk-spacing(5);
   }
 }
 

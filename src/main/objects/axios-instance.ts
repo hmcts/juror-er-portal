@@ -1,6 +1,8 @@
 import axios, { AxiosResponse, Method } from 'axios';
 import { Application } from 'express';
 
+import { replaceAllObjKeys } from '../modules/utils';
+
 const _ = require('lodash');
 
 type TransformerKey = 'default' | 'withHeaders' | 'getSingle';
@@ -11,16 +13,16 @@ interface ResponseWithHeaders {
 }
 
 const transformers: Record<TransformerKey, (response: AxiosResponse) => AxiosResponse['data'] | ResponseWithHeaders> = {
-  default: (response: AxiosResponse) => response.data,
-  withHeaders: (response: AxiosResponse) => ({ headers: response.headers, data: response.data }),
+  default: (response: AxiosResponse) => replaceAllObjKeys(response.data, _.camelCase),
+  withHeaders: (response: AxiosResponse) => ({ headers: response.headers, data: replaceAllObjKeys(response.data, _.camelCase) }),
   getSingle: (response: AxiosResponse) => {
     let returnData = response.data;
 
     if (_.isArray(returnData)) {
-      returnData = returnData.data[0];
+      returnData = replaceAllObjKeys(returnData[0], _.camelCase);
     }
 
-    return returnData;
+    return replaceAllObjKeys(returnData, _.camelCase);
   },
 };
 
