@@ -13,7 +13,7 @@ module "storage" {
 
   containers = [{
     name        = var.component
-    access_type = "private"
+    access_type = "container"
   }]
 }
 
