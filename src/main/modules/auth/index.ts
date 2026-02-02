@@ -3,7 +3,11 @@ import jwt, { JwtPayload } from 'jsonwebtoken';
 
 import errors from '../errors';
 
-export const verify = (req: Request, res: Response, next: () => void): Response<unknown, Record<string, unknown>> | void => {
+export const verify = (
+  req: Request,
+  res: Response,
+  next: () => void
+): Response<unknown, Record<string, unknown>> | void => {
   const token = req.session.authToken;
 
   // decode token

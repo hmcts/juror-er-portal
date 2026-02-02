@@ -17,7 +17,10 @@ export default function (app: Application): void {
       await doLogin(app)(req, res, { email: req.body.email });
       return res.redirect('/data-upload');
     } catch (err) {
-      app.logger.crit('Error while logging in using developer email field', { error: err });
+      app.logger.crit('Failed to log in in using developer email field', {
+        email: req.body.email,
+        error: typeof err.error !== 'undefined' ? err.error : err.toString(),
+      });
       req.session.formFields = { email: req.body.email };
       req.session.errors = { email: 'Unable to sign in with the provided email address' };
       return res.redirect('/');
