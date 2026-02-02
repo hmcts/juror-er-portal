@@ -1,0 +1,78 @@
+{% extends "../layouts/default.njk" %}
+
+{% from "govuk/components/details/macro.njk" import govukDetails %}
+{% from "govuk/components/textarea/macro.njk" import govukTextarea %}
+
+{% block page_title %}
+  Something went wrong
+{% endblock %}
+
+{% set homeLink = "/" %}
+
+{% block content %}
+
+  {% if err and err.statusCode === "403" %}
+    <h2 class="govuk-heading-l">Forbidden</h2>
+    <p class="govuk-body">You do not have permission to access this content</p>
+    <p class="govuk-body">You can <a class="govuk-link" href="{{ homeLink }}">go back home</a>.</p>
+  {% elif err and err.statusCode === "422" %}
+    <h2 class="govuk-heading-l">Business rule violation</h2>
+    <p class="govuk-body">The action performed does not comply with business rules</p>
+    <p class="govuk-body">You can <a class="govuk-link" href="{{ homeLink }}">go back home</a>.</p>
+  {% elif err and err.statusCode === "503" %}
+    <h2 class="govuk-heading-l">Service Unavailable</h2>
+    <p class="govuk-body">The server is temporarily unable to handle a request</p>
+    <p class="govuk-body">You can <a class="govuk-link" href="{{ homeLink }}">go back home</a> and try again later.</p>
+  {% else %}
+    <h2 class="govuk-heading-l">Sorry, there is a technical problem</h2>
+    <p class="govuk-body">
+      You can <a class="govuk-link" href="{{ homeLink }}">go back home</a> and try again later.
+    </p>
+  {% endif %}
+
+  {% set errorDetailsHTML %}
+    {% if err and err.statusCode %}
+      <p class="govuk-body">
+        <span class="govuk-!-font-weight-bold">Status code:</span> {{ err.statusCode }} - {{ err.statusCode | HttpStatusCode }}
+      </p>
+    {% endif %}
+    {% if err and err.error.code %}
+      <p class="govuk-body">
+        <span class="govuk-!-font-weight-bold">Error code:</span> {{ err.error.code }}
+      </p>
+    {% endif %}
+    {% if err and err.error.message %}
+      <p class="govuk-body">
+        <span class="govuk-!-font-weight-bold">Error message:</span> {{ err.error.message }}
+      </p>
+    {% endif %}
+    {% if err and err.error.trace %}
+      {{ govukTextarea({
+        name: "stackTrace",
+        id: "stack-trace",
+        label: {
+          text: "Stack trace:",
+          classes: "govuk-!-font-weight-bold"
+        },
+        value: err.error.trace,
+        disabled: true
+      }) }}
+    {% endif %}
+    {% if err and err.multipleTabs %}
+      <p class="govuk-body">
+        <span class="govuk-!-font-weight-bold">Multiple tabs:</span> {{ err.multipleTabs }}
+      </p>
+    {% endif %}
+  {% endset %}
+
+  {% if err %}
+    {{ govukDetails({
+      summaryText: "Error details",
+      open: true,
+      html: errorDetailsHTML,
+      classes: "govuk-!-width-two-thirds"
+    }) }}
+  {% endif %}
+
+
+{% endblock %}

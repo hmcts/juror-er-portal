@@ -1,7 +1,9 @@
-import * as Express from 'express';
+import { Request, Response } from 'express';
 import jwt, { JwtPayload } from 'jsonwebtoken';
 
-export const verify = (req: Express.Request, res: Express.Response, next: () => void): void => {
+import errors from '../errors';
+
+export const verify = (req: Request, res: Response, next: () => void): Response<unknown, Record<string, unknown>> | void => {
   const token = req.session.authToken;
 
   // decode token
@@ -9,22 +11,20 @@ export const verify = (req: Express.Request, res: Express.Response, next: () => 
     // verifies secret and checks expiry
     jwt.verify(token, req.session.authKey, function (err, decoded) {
       if (err) {
-        return res.redirect('/');
+        return errors(req, res, 403, '/');
       }
 
       if (!decoded || typeof decoded === 'string') {
-        return res.redirect('/');
+        return errors(req, res, 403, '/');
       }
 
       // if no errors, then decode and verify the token body
       req.decoded = decoded;
 
-      // if we do not have a userLevel property then we should assume this
-      // token is not for a logged in user.
       const decodedPayload = decoded as JwtPayload;
 
       if (!decodedPayload.hasOwnProperty('username')) {
-        return res.redirect('/');
+        return errors(req, res, 403, '/');
       }
 
       // If all is well then we check for a data tag in the response
@@ -43,11 +43,11 @@ export const verify = (req: Express.Request, res: Express.Response, next: () => 
     });
   } else {
     // Without a authentication token, we show an error page
-    return res.redirect('/');
+    return errors(req, res, 403, '/');
   }
 };
 
-export const logout = (req: Express.Request, res: Express.Response): void => {
+export const logout = (req: Request, res: Response): void => {
   delete req.session.authToken;
   delete req.session.authKey;
   delete req.session.authentication;
