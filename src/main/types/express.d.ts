@@ -7,5 +7,8 @@ declare global {
     interface Application {
       logger: winston.Logger;
     }
+    interface Request {
+      decoded?: any;
+    }
   }
 }

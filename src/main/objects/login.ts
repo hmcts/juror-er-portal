@@ -7,15 +7,15 @@ const jwt = require('jsonwebtoken');
 const { axiosInstance } = require('./axios-instance');
 
 export const authDAO = {
-  resource: 'auth/moj/jwt/{loc_code}',
+  resource: 'auth/juror-er/jwt',
   post: (app: Application, payload: Record<string, string>): Promise<AxiosResponse['data']> => {
-    const url = authDAO.resource.replace('{loc_code}', '400');
+    const url = authDAO.resource;
     const jwtToken = jwt.sign({}, secretsConfig.get('secrets.juror.er-portal-jwtNoAuthKey'), {
       expiresIn: secretsConfig.get('secrets.juror.er-portal-jwtTTL'),
     });
     const options: AxiosRequestConfig = {
       method: 'post',
-      data: payload
+      data: payload,
     };
 
     return axiosInstance(url, app, jwtToken, options);
