@@ -13,7 +13,7 @@ module "storage" {
 
   containers = [{
     name        = var.component
-    access_type = "container"
+    access_type = "private"
   }]
 }
 
@@ -34,3 +34,11 @@ resource "azurerm_key_vault_secret" "storage_key" {
   value        = module.storage.storageaccount_primary_access_key
   key_vault_id = data.azurerm_key_vault.juror.id
 }
+
+resource "azurerm_role_assignment" "storage_contributors" {
+  for_each             = toset(var.storage_account_contributor_ids)
+  scope                = module.storage.storageaccount_id
+  role_definition_name = "Storage Account Contributor"
+  principal_id         = each.value
+}
+

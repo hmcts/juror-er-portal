@@ -54,3 +54,10 @@ variable "defender_enabled" {
   default     = false
   description = "Enable Defender for Cloud, it costs $10per month / storage account and $0.15/GB scanned for On-Upload Malware Scanning, intended for production only"
 }
+
+variable "storage_account_contributor_ids" {
+  type        = list(string)
+  description = "List of pricipal IDs to create a role assignemnt to grant the storage account contributor role."
+  default     = ["0a542636-7796-4d43-89f7-f6fc9a8eb495"]
+}
+
