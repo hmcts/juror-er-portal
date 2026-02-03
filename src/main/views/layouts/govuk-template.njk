@@ -58,8 +58,8 @@
           label: "Account navigation",
           items: [{
             text: text.NAVIGATION.SIGN_OUT,
-            href: "/"
-          }]
+            href: "/auth/sign-out"
+          } if authentication]
         }
       }) }}
     {% endblock %}

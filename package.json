@@ -23,6 +23,7 @@
     "prepare": "husky install"
   },
   "dependencies": {
+    "@azure/msal-node": "^5.0.3",
     "@hmcts/info-provider": "1.4.0",
     "@hmcts/nodejs-healthcheck": "1.8.6",
     "@hmcts/nodejs-logging": "4.0.4",
@@ -45,6 +46,7 @@
     "connect-redis": "^9.0.0",
     "cookie-parser": "1.4.7",
     "csurf": "1.11.0",
+    "dotenv": "^17.2.3",
     "express": "5.2.1",
     "express-nunjucks": "3.1.2",
     "express-rate-limit": "^8.0.0",

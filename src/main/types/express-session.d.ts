@@ -3,7 +3,6 @@ import { JwtPayload } from 'jsonwebtoken';
 
 declare module 'express-session' {
   export interface SessionData {
-    user: { [key: string]: any };
     authKey: string;
     authToken: string;
     authentication: JwtPayload;
