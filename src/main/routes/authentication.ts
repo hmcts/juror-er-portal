@@ -80,7 +80,7 @@ export default function (app: Application): void {
       return res.redirect('/');
     }
   });
-  
+
   app.get('/auth/sign-out', (req, res) => {
     const clientId = authConfig.auth.clientId;
     const postLogoutRedirectUri: string = process.env.POST_LOGOUT_REDIRECT_URI || 'http://localhost:3000/';
@@ -91,7 +91,7 @@ export default function (app: Application): void {
       logoutUrl = `${authConfig.auth.authority}/oauth2/v2.0/logout?post_logout_redirect_uri=${postLogoutRedirectUri}`;
     }
 
-    req.session.destroy((error) => {
+    req.session.destroy(error => {
       if (error) {
         app.logger.crit('Error destroying session during sign-out', { error });
       }
