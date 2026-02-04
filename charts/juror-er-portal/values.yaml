@@ -19,5 +19,5 @@ nodejs:
   environment:
     API_ENDPOINT: https://juror-api.{{ .Values.global.environment }}.platform.hmcts.net/api/v1
     ALLOW_CONFIG_MUTATIONS: true
-    REDIRECT_UR: https://juror-er.{{ .Values.global.environment }}.apps.hmcts.net/auth/redirect
+    REDIRECT_URI: https://juror-er.{{ .Values.global.environment }}.apps.hmcts.net/auth/redirect
     POST_LOGOUT_REDIRECT_URI: https://juror-er.{{ .Values.global.environment }}.apps.hmcts.net
