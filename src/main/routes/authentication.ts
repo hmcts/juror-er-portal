@@ -4,6 +4,7 @@ import { Application } from 'express';
 import * as Express from 'express';
 import jwt, { JwtPayload } from 'jsonwebtoken';
 
+import { authConfig } from '../modules/auth/azure/authConfig';
 import { acquireTokenByCode, getAuthCodeUrl } from '../modules/auth/azure/authProvider';
 import errors from '../modules/errors';
 import { authDAO } from '../objects/login';
@@ -61,11 +62,11 @@ export default function (app: Application): void {
       return;
     }
 
-    if (!idTokenClaims?.preferred_username) {
+    if (!idTokenClaims?.email) {
       return errors(req, res, 400, '/');
     }
 
-    const email = idTokenClaims.preferred_username;
+    const email = idTokenClaims.email;
 
     try {
       await doLogin(app)(req, res, { email });
@@ -81,13 +82,20 @@ export default function (app: Application): void {
   });
   
   app.get('/auth/sign-out', (req, res) => {
-    const tenantName = process.env.TENANT_NAME || '';
+    const clientId = authConfig.auth.clientId;
     const postLogoutRedirectUri: string = process.env.POST_LOGOUT_REDIRECT_URI || 'http://localhost:3000/';
 
-    const logoutUrl = tenantName !== ''
-      ? `https://${tenantName}.ciamlogin.com/${tenantName}.onmicrosoft.com/oauth2/v2.0/logout` +
-      `?post_logout_redirect_uri=${encodeURIComponent(postLogoutRedirectUri)}`
-      : '/';
+    // const tenantName = process.env.TENANT_SUBDOMAIN || '';
+
+    let logoutUrl: string = '/';
+
+    if (clientId !== '[client-id]') {
+      // logoutUrl = tenantName !== ''
+      //   ? `https://${tenantName}.ciamlogin.com/${tenantName}.onmicrosoft.com/oauth2/v2.0/logout` +
+      //   `?post_logout_redirect_uri=${encodeURIComponent(postLogoutRedirectUri)}`
+      //   : '/';
+      logoutUrl = `${authConfig.auth.authority}/oauth2/v2.0/logout?post_logout_redirect_uri=${postLogoutRedirectUri}`;
+    }
 
     req.session.destroy((error) => {
       if (error) {
