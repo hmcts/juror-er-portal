@@ -6,6 +6,8 @@ node_modules/
 .idea/
 *.iml
 
+.vscode/
+
 *swp
 *log
 .DS_Store
