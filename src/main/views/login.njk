@@ -9,11 +9,14 @@
 
 {% block content %}
 
+  {% include "includes/errors.njk" %}
+
   <div>
     <h1 class="govuk-heading-l">{{ text.LOGIN.PAGE_HEADING }}</h1>
     <p class="govuk-body">{{ text.LOGIN.SERVICE_DESCRIPTION }}</p>
 
     {{ govukButton({
+      id: "signInButton",
       text: text.LOGIN.SIGN_IN_BUTTON,
       href: azureLoginUrl,
       isStartButton: true

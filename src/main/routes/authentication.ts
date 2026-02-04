@@ -13,7 +13,7 @@ export default function (app: Application): void {
   app.post('/dev/sign-in', async (req, res) => {
     if (!req.body?.email) {
       app.logger.warn('No email provided for dev login');
-      req.session.errors = { email: 'Please enter an email address' };
+      req.session.errors = { email: res.locals.text.VALIDATION.LOGIN.EMAIL_REQUIRED };
       return res.redirect('/');
     }
 
@@ -26,7 +26,7 @@ export default function (app: Application): void {
         error: typeof err.error !== 'undefined' ? err.error : err.toString(),
       });
       req.session.formFields = { email: req.body.email };
-      req.session.errors = { email: 'Unable to sign in with the provided email address' };
+      req.session.errors = { email: handleLoginError(res, err.error) };
       return res.redirect('/');
     }
   });
@@ -76,7 +76,7 @@ export default function (app: Application): void {
         email,
         error: typeof err.error !== 'undefined' ? err.error : err.toString(),
       });
-      req.session.errors = { email: 'Unable to sign in with the provided email address' };
+      req.session.errors = { login: handleLoginError(res, err.error) };
       return res.redirect('/');
     }
   });
@@ -85,15 +85,9 @@ export default function (app: Application): void {
     const clientId = authConfig.auth.clientId;
     const postLogoutRedirectUri: string = process.env.POST_LOGOUT_REDIRECT_URI || 'http://localhost:3000/';
 
-    // const tenantName = process.env.TENANT_SUBDOMAIN || '';
-
     let logoutUrl: string = '/';
 
     if (clientId !== '[client-id]') {
-      // logoutUrl = tenantName !== ''
-      //   ? `https://${tenantName}.ciamlogin.com/${tenantName}.onmicrosoft.com/oauth2/v2.0/logout` +
-      //   `?post_logout_redirect_uri=${encodeURIComponent(postLogoutRedirectUri)}`
-      //   : '/';
       logoutUrl = `${authConfig.auth.authority}/oauth2/v2.0/logout?post_logout_redirect_uri=${postLogoutRedirectUri}`;
     }
 
@@ -123,3 +117,14 @@ export const doLogin =
       data: { body },
     });
   };
+
+const handleLoginError = (res: Express.Response, error: Record<string, string>) => {
+  switch (error.message) {
+    case 'User is not active':
+      return res.locals.text.VALIDATION.LOGIN.USER_INACTIVE;
+    case 'User not found':
+      return res.locals.text.VALIDATION.LOGIN.USER_NOT_FOUND;
+    default:
+      return res.locals.text.VALIDATION.LOGIN.LOGIN_FAILED;
+  }
+};
