@@ -7,7 +7,7 @@ export default function (app: Application): void {
   app.get('/', (req, res) => {
     // If already logged in, force logout
     if (typeof res.locals.authentication !== 'undefined') {
-      logout(req, res);
+      logout(app)(req);
     }
 
     const tmpErrors = _.clone(req.session.errors);

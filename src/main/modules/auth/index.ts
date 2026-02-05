@@ -1,4 +1,4 @@
-import { Request, Response } from 'express';
+import { Application, Request, Response } from 'express';
 import jwt, { JwtPayload } from 'jsonwebtoken';
 
 import errors from '../errors';
@@ -51,9 +51,10 @@ export const verify = (
   }
 };
 
-export const logout = (req: Request, res: Response): void => {
-  delete req.session.authToken;
-  delete req.session.authKey;
-  delete req.session.authentication;
-  delete res.locals.authentication;
+export const logout = (app: Application) => (req: Request): void => {
+  req.session.destroy(error => {
+    if (error) {
+      app.logger.crit('Error destroying session during sign-out', { error });
+    }
+  });
 };

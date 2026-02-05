@@ -3,7 +3,7 @@ import type { Request } from 'express';
 
 import msalClient from './msalClient';
 
-const SCOPES = ['User.Read', 'email'];
+const SCOPES = ['User.Read'];
 
 export async function getAuthCodeUrl(_req: Request): Promise<string> {
   const authCodeUrlParameters: AuthorizationUrlRequest = {

@@ -4,6 +4,7 @@ import { Application } from 'express';
 import * as Express from 'express';
 import jwt, { JwtPayload } from 'jsonwebtoken';
 
+import { logout } from '../modules/auth';
 import { authConfig } from '../modules/auth/azure/authConfig';
 import { acquireTokenByCode, getAuthCodeUrl } from '../modules/auth/azure/authProvider';
 import errors from '../modules/errors';
@@ -19,6 +20,7 @@ export default function (app: Application): void {
 
     try {
       await doLogin(app)(req, res, { email: req.body.email });
+      req.session.isDevLogin = true;
       return res.redirect('/data-upload');
     } catch (err) {
       app.logger.crit('Failed to log in in using developer email field', {
@@ -62,11 +64,11 @@ export default function (app: Application): void {
       return;
     }
 
-    if (!idTokenClaims?.email) {
+    if (!idTokenClaims?.preferred_username) {
       return errors(req, res, 400, '/');
     }
 
-    const email = idTokenClaims.email;
+    const email = idTokenClaims.preferred_username;
 
     try {
       await doLogin(app)(req, res, { email });
@@ -87,17 +89,13 @@ export default function (app: Application): void {
 
     let logoutUrl: string = '/';
 
-    if (clientId !== '[client-id]') {
+    if (!req.session.isDevLogin && clientId !== '[client-id]') {
       logoutUrl = `${authConfig.auth.authority}/oauth2/v2.0/logout?post_logout_redirect_uri=${postLogoutRedirectUri}`;
     }
 
-    req.session.destroy(error => {
-      if (error) {
-        app.logger.crit('Error destroying session during sign-out', { error });
-      }
+    logout(app)(req);
 
-      res.redirect(logoutUrl);
-    });
+    res.redirect(logoutUrl);
   });
 }
 
