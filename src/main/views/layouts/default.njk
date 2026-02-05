@@ -11,7 +11,7 @@
   {% if currentApp %}
     <div class="selected-la-banner__with-name">
       <div class="selected-la-banner__container">
-        <span class="govuk-heading-s selected-la-banner__container-title">Manchester City Council</span>
+        <span class="govuk-heading-s selected-la-banner__container-title">{{ localAuthorityName }}</span>
       </div>
     </div>
   {% endif %}
@@ -19,23 +19,7 @@
 
 {% block subNavigation %}
   {% if currentApp %}
-    {{ mojSubNavigation({
-      label: "Sub navigation",
-      items: [{
-        text: "Data upload",
-        href: "/data-upload",
-        active: currentApp == "data-upload"
-      }, {
-        text: "Upload guidance",
-        href: "/upload-guidance",
-        active: currentApp == "upload-guidance"
-      }, {
-        text: "Account details",
-        href: "/account-details",
-        active: currentApp == "account-details"
-      }],
-      classes: "sub-nav__container"
-    }) }}
+    {% include "./sub-navigation.njk" %}
   {% endif %}
 {% endblock %}
 

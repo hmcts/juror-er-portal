@@ -40,7 +40,7 @@
     {% block skipLink %}
       {{ govukSkipLink({
         href: '#main-content',
-        text: 'Skip to main content'
+        text: text.NAVIGATION.SKIP_MAIN_CONTENT_LINK
       }) }}
     {% endblock %}
 
@@ -57,7 +57,7 @@
         navigation: {
           label: "Account navigation",
           items: [{
-            text: "Sign out",
+            text: text.NAVIGATION.SIGN_OUT,
             href: "/"
           }]
         }

@@ -10,12 +10,13 @@
 {% block content %}
 
   <div>
-    <h1 class="govuk-heading-l">{{text.LOGIN.PAGE_HEADING}}</h1>
+    <h1 class="govuk-heading-l">{{ text.LOGIN.PAGE_HEADING }}</h1>
+    <p class="govuk-body">{{ text.LOGIN.SERVICE_DESCRIPTION }}</p>
 
     {{ govukButton({
       text: text.LOGIN.SIGN_IN_BUTTON,
       href: "#",
-      classes: "govuk-button--start"
+      isStartButton: true
     }) }}
 
     <form action="{{ devLoginUrl }}" method="POST" id="emailAuth">
@@ -27,12 +28,13 @@
         classes: "govuk-input--width-20",
         id: "email",
         name: "email",
-        errorMessage: emailError
+        value: tmpBody.email,
+        errorMessage: { text: errors.email } if errors.email else null
       }) }}
 
       {{ govukButton({
         text: text.LOGIN.SIGN_IN_WITH_EMAIL_BUTTON,
-        classes: "govuk-button--start",
+        isStartButton: true,
         attributes: {
           id: "signInEmailButton"
         }

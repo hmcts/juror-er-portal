@@ -1,0 +1,39 @@
+{% extends "layouts/default.njk" %}
+
+{% from "govuk/components/summary-list/macro.njk" import govukSummaryList %}
+
+{% block page_title %}{{ serviceName }} - Account Access{% endblock %}
+{% block page_identifier %}Account Access{% endblock %}
+
+{% set currentApp = "account-access" %}
+
+{% block content %}
+
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-full">
+
+      <div class="govuk-summary-card">
+        <div class="govuk-summary-card__title-wrapper">
+          <h2 class="govuk-summary-card__title">
+            {{ text.ACCOUNT_ACCESS.PAGE_HEADING }}
+          </h2>
+        </div>
+        <div class="govuk-summary-card__content">
+          <dl class="govuk-summary-list">
+            {% for user in laUserDetails %}
+              <div class="govuk-summary-list__row">
+                <dd class="govuk-summary-list__value">
+                  <a class="govuk-body govuk-link govuk-link--no-visited-state" href="#">
+                    {{ user.username }}
+                  </a>
+                </dd>
+              </div>
+            {% endfor %}
+          </dl>
+        </div>
+      </div>
+
+    </div>
+  </div>
+  
+{% endblock %}

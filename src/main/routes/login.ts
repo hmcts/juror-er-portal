@@ -1,25 +1,24 @@
 import { Application } from 'express';
+import _ from 'lodash';
+
+import { logout } from '../modules/auth';
 
 export default function (app: Application): void {
   app.get('/', (req, res) => {
-    if (req.session?.user) {
-      app.logger.info('Logged in user', {
-        user: req.session.user,
-      });
-      delete req.session.user;
+    // If already logged in, force logout
+    if (typeof res.locals.authentication !== 'undefined') {
+      logout(req, res);
     }
+
+    const tmpErrors = _.clone(req.session.errors);
+    const tmpBody = _.clone(req.session.formFields);
+    delete req.session.errors;
+    delete req.session.formFields;
+
     res.render('login', {
       devLoginUrl: '/dev-login',
+      tmpBody,
+      errors: tmpErrors,
     });
-  });
-
-  app.post('/dev-login', (req, res) => {
-    app.logger.info('Dev login request', {
-      email: req.body.email,
-    });
-    req.session.user = {
-      email: req.body.email,
-    };
-    return res.redirect('/data-upload');
   });
 }

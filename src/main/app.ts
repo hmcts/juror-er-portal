@@ -55,6 +55,8 @@ app.use((req, res, next) => {
 // store i18n content JSON in locals
 app.use((req, res, next) => {
   res.locals.text = enContent;
+  res.locals.organisationName = 'HMCTS';
+  res.locals.serviceName = res.locals.text.NAVIGATION.SERVICE_NAME;
   next();
 });
 

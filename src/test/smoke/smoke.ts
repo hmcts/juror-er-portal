@@ -14,7 +14,9 @@ describe('Smoke Test', () => {
             'Accept-Encoding': 'gzip',
           },
         });
-        expect(response.data).includes('<h1 class="govuk-heading-l">Sign in</h1>');
+        expect(response.data).includes(
+          '<h1 class="govuk-heading-l">Sign in to the electoral register data portal</h1>'
+        );
       } catch {
         fail('Heading not present and/or correct');
       }
