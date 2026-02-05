@@ -45,14 +45,15 @@
     {% endblock %}
 
     {% block header %}
+      {% set homeLink = "/data-upload" if authentication else "/"%}
       {{ mojHeader({
         organisationLabel: {
           text: organisationName,
-          href: "#"
+          href: homeLink
         },
         serviceLabel: {
           text: serviceName,
-          href: "#"
+          href: homeLink
         },
         navigation: {
           label: "Account navigation",
