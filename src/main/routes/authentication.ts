@@ -34,6 +34,11 @@ export default function (app: Application): void {
   });
 
   app.get('/auth/sign-in', async (req, res) => {
+    if (authConfig.auth.clientId === '[client-id]' || authConfig.auth.clientSecret === '[client-secret]') {
+      app.logger.warn('Azure authentication is not configured');
+      req.session.errors = { login: res.locals.text.VALIDATION.LOGIN.AZURE_NOT_CONFIGURED };
+      return res.redirect('/');
+    }
     // eslint-disable-next-line no-useless-catch
     try {
       const url = await getAuthCodeUrl(req);
@@ -89,7 +94,7 @@ export default function (app: Application): void {
 
     let logoutUrl: string = '/';
 
-    if (!req.session.isDevLogin && clientId !== '[client-id]') {
+    if (!req.session.isDevLogin && (clientId !== '[client-id]' || authConfig.auth.clientSecret !== '[client-secret]')) {
       logoutUrl = `${authConfig.auth.authority}/oauth2/v2.0/logout?post_logout_redirect_uri=${postLogoutRedirectUri}`;
     }
 

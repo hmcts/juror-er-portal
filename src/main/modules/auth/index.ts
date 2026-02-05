@@ -51,10 +51,12 @@ export const verify = (
   }
 };
 
-export const logout = (app: Application) => (req: Request): void => {
-  req.session.destroy(error => {
-    if (error) {
-      app.logger.crit('Error destroying session during sign-out', { error });
-    }
-  });
-};
+export const logout =
+  (app: Application) =>
+  (req: Request): void => {
+    req.session.destroy(error => {
+      if (error) {
+        app.logger.crit('Error destroying session during sign-out', { error });
+      }
+    });
+  };
