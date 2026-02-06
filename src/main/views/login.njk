@@ -9,40 +9,43 @@
 
 {% block content %}
 
+  {% include "includes/errors.njk" %}
+
   <div>
     <h1 class="govuk-heading-l">{{ text.LOGIN.PAGE_HEADING }}</h1>
-    <p class="govuk-body">{{ text.LOGIN.SERVICE_DESCRIPTION }}</p>
 
     {{ govukButton({
+      id: "signInButton",
       text: text.LOGIN.SIGN_IN_BUTTON,
-      href: "#",
+      href: azureLoginUrl,
       isStartButton: true
     }) }}
 
-    <form action="{{ devLoginUrl }}" method="POST" id="emailAuth">
+    {% if ENV === 'development' or skipSSO %}
+      <form action="{{ devLoginUrl }}" method="POST" id="emailAuth">
 
-      {{ govukInput({
-        label: {
-          text: text.LOGIN.EMAIL_ADDRESS_LABEL
-        },
-        classes: "govuk-input--width-20",
-        id: "email",
-        name: "email",
-        value: tmpBody.email,
-        errorMessage: { text: errors.email } if errors.email else null
-      }) }}
+        {{ govukInput({
+          label: {
+            text: text.LOGIN.EMAIL_ADDRESS_LABEL
+          },
+          classes: "govuk-input--width-20",
+          id: "email",
+          name: "email",
+          value: tmpBody.email,
+          errorMessage: { text: errors.email } if errors.email else null
+        }) }}
 
-      {{ govukButton({
-        text: text.LOGIN.SIGN_IN_WITH_EMAIL_BUTTON,
-        isStartButton: true,
-        attributes: {
-          id: "signInEmailButton"
-        }
-      }) }}
+        {{ govukButton({
+          text: text.LOGIN.SIGN_IN_WITH_EMAIL_BUTTON,
+          isStartButton: true,
+          attributes: {
+            id: "signInEmailButton"
+          }
+        }) }}
 
-      {{ csrfProtection(csrftoken) }}
-    </form>
-
+        {{ csrfProtection(csrftoken) }}
+      </form>
+    {% endif %}
   </div>
 
 {% endblock %}

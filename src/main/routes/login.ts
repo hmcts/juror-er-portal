@@ -7,7 +7,7 @@ export default function (app: Application): void {
   app.get('/', (req, res) => {
     // If already logged in, force logout
     if (typeof res.locals.authentication !== 'undefined') {
-      logout(req, res);
+      logout(app)(req);
     }
 
     const tmpErrors = _.clone(req.session.errors);
@@ -16,7 +16,8 @@ export default function (app: Application): void {
     delete req.session.formFields;
 
     res.render('login', {
-      devLoginUrl: '/dev-login',
+      azureLoginUrl: '/auth/sign-in',
+      devLoginUrl: '/dev/sign-in',
       tmpBody,
       errors: tmpErrors,
     });
