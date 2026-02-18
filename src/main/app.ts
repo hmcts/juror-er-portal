@@ -31,6 +31,7 @@ export const app = express();
 app.locals.ENV = env;
 app.locals.skipSSO = skipSSO;
 
+app.set('trust proxy', 1);
 new Logger(config.get('logger')).initLogger(app);
 new PropertiesVolume().enableFor(app);
 new AppInsights().enable();
