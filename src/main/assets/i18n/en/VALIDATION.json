@@ -7,5 +7,12 @@
     "USER_NOT_FOUND": "No account found for the provided email address",
     "USER_INACTIVE": "Account is marked as inactive",
     "AZURE_NOT_CONFIGURED": "Azure authentication is not configured"
+  },
+  "FILE_UPLOAD": {
+    "FILE_REQUIRED": "Choose a file to upload",
+    "FILE_TOO_LARGE": "The selected file is too large. Maximum size is 100MB.",
+    "INVALID_FILE_TYPE": "Invalid file type. Please upload a CSV or Excel file.",
+    "CITIZENS_OVER_AGE_REQUIRED": "Indicate if the data includes citizens over 76 years old",
+    "FILE_FORMAT_REQUIRED": "Select the file format"
   }
 }

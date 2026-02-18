@@ -1,5 +1,17 @@
 {% extends "layouts/default.njk" %}
 
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/input/macro.njk" import govukInput %}
+{% from "govuk/components/tag/macro.njk" import govukTag %}
+{% from "govuk/components/file-upload/macro.njk" import govukFileUpload %}
+{% from "govuk/components/select/macro.njk" import govukSelect %}
+{% from "govuk/components/radios/macro.njk" import govukRadios %}
+{% from "govuk/components/checkboxes/macro.njk" import govukCheckboxes %}
+{% from "govuk/components/character-count/macro.njk" import govukCharacterCount %}
+
+{% from "macros/csrf.njk" import csrfProtection %}
+
+
 {% block page_title %}{{ serviceName }} - Data Upload{% endblock %}
 {% block page_identifier %}Data Upload{% endblock %}
 
@@ -7,7 +19,284 @@
 
 {% block content %}
 
+  {% include "includes/errors.njk" %}
+
+  Errors: {{ errors }}
+
   <div>
+
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-one-half">
+
+          <br/>
+          <h1 class="govuk-heading-l">{{ text.DATA_UPLOAD.PAGE_HEADING }}</h1>
+
+          <table class="govuk-table govuk-table--m">
+            <tbody class="govuk-table__body">
+              <tr class="govuk-table__row">
+                <th class="govuk-table__header">{{ text.DATA_UPLOAD.DEADLINE_ROW_LABEL }}</th>
+                <td class="govuk-table__cell">{{ deadlineDate }}</td>
+              </tr>
+              <tr class="govuk-table__row">
+                <th class="govuk-table__header">{{ text.DATA_UPLOAD.DAYS_REMAINING_ROW_LABEL }}</th>
+                <td class="govuk-table__cell">{{ daysRemaining }}</td>
+              </tr>
+              <tr class="govuk-table__row">
+                <th class="govuk-table__header">{{ text.DATA_UPLOAD.STATUS_ROW_LABEL }}</th>
+                {% if uploadStatus === "NOT_UPLOADED" %}
+                  <td class="govuk-table__cell">
+                    {{govukTag({
+                      text: "Not uploaded",
+                      classes: "govuk-body govuk-tag--red"
+                    })}}
+                  </td>
+                {% endif %}
+                {% if uploadStatus === "UPLOADED" %}
+                  <td class="govuk-table__cell">
+                    {{govukTag({
+                      text: "UPLOADED",
+                      classes: "govuk-body govuk-tag--green"
+                    })}}
+                  </td>
+                {% endif %}              
+              </tr>
+            </tbody>
+          </table>
+
+        </div>
+    </div>
+
+
+    <div class="govuk-grid-row">
+      <div class="govuk-grid-column-two-thirds">
+
+        <form action="{{ fileUploadPostUrl }}" method="POST" id="dataUploadForm" enctype="multipart/form-data">
+
+          <h2 class="govuk-heading-m">{{ text.DATA_UPLOAD.UPLOAD_SECTION_HEADING }}</h2>
+          <p class="govuk-body">
+            {{ text.DATA_UPLOAD.UPLOAD_INSTRUCTIONS_1 }}<br/>
+            {{ text.DATA_UPLOAD.UPLOAD_INSTRUCTIONS_2 }}
+          </p>
+
+          
+          <div class="govuk-form-group">
+            <label class="govuk-label" for="fileUpload">
+              Upload a file
+            </label>
+            <input class="govuk-file-upload" id="fileUpload" name="fileUpload" type="file" accept=".csv, .xlsx, .xlsm,.xls, .zip">
+          </div>
+          
+
+          {# Select data format #}
+          {{ govukSelect({
+            id: "fileFormat",
+            name: "fileFormat",
+            label: {
+              text: text.DATA_UPLOAD.FORMAT_SECTION_HEADING,
+              classes: "govuk-label--m"
+            },
+            hint: {
+              text: text.DATA_UPLOAD.FORMAT_HINT
+            },
+            items: fileFormats
+          }) }}
+
+          {# Citizens over 76 flag #}
+          {{ govukRadios({
+            classes: "govuk-radios--small govuk-radios--inline",
+            name: "citizensOverAge",
+            fieldset: {
+              legend: {
+                text: text.DATA_UPLOAD.AGE_SECTION_HEADING,
+                classes: "govuk-fieldset__legend--m"
+              }
+            },
+            items: [
+              {
+                id: "citizensOverAgeYes",
+                value: "Yes",
+                text: text.DATA_UPLOAD.OVER_76_YES_LABEL
+              },
+              {
+                id: "citizensOverAgeNo",
+                value: "No",
+                text: text.DATA_UPLOAD.OVER_76_NO_LABEL
+              }
+            ]
+          }) }}
+
+          {# Elector type flags #}
+          {{ govukCheckboxes({
+            name: "electorType",
+            classes: "govuk-checkboxes--small",
+            fieldset: {
+              legend: {
+                text: text.DATA_UPLOAD.ELECTOR_TYPES_SECTION_HEADING,
+                classes: "govuk-fieldset__legend--m"
+              }
+            },
+            hint: {
+              text: text.DATA_UPLOAD.ELECTOR_TYPES_HINT
+            },
+            items: [
+              {
+                value: text.DATA_UPLOAD.ELECTOR_TYPE_1_VALUE,
+                text: text.DATA_UPLOAD.ELECTOR_TYPE_1_VALUE + " - " + text.DATA_UPLOAD.ELECTOR_TYPE_1_DESC
+              },
+              {
+                value: text.DATA_UPLOAD.ELECTOR_TYPE_2_VALUE,
+                text: text.DATA_UPLOAD.ELECTOR_TYPE_2_VALUE + " - " + text.DATA_UPLOAD.ELECTOR_TYPE_2_DESC
+              },
+              {
+                value: text.DATA_UPLOAD.ELECTOR_TYPE_3_VALUE,
+                text: text.DATA_UPLOAD.ELECTOR_TYPE_3_VALUE + " - " + text.DATA_UPLOAD.ELECTOR_TYPE_3_DESC
+              },
+              {
+                value: text.DATA_UPLOAD.ELECTOR_TYPE_4_VALUE,
+                text: text.DATA_UPLOAD.ELECTOR_TYPE_4_VALUE + " - " + text.DATA_UPLOAD.ELECTOR_TYPE_4_DESC
+              },
+              {
+                value: text.DATA_UPLOAD.ELECTOR_TYPE_5_VALUE,
+                text: text.DATA_UPLOAD.ELECTOR_TYPE_5_VALUE + " - " + text.DATA_UPLOAD.ELECTOR_TYPE_5_DESC
+              },
+              {
+                value: text.DATA_UPLOAD.ELECTOR_TYPE_6_VALUE,
+                text: text.DATA_UPLOAD.ELECTOR_TYPE_6_VALUE + " - " + text.DATA_UPLOAD.ELECTOR_TYPE_6_DESC
+              }
+            ]
+          }) }}
+
+          {# Other information #}
+          {{ govukCharacterCount({
+            name: "otherInformation",
+            id: "otherInformation",
+            maxlength: 200,
+            label: {
+              text: text.DATA_UPLOAD.OTHER_INFORMATION_SECTION_HEADING,
+              classes: "govuk-label--m",
+              isPageHeading: false
+            }
+          }) }}
+
+
+          <div class="form-group">
+            <input class="button" type="submit" value="Upload">
+            <input type="hidden" name="_csrf" value="{{csrftoken}}">
+          </div>
+
+        </form>
+
+      </div>
+    </div>
+
   </div>
+
+  <script {%- if nonce %} nonce="{{ nonce }}"{% endif %} src="https://code.jquery.com/jquery-latest.min.js"></script>
+  <script {%- if nonce %} nonce="{{ nonce }}"{% endif %}>console.log('JS on file-upload page');</script>
+  <script {%- if nonce %} nonce="{{ nonce }}"{% endif %}>
+    if (typeof window.jQuery === 'undefined') {
+      console.log("❌ jQuery is NOT loaded");
+    } else {
+      console.log("✅ jQuery is loaded");
+    }
+  </script>
+
+  
+
+{% endblock %}
+
+
+{% block body_end %}
+  {{ super() }}
+
+  <script {%- if nonce %} nonce="{{ nonce }}"{% endif %}>console.log('hello2');</script>
+
+
+  <script {%- if nonce %} nonce="{{ nonce }}"{% endif %}>
+    $( document ).ready(function() {
+
+      const form = document.getElementById('dataUploadForm');
+
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        
+        let fileFormat = '';
+        fileFormat = document.getElementById('fileFormat').value;
+        
+        let citizensOverAge = '';
+        if (document.getElementById('citizensOverAgeYes').checked){
+          citizensOverAge = 'Yes';
+        }
+        if (document.getElementById('citizensOverAgeNo').checked){
+          citizensOverAge = 'No';
+        }
+
+        const fd = new FormData();
+        // append fields first so they appear on the server before the file which allows for validation before file processing
+        fd.append('fileFormat', fileFormat);
+        fd.append('citizensOverAge', citizensOverAge);
+        //fd.append('electorTypes', electorTypes.join(','));
+        fd.append('otherInformation', document.getElementById('otherInformation').value);
+
+        // append file
+        let fileName = '';
+        if (document.getElementById('fileUpload').files.length > 0) {
+          fileName = document.getElementById('fileUpload').files[0].name;
+        }
+        fd.append('file', document.getElementById('fileUpload').files[0]);
+        
+        // post to server
+        console.log( 'posting form data with fetch');
+        const response = await fetch('/submit-data-upload', { 
+          method: 'POST',
+          headers: {
+            'formCitizensOverage': citizensOverAge,
+            'formFileFormat': fileFormat,
+            'formFileName': fileName
+          },
+          body: fd,
+          credentials: 'same-origin'
+        });
+
+        console.log('response: \n', response);
+
+     
+      
+      // slightly broken (missing } but it works)
+      /*
+      if (response.ok) {
+        const payload = await response.json();
+        if (payload.redirect) {
+          window.location.href = payload.redirect;
+        } else {
+          console.log('upload submitted successfully');
+        }
+      } else {
+        let body;
+        try { body = await response.json(); } catch { body = await response.text(); }
+
+        if (body && body.redirect) {
+          window.location.href = body.redirect;
+        } else {
+          console.error('Upload failed: ', body?.error || response.statusText);
+        }
+      }
+      */
+
+
+
+        if (response.ok && response.redirected) {
+          console.log('response is a redirect, navigating to: ', response.url);
+          window.location.href = response.url;
+        }
+      
+
+
+
+      });
+
+    });
+    
+  </script>
 
 {% endblock %}

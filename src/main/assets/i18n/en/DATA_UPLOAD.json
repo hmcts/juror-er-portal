@@ -1,12 +1,49 @@
 {
   "PAGE_HEADING": "Data upload",
-  "DEADLINE_LABEL": "Deadline:",
-  "DAYS_REMAINING_LABEL": "Days remaining",
-  "STATUS_LABEL": "Status",
+  "DEADLINE_ROW_LABEL": "Deadline",
+  "DAYS_REMAINING_ROW_LABEL": "Days remaining",
+  "STATUS_ROW_LABEL": "Status",
 
-  "UPLOAD_SUB_HEADING": "Upload a file",
-  "UPLOAD_INSTRUCTIONS": "Include all registered electors as of 1 December. Ensure all required fields are present and correctly formatted...",
+  "STATUS_NOT_UPLOADED:": "Not uploaded",
+  "STATUS_UPLOADED": "Uploaded",
 
-  "FORMAT_SUB_HEADING": "Data format",
-  "FORMAT_INSTRUCTIONS": "Select which electoral register system generated the data."
+  "UPLOAD_SECTION_HEADING": "Upload a file",
+  "UPLOAD_INSTRUCTIONS_1": "Include all registered electors as of 1 December. Ensure all required fields are present and correctly formatted. File size must not exceed 100MB. Ensure character encoding is UTF-8 where applicable.",
+  "UPLOAD_INSTRUCTIONS_2": "Do not password protect the file.",
+  "UPLOAD_CHOOSE_FILE": "Choose a file",
+
+  "FORMAT_SECTION_HEADING": "Data format",
+  "FORMAT_HINT": "Select which electoral register system generated the data.",
+
+  "AGE_SECTION_HEADING": "Does the data set include citizens over 76 years old?",
+  "OVER_76_YES_LABEL": "Yes",
+  "OVER_76_NO_LABEL": "No",
+
+  "ELECTOR_TYPES_SECTION_HEADING": "Are any of these elector types present in the data?",
+  "ELECTOR_TYPES_HINT": "Select all that apply. If none of these prefixes are present in the data then leave all boxes unchecked.",
+
+  "ELECTOR_TYPE_1_VALUE": "B",
+  "ELECTOR_TYPE_1_DESC": "Elector who is either a qualifying EU citizen, an EU citizen with retained rights who is only entitled to vote at Senedd, local government and Police and Crime Commissioner elections",
+  
+  "ELECTOR_TYPE_2_VALUE": "F",
+  "ELECTOR_TYPE_2_DESC": "Overseas elector who is only entitled to vote at UK Parliamentary elections",
+  
+  "ELECTOR_TYPE_3_VALUE": "G",
+  "ELECTOR_TYPE_3_DESC": "Citizen of a member state of the European Union (except a Commonwealth country or the Republic of Ireland) who is only entitled to vote at Senedd and local government elections",
+  
+  "ELECTOR_TYPE_4_VALUE": "J",
+  "ELECTOR_TYPE_4_DESC": "Elector registered as a result of the Automatic Voter Registration pilots, who is only entitled to vote at Senedd and local government elections",
+  
+  "ELECTOR_TYPE_5_VALUE": "L",
+  "ELECTOR_TYPE_5_DESC": "Peer eligible to vote in the House of Lords who is entitled to vote at local government elections",
+  
+  "ELECTOR_TYPE_6_VALUE": "M",
+  "ELECTOR_TYPE_6_DESC": "Qualifying foreign citizen (except a Commonwealth, Republic of Ireland or European Union citizen) who is entitled to vote at Senedd and local government elections",
+  
+  "OTHER_INFORMATION_SECTION_HEADING": "Other information",
+
+  "UPLOAD_WINDOW_CLOSED_HEADING": "Update window is now closed",
+  "UPLOAD_WINDOW_CLOSED_DETAIL_1": "The annual upload window for electoral register data has now closed. You are not able to upload files at this time.",
+  "UPLOAD_WINDOW_CLOSED_DETAIL_2": "The Jury Central Summoning Bureau will contact you when the next upload window opens. You will receive an email notification with details of the new deadline and upload period."
+
 }

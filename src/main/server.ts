@@ -26,6 +26,7 @@ console.info('\n\n');
 
 console.info('app name: ' + pkg.name);
 console.info('app version: ' + pkg.version);
+console.info('node version: ' + process.version);
 
 if (app.locals.ENV === 'development') {
   const sslDirectory = path.join(__dirname, 'resources', 'localhost-ssl');

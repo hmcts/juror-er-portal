@@ -43,3 +43,14 @@
 .govuk-inset-text--red {
   border-left-color: govuk-colour('red');
 }
+
+.data-upload-closed-panel {
+  padding: 35px;
+  background-color: govuk-colour('blue') !important;
+  h1 {
+    color: govuk-colour('white');
+  }
+  p {
+    color: govuk-colour('white');
+  }
+}
