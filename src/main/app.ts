@@ -3,6 +3,7 @@ import * as path from 'path';
 import * as bodyParser from 'body-parser';
 import config = require('config');
 import cookieParser from 'cookie-parser';
+import csrf from 'csurf';
 import express from 'express';
 import RateLimit from 'express-rate-limit';
 import { glob } from 'glob';
@@ -47,9 +48,15 @@ app.get('/favicon.ico', limiter, (req, res) => {
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
+app.use(csrf());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use((req, res, next) => {
   res.setHeader('Cache-Control', 'no-cache, max-age=0, must-revalidate, no-store');
+  next();
+});
+
+app.use((req, res, next) => {
+  res.locals.csrftoken = req.csrfToken();
   next();
 });
 
