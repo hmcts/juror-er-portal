@@ -30,7 +30,6 @@ const limiter = RateLimit({
 
 export const app = express();
 app.locals.ENV = env;
-app.locals.skipSSO = skipSSO;
 
 app.set('trust proxy', 1);
 new Logger(config.get('logger')).initLogger(app);
@@ -56,6 +55,7 @@ app.use((req, res, next) => {
 });
 
 app.use((req, res, next) => {
+  res.locals.skipSSO = skipSSO;
   res.locals.csrftoken = req.csrfToken();
   next();
 });
