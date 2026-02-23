@@ -17,23 +17,22 @@ export class Helmet {
 
   public enableFor(app: express.Express): void {
     // include default helmet functions
-    const scriptSrc = [self, googleAnalyticsDomain, "'sha256-+6WnXIl4mbFTCARd8N3COQmT3bJJmo32N8q8ZSQAIcU='"];
-
-    app.use((req, res, next) => {
-      res.locals.nonce = randomBytes(16).toString('base64');
-      scriptSrc.push(`'nonce-${res.locals.nonce}'`);
-      next();
-    });
+    const baseScriptSrc = [self, googleAnalyticsDomain, "'sha256-+6WnXIl4mbFTCARd8N3COQmT3bJJmo32N8q8ZSQAIcU='"];
 
     if (this.developmentMode) {
       // Uncaught EvalError: Refused to evaluate a string as JavaScript because 'unsafe-eval'
       // is not an allowed source of script in the following Content Security Policy directive:
       // "script-src 'self' *.google-analytics.com 'sha256-+6WnXIl4mbFTCARd8N3COQmT3bJJmo32N8q8ZSQAIcU='".
       // seems to be related to webpack
-      scriptSrc.push("'unsafe-eval'");
+      baseScriptSrc.push("'unsafe-eval'");
     }
 
-    app.use(
+    app.use((req, res, next) => {
+      const nonce = randomBytes(16).toString('base64');
+      res.locals.nonce = nonce;
+
+      const scriptSrc = [...baseScriptSrc, `'nonce-${nonce}'`];
+
       helmet({
         contentSecurityPolicy: {
           directives: {
@@ -48,7 +47,7 @@ export class Helmet {
           },
         },
         referrerPolicy: { policy: 'origin' },
-      })
-    );
+      })(req, res, next);
+    });
   }
 }
