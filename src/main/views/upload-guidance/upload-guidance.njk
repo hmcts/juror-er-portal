@@ -7,7 +7,112 @@
 
 {% block content %}
 
-  <div>
+  <div class="govuk-width-container">
+   <main class="govuk-main-wrapper">
+      <h1 class="govuk-heading-xl">{{text.UPLOAD_GUIDANCE.PAGE_HEADING}}</h1>
+
+      <!-- File type -->
+      <section>
+        <h2 class="govuk-heading-m">{{ text.UPLOAD_GUIDANCE.FILE_TYPE_HEADING}}</h2>
+
+        <p class="govuk-body">{{text.UPLOAD_GUIDANCE.FILE_TYPE_BODY}}</p>
+
+        <ul class="govuk-list govuk-list--bullet">
+          <li>
+            {{text.UPLOAD_GUIDANCE.FILE_TYPE_LIST_ITEM_1}}<br><div class="govuk-hint">{{text.UPLOAD_GUIDANCE.FILE_TYPE_LIST_ITEM_1B}}</div>
+          </li>
+          <li>
+            {{text.UPLOAD_GUIDANCE.FILE_TYPE_LIST_ITEM_2}}<br><div class="govuk-hint">{{text.UPLOAD_GUIDANCE.FILE_TYPE_LIST_ITEM_2B}}</div>
+          </li>
+          <li>
+            {{text.UPLOAD_GUIDANCE.FILE_TYPE_LIST_ITEM_3}}<br><div class="govuk-hint">{{text.UPLOAD_GUIDANCE.FILE_TYPE_LIST_ITEM_3B}}</div>
+          </li>
+          <li>
+            {{text.UPLOAD_GUIDANCE.FILE_TYPE_LIST_ITEM_4}}<br><div class="govuk-hint">{{text.UPLOAD_GUIDANCE.FILE_TYPE_LIST_ITEM_4B}}</div>
+          </li>
+        </ul>
+
+        <!-- Highlight -->
+        <div class="govuk-inset-text">{{text.UPLOAD_GUIDANCE.FILE_TYPE_INSET_TEXT}}</div>
+
+      </section>
+
+      <!-- File format -->
+      <section>
+        <h2 class="govuk-heading-m">{{text.UPLOAD_GUIDANCE.FILE_FORMAT_HEADING}}</h2>
+
+        <p class="govuk-body">{{text.UPLOAD_GUIDANCE.FILE_FORMAT_BODY}}</p>
+
+        <ul class="govuk-list govuk-list--bullet">
+          <li>{{text.UPLOAD_GUIDANCE.FILE_FORMAT_LIST_ITEM_1}}</li>
+          <li>{{text.UPLOAD_GUIDANCE.FILE_FORMAT_LIST_ITEM_2}}</li>
+          <li>{{text.UPLOAD_GUIDANCE.FILE_FORMAT_LIST_ITEM_3}}</li>
+          <li>{{text.UPLOAD_GUIDANCE.FILE_FORMAT_LIST_ITEM_4}}</li>
+          <li>{{text.UPLOAD_GUIDANCE.FILE_FORMAT_LIST_ITEM_5}}</li>
+        </ul>
+
+        <p class="govuk-body govuk-hint">{{text.UPLOAD_GUIDANCE.FILE_FORMAT_HINT_TEXT}}</p>
+      </section>
+
+      <!-- Over 76's Flag -->
+      <section>
+        <h2 class="govuk-heading-m">{{text.UPLOAD_GUIDANCE.OVER_76_TITLE}}</h2>
+
+        <p class="govuk-body">{{text.UPLOAD_GUIDANCE.OVER_76_BODY}}</p>
+
+        <h2 class="govuk-heading-m">{{text.UPLOAD_GUIDANCE.OTHER_MARKERS_HEADING}}</h2>
+
+        <p class="govuk-body">{{text.UPLOAD_GUIDANCE.OTHER_MARKERS_BODY}}</p>
+
+        <ul class="govuk-list govuk-list--bullet">
+          <li>{{text.UPLOAD_GUIDANCE.OTHER_MARKERS_LIST_ITEM_1}}</li>
+          <li>{{text.UPLOAD_GUIDANCE.OTHER_MARKERS_LIST_ITEM_2}}</li>
+          <li>{{text.UPLOAD_GUIDANCE.OTHER_MARKERS_LIST_ITEM_3}}</li>
+        </ul>
+
+        <p class="govuk-body">{{text.UPLOAD_GUIDANCE.OTHER_MARKERS_BODY_2}}</p>
+      </section>
+
+      <!-- Important information on ZIP files -->
+      <section>
+          <h2 class="govuk-heading-m">{{text.UPLOAD_GUIDANCE.IMPORTANT_ZIP_HEADING}}</h2>
+
+          <p class="govuk-body">{{text.UPLOAD_GUIDANCE.IMPORTANT_ZIP_BODY}}</p>
+
+          <div class="govuk-inset-text govuk-inset-text--green">
+            {{text.UPLOAD_GUIDANCE.IMPORTANT_ZIP_INSET_TEXT_1}}
+            <ul class="govuk-list govuk-list--bullet">
+              <li>{{text.UPLOAD_GUIDANCE.IMPORTANT_ZIP_LIST_ITEM_1}}</li>
+              <li>{{text.UPLOAD_GUIDANCE.IMPORTANT_ZIP_LIST_ITEM_2}}</li>
+              <li>{{text.UPLOAD_GUIDANCE.IMPORTANT_ZIP_LIST_ITEM_3}}</li>
+            </ul>
+          </div>
+
+          <div class="govuk-inset-text govuk-inset-text--red">
+            {{text.UPLOAD_GUIDANCE.IMPORTANT_ZIP_INSET_TEXT_2}}
+            <ul class="govuk-list govuk-list--bullet">
+              <li>{{text.UPLOAD_GUIDANCE.IMPORTANT_ZIP_LIST_ITEM_4}}</li>
+              <li>{{text.UPLOAD_GUIDANCE.IMPORTANT_ZIP_LIST_ITEM_5}}</li>
+              <li>{{text.UPLOAD_GUIDANCE.IMPORTANT_ZIP_LIST_ITEM_6}}</li>
+            </ul>
+            {{text.UPLOAD_GUIDANCE.IMPORTANT_ZIP_INSET_TEXT_3}}<br><br>
+            {{text.UPLOAD_GUIDANCE.IMPORTANT_ZIP_INSET_TEXT_4}}
+          </div>
+      </section>
+
+      <!-- Contact for Jury Central Summoning Bureau -->
+      <section>
+        <h2 class="govuk-heading-m">{{text.UPLOAD_GUIDANCE.CONTACT_DETAILS_HEADING}}</h2>
+        <p class="govuk-body">
+          {{text.UPLOAD_GUIDANCE.CONTACT_NAME}}<br><br>
+          <a class="govuk-link govuk-link--no-visited-state" href="mailto:{{text.UPLOAD_GUIDANCE.CONTACT_EMAIL}}">{{text.UPLOAD_GUIDANCE.CONTACT_EMAIL}}</a><br><br>
+          {{text.UPLOAD_GUIDANCE.CONTACT_TELEPHONE}}<br>
+          {{text.UPLOAD_GUIDANCE.CONTACT_OPENING_HOURS}}<br>
+          {{text.UPLOAD_GUIDANCE.CONTACT_OPENING_HOURS_2}}<br>
+          {{text.UPLOAD_GUIDANCE.CONTACT_OPENING_HOURS_3}}<br>
+        </p>
+      </section>
+    </main>
   </div>
 
 {% endblock %}
