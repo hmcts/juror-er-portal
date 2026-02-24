@@ -1,0 +1,27 @@
+<script nonce="{{ nonce }}" type="text/javascript">
+  document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('form button[type="submit"]').forEach(function(button) {
+      button.addEventListener('click', function(event) {
+
+        // Disable the button to prevent double submission
+        button.setAttribute('disabled', true);
+
+        // Find the closest form and submit it
+        var form = button.closest('form');
+        form.submit();
+
+        var message = form ? form.getAttribute('loading-spinner-message') : "Loading, please wait...";
+
+        // Find the outermost main-content ancestor and replace its content
+        var container = document.querySelector('#main-content');
+        container.innerHTML =
+          '<div class="loading-spinner" id="request-pool-spinner">' +
+            '<div class="loading-spinner__spinner" aria-live="polite" role="status"></div>' +
+            '<div class="loading-spinner__content">' +
+              '<h1 class="govuk-heading-m"> ' + message + ' </h1>' +
+            '</div>' +
+          '</div>'
+      });
+    });
+  });
+</script>
