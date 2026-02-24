@@ -8,9 +8,9 @@
 {% from "govuk/components/radios/macro.njk" import govukRadios %}
 {% from "govuk/components/checkboxes/macro.njk" import govukCheckboxes %}
 {% from "govuk/components/character-count/macro.njk" import govukCharacterCount %}
+{% from "moj/components/alert/macro.njk" import mojAlert %} 
 
 {% from "macros/csrf.njk" import csrfProtection %}
-
 
 {% block page_title %}{{ serviceName }} - Data Upload{% endblock %}
 {% block page_identifier %}Data Upload{% endblock %}
@@ -19,9 +19,29 @@
 
 {% block content %}
 
+  {% if bannerMessage %}
+    {{ mojAlert({
+      variant: "success",
+      text: bannerMessage,
+      iconFallbackText: "Success"
+    }) }}
+  {% endif %}
+
   {% include "includes/errors.njk" %}
 
-  Errors: {{ errors }}
+  {% set citizensOverAgeCheckedYes = undefined %}
+  {% set citizensOverAgeCheckedNo = undefined %}
+  {% if formData.citizensOverAge === 'Yes' %}
+    {% set citizensOverAgeCheckedYes = 'checked="checked"' %}
+  {% endif %}
+  {% if formData.citizensOverAge === 'No' %}
+    {% set citizensOverAgeCheckedNo = 'checked="checked"' %}
+  {% endif %}
+
+{#
+  Errors: {{ errors }}<br/>
+  Form Data: {{ formData.electorTypes }}
+#}
 
   <div>
 
@@ -66,11 +86,16 @@
         </div>
     </div>
 
-
     <div class="govuk-grid-row">
       <div class="govuk-grid-column-two-thirds">
 
         <form action="{{ fileUploadPostUrl }}" method="POST" id="dataUploadForm" enctype="multipart/form-data">
+
+          <input type="hiddenx" id="fileSizeVal" name="fileSizeVal"  value="0">
+          <input type="hiddenx" id="dataFormatVal" name="dataFormatVal" value="">
+          <input type="hiddenx" id="citizensOverAgeVal" name="citizensOverAgeVal" value="">
+          <input type="hiddenx" id="electorTypesVal" name="electorTypesVal" value="">
+          <input type="hiddenx" id="otherInformationVal" name="otherInformationVal" value="">
 
           <h2 class="govuk-heading-m">{{ text.DATA_UPLOAD.UPLOAD_SECTION_HEADING }}</h2>
           <p class="govuk-body">
@@ -78,19 +103,22 @@
             {{ text.DATA_UPLOAD.UPLOAD_INSTRUCTIONS_2 }}
           </p>
 
-          
-          <div class="govuk-form-group">
-            <label class="govuk-label" for="fileUpload">
-              Upload a file
-            </label>
-            <input class="govuk-file-upload" id="fileUpload" name="fileUpload" type="file" accept=".csv, .xlsx, .xlsm,.xls, .zip">
-          </div>
-          
+          {{ govukFileUpload({
+            id: "fileUpload",
+            name: "fileUpload",
+            label: {
+              text: text.DATA_UPLOAD.UPLOAD_CHOOSE_FILE
+            },
+            accept: fileTypes,
+            multiple: false,
+            javascript: true,
+            errorMessage: { text: errors.fileUpload } if errors.fileUpload else null
+          }) }}
 
           {# Select data format #}
           {{ govukSelect({
-            id: "fileFormat",
-            name: "fileFormat",
+            id: "dataFormat",
+            name: "dataFormat",
             label: {
               text: text.DATA_UPLOAD.FORMAT_SECTION_HEADING,
               classes: "govuk-label--m"
@@ -98,7 +126,9 @@
             hint: {
               text: text.DATA_UPLOAD.FORMAT_HINT
             },
-            items: fileFormats
+            items: dataFormats,
+            value: formData.dataFormat,
+            errorMessage: { text: errors.dataFormat } if errors.dataFormat else null
           }) }}
 
           {# Citizens over 76 flag #}
@@ -115,14 +145,17 @@
               {
                 id: "citizensOverAgeYes",
                 value: "Yes",
-                text: text.DATA_UPLOAD.OVER_76_YES_LABEL
+                text: text.DATA_UPLOAD.OVER_76_YES_LABEL,
+                checked: citizensOverAgeCheckedYes
               },
               {
                 id: "citizensOverAgeNo",
                 value: "No",
-                text: text.DATA_UPLOAD.OVER_76_NO_LABEL
+                text: text.DATA_UPLOAD.OVER_76_NO_LABEL,
+                checked: citizensOverAgeCheckedNo
               }
-            ]
+            ],
+            errorMessage: { text: errors.citizensOverAgeYes } if errors.citizensOverAgeYes else null
           }) }}
 
           {# Elector type flags #}
@@ -141,27 +174,33 @@
             items: [
               {
                 value: text.DATA_UPLOAD.ELECTOR_TYPE_1_VALUE,
-                text: text.DATA_UPLOAD.ELECTOR_TYPE_1_VALUE + " - " + text.DATA_UPLOAD.ELECTOR_TYPE_1_DESC
+                text: text.DATA_UPLOAD.ELECTOR_TYPE_1_VALUE + " - " + text.DATA_UPLOAD.ELECTOR_TYPE_1_DESC,
+                checked: true if formData.electorTypes and text.DATA_UPLOAD.ELECTOR_TYPE_1_VALUE in formData.electorTypes else false
               },
               {
                 value: text.DATA_UPLOAD.ELECTOR_TYPE_2_VALUE,
-                text: text.DATA_UPLOAD.ELECTOR_TYPE_2_VALUE + " - " + text.DATA_UPLOAD.ELECTOR_TYPE_2_DESC
+                text: text.DATA_UPLOAD.ELECTOR_TYPE_2_VALUE + " - " + text.DATA_UPLOAD.ELECTOR_TYPE_2_DESC,
+                checked: true if formData.electorTypes and text.DATA_UPLOAD.ELECTOR_TYPE_2_VALUE in formData.electorTypes else false
               },
               {
                 value: text.DATA_UPLOAD.ELECTOR_TYPE_3_VALUE,
-                text: text.DATA_UPLOAD.ELECTOR_TYPE_3_VALUE + " - " + text.DATA_UPLOAD.ELECTOR_TYPE_3_DESC
+                text: text.DATA_UPLOAD.ELECTOR_TYPE_3_VALUE + " - " + text.DATA_UPLOAD.ELECTOR_TYPE_3_DESC,
+                checked: true if formData.electorTypes and text.DATA_UPLOAD.ELECTOR_TYPE_3_VALUE in formData.electorTypes else false
               },
               {
                 value: text.DATA_UPLOAD.ELECTOR_TYPE_4_VALUE,
-                text: text.DATA_UPLOAD.ELECTOR_TYPE_4_VALUE + " - " + text.DATA_UPLOAD.ELECTOR_TYPE_4_DESC
+                text: text.DATA_UPLOAD.ELECTOR_TYPE_4_VALUE + " - " + text.DATA_UPLOAD.ELECTOR_TYPE_4_DESC,
+                checked: true if formData.electorTypes and text.DATA_UPLOAD.ELECTOR_TYPE_4_VALUE in formData.electorTypes else false
               },
               {
                 value: text.DATA_UPLOAD.ELECTOR_TYPE_5_VALUE,
-                text: text.DATA_UPLOAD.ELECTOR_TYPE_5_VALUE + " - " + text.DATA_UPLOAD.ELECTOR_TYPE_5_DESC
+                text: text.DATA_UPLOAD.ELECTOR_TYPE_5_VALUE + " - " + text.DATA_UPLOAD.ELECTOR_TYPE_5_DESC,
+                checked: true if formData.electorTypes and text.DATA_UPLOAD.ELECTOR_TYPE_5_VALUE in formData.electorTypes else false
               },
               {
                 value: text.DATA_UPLOAD.ELECTOR_TYPE_6_VALUE,
-                text: text.DATA_UPLOAD.ELECTOR_TYPE_6_VALUE + " - " + text.DATA_UPLOAD.ELECTOR_TYPE_6_DESC
+                text: text.DATA_UPLOAD.ELECTOR_TYPE_6_VALUE + " - " + text.DATA_UPLOAD.ELECTOR_TYPE_6_DESC,
+                checked: true if formData.electorTypes and text.DATA_UPLOAD.ELECTOR_TYPE_6_VALUE in formData.electorTypes else false
               }
             ]
           }) }}
@@ -175,14 +214,21 @@
               text: text.DATA_UPLOAD.OTHER_INFORMATION_SECTION_HEADING,
               classes: "govuk-label--m",
               isPageHeading: false
+            },
+            value: formData.otherInformation,
+            errorMessage: { text: errors.otherInformation } if errors.otherInformation else null
+          }) }}
+
+          {# Submit button #}
+          {{ govukButton({
+            text: text.DATA_UPLOAD.SUBMIT_BUTTON,
+            type: "submit",
+            attributes: {
+              id: "submitButton"
             }
           }) }}
 
-
-          <div class="form-group">
-            <input class="button" type="submit" value="Upload">
-            <input type="hidden" name="_csrf" value="{{csrftoken}}">
-          </div>
+          {{ csrfProtection(csrftoken) }}
 
         </form>
 
@@ -193,15 +239,76 @@
 
   <script {%- if nonce %} nonce="{{ nonce }}"{% endif %} src="https://code.jquery.com/jquery-latest.min.js"></script>
   <script {%- if nonce %} nonce="{{ nonce }}"{% endif %}>console.log('JS on file-upload page');</script>
+
   <script {%- if nonce %} nonce="{{ nonce }}"{% endif %}>
-    if (typeof window.jQuery === 'undefined') {
-      console.log("❌ jQuery is NOT loaded");
-    } else {
-      console.log("✅ jQuery is loaded");
-    }
+    $( document ).ready(function() {
+
+      // initialise metadata fields
+      document.getElementById('dataFormatVal').value = document.getElementById('dataFormat').value;
+      document.getElementById('otherInformationVal').value = document.getElementById('otherInformation').value;
+      document.getElementsByName('citizensOverAge').forEach(radio => {
+        if (radio.checked) {
+          document.getElementById('citizensOverAgeVal').value = radio.value;
+        }
+      });
+      const electorTypeCBs = document.getElementsByName('electorType');
+      const selectedElectorTypes = [];
+      electorTypeCBs.forEach(cb => {
+        if (cb.checked) {
+          selectedElectorTypes.push(cb.value);
+        }
+      });
+      document.getElementById('electorTypesVal').value = selectedElectorTypes.join(',');
+
+      // Get upload file size
+      document.getElementById('fileUpload-input').addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        let fileSizeBytes = 0;
+        if (!file) {
+          fileSizeBytes = 0;
+        } else {
+          fileSizeBytes = file.size;
+        }
+        document.getElementById('fileSizeVal').value = fileSizeBytes.toString();
+        return;
+      });
+
+      document.getElementById('dataFormat').addEventListener('change', function(e) {
+        const selectedValue = e.target.value;
+        document.getElementById('dataFormatVal').value = selectedValue.toString();
+        return;
+      });
+
+      const citizensOverAgeRadios = document.getElementsByName('citizensOverAge');
+      citizensOverAgeRadios.forEach(radio => {
+        radio.addEventListener('change', function(e) {
+          if (e.target.checked) {
+            document.getElementById('citizensOverAgeVal').value = e.target.value;
+          }
+          return;
+        });
+      });
+
+      const electorTypeCheckboxes = document.getElementsByName('electorType');
+      electorTypeCheckboxes.forEach(checkbox => {
+        checkbox.addEventListener('change', function(e) {
+          const selectedElectorTypes = [];
+          electorTypeCheckboxes.forEach(cb => {
+            if (cb.checked) {
+              selectedElectorTypes.push(cb.value);
+            }
+          });
+          document.getElementById('electorTypesVal').value = selectedElectorTypes.join(',');
+        });
+      });
+
+      document.getElementById('otherInformation').addEventListener('input', function(e) {
+        document.getElementById('otherInformationVal').value = e.target.value;
+      });
+
+    });
   </script>
 
-  
 
 {% endblock %}
 
@@ -211,11 +318,12 @@
 
   <script {%- if nonce %} nonce="{{ nonce }}"{% endif %}>console.log('hello2');</script>
 
-
   <script {%- if nonce %} nonce="{{ nonce }}"{% endif %}>
     $( document ).ready(function() {
 
       const form = document.getElementById('dataUploadForm');
+
+      console.log('Adding submit event listener to form');
 
       form.addEventListener('submit', async (e) => {
         e.preventDefault();
@@ -255,48 +363,49 @@
             'formFileName': fileName
           },
           body: fd,
-          credentials: 'same-origin'
+          credentials: 'same-origin',
+          redirect: 'manual'
         });
 
         console.log('response: \n', response);
 
      
       
-      // slightly broken (missing } but it works)
-      /*
-      if (response.ok) {
-        const payload = await response.json();
-        if (payload.redirect) {
-          window.location.href = payload.redirect;
+        // check response and process redrect
+        
+        /*
+        if (response.ok) {
+          const payload = await response.json();
+          if (payload.redirect) {
+            window.location.href = payload.redirect;
+          } else {
+            console.log('upload submitted successfully');
+          }
         } else {
-          console.log('upload submitted successfully');
+          let body;
+          try { body = await response.json(); } catch { body = await response.text(); }
+
+          if (body && body.redirect) {
+            window.location.href = body.redirect;
+          } else {
+            console.error('Upload failed: ', body?.error || response.statusText);
+          }
         }
-      } else {
-        let body;
-        try { body = await response.json(); } catch { body = await response.text(); }
-
-        if (body && body.redirect) {
-          window.location.href = body.redirect;
-        } else {
-          console.error('Upload failed: ', body?.error || response.statusText);
-        }
-      }
-      */
-
-
-
+        */
+        
+        
         if (response.ok && response.redirected) {
           console.log('response is a redirect, navigating to: ', response.url);
           window.location.href = response.url;
         }
-      
-
-
+        
 
       });
 
     });
     
   </script>
+  
+  
 
 {% endblock %}

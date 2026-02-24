@@ -11,8 +11,10 @@
   "FILE_UPLOAD": {
     "FILE_REQUIRED": "Choose a file to upload",
     "FILE_TOO_LARGE": "The selected file is too large. Maximum size is 100MB.",
-    "INVALID_FILE_TYPE": "Invalid file type. Please upload a CSV or Excel file.",
+    "INVALID_FILE_TYPE": "File type not permitted",
     "CITIZENS_OVER_AGE_REQUIRED": "Indicate if the data includes citizens over 76 years old",
-    "FILE_FORMAT_REQUIRED": "Select the file format"
+    "DATA_FORMAT_REQUIRED": "Select the data format",
+    "FILE_TYPE_NOT_PERMITTED": "File type not permitted",
+    "OTHER_INFORMATION_TOO_LONG": "Other Information must be 200 characters or less"
   }
 }

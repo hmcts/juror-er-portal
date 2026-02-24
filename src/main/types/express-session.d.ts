@@ -7,7 +7,8 @@ declare module 'express-session' {
     authToken: string;
     authentication: JwtPayload;
     isDevLogin?: boolean;
-    formFields: { [key: string]: string };
+    formFields: { [key: string]: string | string[] };
     errors: { [key: string]: string };
+    bannerMessage?: string;
   }
 }
