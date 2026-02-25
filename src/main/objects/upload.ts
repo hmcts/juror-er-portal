@@ -19,7 +19,7 @@ export const uploadStatusDAO = {
 export const uploadDashboardDAO = {
   resource: 'juror-er/upload/dashboard',
   get: (app: Application, jwtToken: string | undefined): Promise<AxiosResponse['data']> => {
-    const url = uploadDashboardDAO.resource
+    const url = uploadDashboardDAO.resource;
     const options: AxiosRequestConfig = {
       method: 'get',
     };
@@ -27,10 +27,13 @@ export const uploadDashboardDAO = {
   },
 };
 
-
 export const uploadStatusUpdateDAO = {
   resource: 'juror-er/upload/file',
-  post: (app: Application, jwtToken: string | undefined, payload: Record<string, string | number>): Promise<AxiosResponse['data']> => {
+  post: (
+    app: Application,
+    jwtToken: string | undefined,
+    payload: Record<string, string | number>
+  ): Promise<AxiosResponse['data']> => {
     const url = uploadStatusUpdateDAO.resource;
     const options: AxiosRequestConfig = {
       method: 'post',
@@ -40,4 +43,3 @@ export const uploadStatusUpdateDAO = {
     return axiosInstance(url, app, jwtToken, options);
   },
 };
-

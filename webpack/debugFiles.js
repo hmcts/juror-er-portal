@@ -10,7 +10,7 @@ const resourcesDist = path.resolve(__dirname, '../dist/main/resources');
 const copyDebugFiles = new CopyWebpackPlugin({
   patterns: [
     { from: views, to: viewsDist },
-    { from: resources, to: resourcesDist }
+    { from: resources, to: resourcesDist },
   ],
 });
 

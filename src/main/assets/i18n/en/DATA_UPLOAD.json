@@ -34,7 +34,7 @@
   "ELECTOR_TYPE_5_DESC": "Peer eligible to vote in the House of Lords who is entitled to vote at local government elections",
   "ELECTOR_TYPE_6_VALUE": "M",
   "ELECTOR_TYPE_6_DESC": "Qualifying foreign citizen (except a Commonwealth, Republic of Ireland or European Union citizen) who is entitled to vote at Senedd and local government elections",
-  
+
   "OTHER_INFORMATION_SECTION_HEADING": "Other information",
 
   "SUBMIT_BUTTON": "Upload",
@@ -42,5 +42,4 @@
   "UPLOAD_WINDOW_CLOSED_HEADING": "Update window is now closed",
   "UPLOAD_WINDOW_CLOSED_DETAIL_1": "The annual upload window for electoral register data has now closed. You are not able to upload files at this time.",
   "UPLOAD_WINDOW_CLOSED_DETAIL_2": "The Jury Central Summoning Bureau will contact you when the next upload window opens. You will receive an email notification with details of the new deadline and upload period."
-
 }
