@@ -8,7 +8,8 @@
 {% from "govuk/components/radios/macro.njk" import govukRadios %}
 {% from "govuk/components/checkboxes/macro.njk" import govukCheckboxes %}
 {% from "govuk/components/character-count/macro.njk" import govukCharacterCount %}
-{% from "moj/components/alert/macro.njk" import mojAlert %} 
+{% from "govuk/components/warning-text/macro.njk" import govukWarningText %}
+{% from "moj/components/alert/macro.njk" import mojAlert %}
 
 {% from "macros/csrf.njk" import csrfProtection %}
 
@@ -38,19 +39,13 @@
     {% set citizensOverAgeCheckedNo = 'checked="checked"' %}
   {% endif %}
 
-{#
-  Errors: {{ errors }}<br/>
-  Form Data: {{ formData.electorTypes }}
-#}
-
   <div>
 
+    {# Submission dashboard #}
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-one-half">
-
           <br/>
           <h1 class="govuk-heading-l">{{ text.DATA_UPLOAD.PAGE_HEADING }}</h1>
-
           <table class="govuk-table govuk-table--m">
             <tbody class="govuk-table__body">
               <tr class="govuk-table__row">
@@ -82,7 +77,6 @@
               </tr>
             </tbody>
           </table>
-
         </div>
     </div>
 
@@ -91,18 +85,23 @@
 
         <form action="{{ fileUploadPostUrl }}" method="POST" id="dataUploadForm" enctype="multipart/form-data" loading-spinner-message="Uploading file, please wait...">
 
-          <input type="hiddenx" id="fileSizeVal" name="fileSizeVal"  value="0">
-          <input type="hiddenx" id="dataFormatVal" name="dataFormatVal" value="">
-          <input type="hiddenx" id="citizensOverAgeVal" name="citizensOverAgeVal" value="">
-          <input type="hiddenx" id="electorTypesVal" name="electorTypesVal" value="">
-          <input type="hiddenx" id="otherInformationVal" name="otherInformationVal" value="">
+          {# Upload metadata #}
+          <input type="hidden" id="fileSizeVal" name="fileSizeVal"  value="0">
+          <input type="hidden" id="dataFormatVal" name="dataFormatVal" value="">
+          <input type="hidden" id="citizensOverAgeVal" name="citizensOverAgeVal" value="">
+          <input type="hidden" id="electorTypesVal" name="electorTypesVal" value="">
+          <input type="hidden" id="otherInformationVal" name="otherInformationVal" value="">
 
           <h2 class="govuk-heading-m">{{ text.DATA_UPLOAD.UPLOAD_SECTION_HEADING }}</h2>
           <p class="govuk-body">
             {{ text.DATA_UPLOAD.UPLOAD_INSTRUCTIONS_1 }}<br/>
-            {{ text.DATA_UPLOAD.UPLOAD_INSTRUCTIONS_2 }}
           </p>
+          {{ govukWarningText({
+            text: text.DATA_UPLOAD.UPLOAD_INSTRUCTIONS_2,
+            iconFallbackText: "Warning"
+          }) }}
 
+          {# File upload component #}
           {{ govukFileUpload({
             id: "fileUpload",
             name: "fileUpload",
@@ -158,7 +157,7 @@
             errorMessage: { text: errors.citizensOverAgeYes } if errors.citizensOverAgeYes else null
           }) }}
 
-          {# Elector type flags #}
+          {# Additional elector type flags #}
           {{ govukCheckboxes({
             name: "electorType",
             classes: "govuk-checkboxes--small",
@@ -237,180 +236,10 @@
 
   </div>
 
-  <script {%- if nonce %} nonce="{{ nonce }}"{% endif %} src="https://code.jquery.com/jquery-latest.min.js"></script>
-  <script {%- if nonce %} nonce="{{ nonce }}"{% endif %}>console.log('JS on file-upload page');</script>
-
-  <script {%- if nonce %} nonce="{{ nonce }}"{% endif %}>
-    $( document ).ready(function() {
-
-      // initialise metadata fields
-      document.getElementById('dataFormatVal').value = document.getElementById('dataFormat').value;
-      document.getElementById('otherInformationVal').value = document.getElementById('otherInformation').value;
-      document.getElementsByName('citizensOverAge').forEach(radio => {
-        if (radio.checked) {
-          document.getElementById('citizensOverAgeVal').value = radio.value;
-        }
-      });
-      const electorTypeCBs = document.getElementsByName('electorType');
-      const selectedElectorTypes = [];
-      electorTypeCBs.forEach(cb => {
-        if (cb.checked) {
-          selectedElectorTypes.push(cb.value);
-        }
-      });
-      document.getElementById('electorTypesVal').value = selectedElectorTypes.join(',');
-
-      // Get upload file size
-      document.getElementById('fileUpload-input').addEventListener('change', function(e) {
-        const file = e.target.files[0];
-        let fileSizeBytes = 0;
-        if (!file) {
-          fileSizeBytes = 0;
-        } else {
-          fileSizeBytes = file.size;
-        }
-        document.getElementById('fileSizeVal').value = fileSizeBytes.toString();
-        return;
-      });
-
-      document.getElementById('dataFormat').addEventListener('change', function(e) {
-        const selectedValue = e.target.value;
-        document.getElementById('dataFormatVal').value = selectedValue.toString();
-        return;
-      });
-
-      const citizensOverAgeRadios = document.getElementsByName('citizensOverAge');
-      citizensOverAgeRadios.forEach(radio => {
-        radio.addEventListener('change', function(e) {
-          if (e.target.checked) {
-            document.getElementById('citizensOverAgeVal').value = e.target.value;
-          }
-          return;
-        });
-      });
-
-      const electorTypeCheckboxes = document.getElementsByName('electorType');
-      electorTypeCheckboxes.forEach(checkbox => {
-        checkbox.addEventListener('change', function(e) {
-          const selectedElectorTypes = [];
-          electorTypeCheckboxes.forEach(cb => {
-            if (cb.checked) {
-              selectedElectorTypes.push(cb.value);
-            }
-          });
-          document.getElementById('electorTypesVal').value = selectedElectorTypes.join(',');
-        });
-      });
-
-      document.getElementById('otherInformation').addEventListener('input', function(e) {
-        document.getElementById('otherInformationVal').value = e.target.value;
-      });
-
-    });
-  </script>
-
-
-{% endblock %}
-
-
-{% block body_end %}
-  {{ super() }}
-
-  <script {%- if nonce %} nonce="{{ nonce }}"{% endif %}>console.log('hello2');</script>
-
-  <script {%- if nonce %} nonce="{{ nonce }}"{% endif %}>
-    $( document ).ready(function() {
-
-      const form = document.getElementById('dataUploadForm');
-
-      console.log('Adding submit event listener to form');
-
-      form.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        
-        let fileFormat = '';
-        fileFormat = document.getElementById('fileFormat').value;
-        
-        let citizensOverAge = '';
-        if (document.getElementById('citizensOverAgeYes').checked){
-          citizensOverAge = 'Yes';
-        }
-        if (document.getElementById('citizensOverAgeNo').checked){
-          citizensOverAge = 'No';
-        }
-
-        const fd = new FormData();
-        // append fields first so they appear on the server before the file which allows for validation before file processing
-        fd.append('fileFormat', fileFormat);
-        fd.append('citizensOverAge', citizensOverAge);
-        //fd.append('electorTypes', electorTypes.join(','));
-        fd.append('otherInformation', document.getElementById('otherInformation').value);
-
-        // append file
-        let fileName = '';
-        if (document.getElementById('fileUpload').files.length > 0) {
-          fileName = document.getElementById('fileUpload').files[0].name;
-        }
-        fd.append('file', document.getElementById('fileUpload').files[0]);
-        
-        // post to server
-        console.log( 'posting form data with fetch');
-        const response = await fetch('/submit-data-upload', { 
-          method: 'POST',
-          headers: {
-            'formCitizensOverage': citizensOverAge,
-            'formFileFormat': fileFormat,
-            'formFileName': fileName
-          },
-          body: fd,
-          credentials: 'same-origin',
-          redirect: 'manual'
-        });
-
-        console.log('response: \n', response);
-
-     
-      
-        // check response and process redrect
-        
-        /*
-        if (response.ok) {
-          const payload = await response.json();
-          if (payload.redirect) {
-            window.location.href = payload.redirect;
-          } else {
-            console.log('upload submitted successfully');
-          }
-        } else {
-          let body;
-          try { body = await response.json(); } catch { body = await response.text(); }
-
-          if (body && body.redirect) {
-            window.location.href = body.redirect;
-          } else {
-            console.error('Upload failed: ', body?.error || response.statusText);
-          }
-        }
-        */
-        
-        
-        if (response.ok && response.redirected) {
-          console.log('response is a redirect, navigating to: ', response.url);
-          window.location.href = response.url;
-        }
-        
-
-      });
-
-    });
-    
-  </script>
-  
-  
-
 {% endblock %}
 
 {% block bodyEnd %}
   {{ super() }}
   {% include "includes/loading-spinner.njk" %}
+  {% include "data-upload/data-upload-scripts.njk" %}
 {% endblock %}
