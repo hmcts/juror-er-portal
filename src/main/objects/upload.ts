@@ -1,8 +1,6 @@
 import { AxiosRequestConfig, AxiosResponse } from 'axios';
 import { Application } from 'express';
 
-//const jwt = require('jsonwebtoken');
-
 const { axiosInstance } = require('./axios-instance');
 
 export const uploadStatusDAO = {

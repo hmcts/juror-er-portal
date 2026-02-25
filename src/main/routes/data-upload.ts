@@ -1,24 +1,14 @@
+import path from 'path';
+import { Readable } from 'stream';
+
+import { BlobServiceClient, BlockBlobClient, ContainerClient } from '@azure/storage-blob';
+import busboy, { FileInfo } from 'busboy';
 import { Application } from 'express';
 import * as _ from 'lodash';
-import path from 'path';
-import busboy from 'busboy';
-import { verify } from '../modules/auth';
-import { uploadStatusDAO } from '../objects/upload';
-import { uploadDashboardDAO } from '../objects/upload';
-import { uploadStatusUpdateDAO } from '../objects/upload';
-import { v4 as uuidv4 } from 'uuid';
-import { Readable } from 'stream';
-import 'dotenv/config';
 
-import {
-  BlobServiceClient,
-  ContainerCreateResponse,
-  BlockBlobClient,
-  BlockBlobUploadResponse,
-  ContainerDeleteResponse,
-  BlobDownloadResponseParsed,
-  ContainerClient,
-} from '@azure/storage-blob';
+import { verify } from '../modules/auth';
+import { uploadDashboardDAO, uploadStatusUpdateDAO } from '../objects/upload';
+import 'dotenv/config';
 
 export class UploadDetails {
   laCode: string = '';
@@ -75,20 +65,8 @@ export default function (app: Application): void {
       delete req.session.bannerMessage;
     }
 
-    // Call API to get upload status
-    let statusDetails;
-    let dashboardDetails;
-    try {
-      statusDetails = await uploadStatusDAO.get(app, req.session?.authToken, req.session?.authentication?.laCode);
-    } catch (err) {
-      app.logger.crit('Failed to fetch upload status details: ', {
-        error: typeof err.error !== 'undefined' ? err.error : err.toString(),
-        laCode: req.session?.authentication?.laCode,
-      });
-      return res.render('_errors/generic', { err });
-    }
-
     // Call API to get dashboard details
+    let dashboardDetails;
     try {
       dashboardDetails = await uploadDashboardDAO.get(app, req.session?.authToken);
     } catch (err) {
@@ -117,7 +95,7 @@ export default function (app: Application): void {
       uploadWindowClosed = daysRemaining < 0;
     } else {
       app.logger.crit('Error processing upload dashboard details: ', {
-        dashboardDetails: dashboardDetails,
+        dashboardDetails,
         laCode: req.session?.authentication?.laCode,
       });
     }
@@ -128,13 +106,13 @@ export default function (app: Application): void {
 
     return res.render('data-upload/data-upload.njk', {
       deadlineDate: displayDeadlineDate,
-      daysRemaining: daysRemaining,
+      daysRemaining,
       uploadStatus: dashboardDetails?.uploadStatus,
-      dataFormats: dataFormats,
+      dataFormats,
       fileUploadPostUrl: '/submit-data-upload',
       fileTypes: acceptedFileTypes,
-      bannerMessage: bannerMessage,
-      formData: formData,
+      bannerMessage,
+      formData,
       errors: tmpErrors,
     });
   });
@@ -148,7 +126,7 @@ export default function (app: Application): void {
     });
   });
 
-  app.post('/submit-data-upload', async (req, res, next: any) => {
+  app.post('/submit-data-upload', async (req, res) => {
     const uploadDetails: UploadDetails = new UploadDetails();
 
     let connectionString = '';
@@ -159,10 +137,8 @@ export default function (app: Application): void {
 
     let fileStream: NodeJS.ReadableStream | null = null;
     let uploadAborted = false;
-    let fileTooLarge: boolean = false;
     let uploadValid: boolean = true;
     let uploadErrors: { [key: string]: string } = {};
-    let metadataReceived = false;
 
     delete req.session.errors;
     delete req.session.formFields;
@@ -179,7 +155,7 @@ export default function (app: Application): void {
     uploadDetails.azureDataFolder = `${dateFolder}/LA_Data/${uploadDetails.laCode}-${uploadDetails.laName}`;
 
     //const formData: UploadFormData = new UploadFormData();
-    let formData = {
+    const formData = {
       dataFormat: '',
       citizensOverAge: '',
       fileName: '',
@@ -243,162 +219,167 @@ export default function (app: Application): void {
       }
 
       if (fieldname === 'filename') {
-        uploadDetails.fileName = val;
+        uploadDetails.fileName = sanitizeFilename(val);
 
-        formData.fileName = val;
+        formData.fileName = sanitizeFilename(val);
       }
-
-      metadataReceived = true;
     });
 
     // Process file upload
-    bb.on(
-      'file',
-      async (fieldname: string, file: NodeJS.ReadableStream, fileInfo: any, encoding: string, mimetype: string) => {
-        if (uploadAborted || fileStream) {
-          // If upload aborted or have an active stream, drain the incoming file stream return early
-          app.logger.warn('Upload aborted or file stream active - draining incoming file stream', {
-            laCode: req.session?.authentication?.laCode,
-            fileName: fileInfo.filename,
-            fileStreamActive: !!fileStream,
-          });
-          try {
-            (file as any).resume();
-          } catch (e) {}
-          return;
-        }
-
-        if (!fileInfo.filename) {
-          app.logger.warn('No file details received: ', {
-            laCode: req.session?.authentication?.laCode,
-            fileName: fileInfo.filename,
-          });
-          uploadValid = false;
-          uploadDetails.fileName = '';
-          uploadDetails.fileMimeType = '';
-          uploadDetails.fileExtension = '';
-        } else {
-          uploadDetails.fileName = fileInfo.filename.trim();
-          uploadDetails.fileMimeType = fileInfo.mimeType;
-          uploadDetails.fileExtension = path.extname(fileInfo.filename).toLowerCase();
-
-          app.logger.info('Upload file details received: ', {
-            laCode: req.session?.authentication?.laCode,
-            fileName: fileInfo.filename,
-            mimeType: fileInfo.mimeType,
-          });
-        }
-
-        uploadErrors = validateDetails(uploadDetails, res.locals.text.VALIDATION);
-
-        if (Object.keys(uploadErrors).length > 0) {
-          req.session.errors = _.clone(uploadErrors);
-          uploadValid = false;
-        }
-
-        if (!uploadValid) {
-          // If upload invalid drain the incoming file stream return early
-          try {
-            (file as any).resume();
-          } catch (err) {}
-          return;
-        }
-
-        // Upload details valid, proceed with upload to Azure blob storage
-        if (uploadValid) {
-          uploadDetails.azureDataFilepath = `${uploadDetails.azureDataFolder}/${uploadDetails.fileName}`;
-
-          try {
-            fileStream = file;
-
-            // Configure azure container client
-            connectionString = process.env.AZURE_STORAGE_CONNECTION_STRING as string;
-            if (!connectionString) throw new Error('Azure connection string not found');
-
-            blobServiceClient = BlobServiceClient.fromConnectionString(connectionString);
-            containerName = process.env.AZURE_STORAGE_CONTAINER_NAME as string;
-            containerClient = blobServiceClient.getContainerClient(containerName);
-
-            // Verify container exists
-            const exists = await containerClient.exists();
-            if (!exists) {
-              throw new Error(`Container "${containerName}" does not exist.`);
-            }
-
-            const bufferSize = 5 * 1024 * 1024; // 5MB buffer size for streaming upload
-            const maxConcurrency = 5; // max concurrency for parallel uploads
-            const uploadOptions = {
-              blobHTTPHeaders: {
-                blobContentType: uploadDetails.fileMimeType || 'application/octet-stream',
-              },
-            };
-            const dataBlobName = `${uploadDetails.azureDataFolder}/${uploadDetails.fileName}`;
-            blockBlobClient = containerClient.getBlockBlobClient(dataBlobName);
-
-            app.logger.info('Start upload data stream to azure: ', {
-              laCode: req.session?.authentication?.laCode,
-              fileName: uploadDetails.fileName,
-              fileSize: uploadDetails.fileSize,
-              mimeType: uploadDetails.fileMimeType,
-              blobUrl: blockBlobClient.url,
-            });
-            // Stream upload directly to Azure storage
-            await blockBlobClient.uploadStream(file as unknown as Readable, bufferSize, maxConcurrency, uploadOptions);
-
-            uploadDetails.fileUploadSuccessful = true;
-
-            app.logger.info('Data file upload successful: ', {
-              laCode: req.session?.authentication?.laCode,
-              fileName: uploadDetails.fileName,
-              fileSize: uploadDetails.fileSize,
-              mimeType: uploadDetails.fileMimeType,
-              blobUrl: blockBlobClient.url,
-            });
-          } catch (err) {
-            const message = err instanceof Error ? err.message : String(err);
-            app.logger.crit(`Error uploading file to Azure Blob Storage:`, {
-              error: message,
-              laCode: req.session?.authentication?.laCode,
-              fileName: uploadDetails.fileName,
-              blobUrl: blockBlobClient.url,
-            });
-            uploadAborted = true;
-          }
-        }
-
-        // handle file too large error
-        file.on('limit', () => {
-          app.logger.crit('File sioze limit exceeded: ', {
-            laCode: req.session?.authentication?.laCode,
-            fileName: uploadDetails.fileName,
-            mimeType: uploadDetails.fileMimeType,
-            uploadBytesReceived: uploadDetails.uploadBytesReceived,
-          });
-          fileTooLarge = true;
-          uploadAborted = true;
+    bb.on('file', async (_fieldname: string, file: NodeJS.ReadableStream, fileInfo: FileInfo) => {
+      if (uploadAborted || fileStream) {
+        // If upload aborted or have an active stream, drain the incoming file stream return early
+        app.logger.warn('Upload aborted or file stream active - draining incoming file stream', {
+          laCode: req.session?.authentication?.laCode,
+          fileName: fileInfo.filename,
+          fileStreamActive: !!fileStream,
+        });
+        try {
           file.resume();
-        });
-
-        // handle incoming file chunks
-        file.on('data', (data: Buffer) => {
-          uploadDetails.uploadBytesReceived += data.length;
-        });
-
-        file.on('end', () => {
-          //fileBuffer = Buffer.concat(fileChunks);
-          //fileChunks.length = 0; // Clear the chunks array - free memory
-
-          app.logger.info('Finished receiving file data: ', {
+        } catch (err) {
+          app.logger.crit('Error draining incoming file stream: ', {
             laCode: req.session?.authentication?.laCode,
-            fileName: uploadDetails.fileName,
-            mimeType: uploadDetails.fileMimeType,
-            uploadBytesReceived: uploadDetails.uploadBytesReceived,
+            fileName: fileInfo.filename,
+            error: err,
           });
+        }
+        return;
+      }
+
+      if (!fileInfo.filename) {
+        app.logger.warn('No file details received: ', {
+          laCode: req.session?.authentication?.laCode,
+          fileName: fileInfo.filename,
+        });
+        uploadValid = false;
+        uploadDetails.fileName = '';
+        uploadDetails.fileMimeType = '';
+        uploadDetails.fileExtension = '';
+      } else {
+        uploadDetails.fileName = fileInfo.filename.trim();
+        uploadDetails.fileMimeType = fileInfo.mimeType;
+        uploadDetails.fileExtension = path.extname(fileInfo.filename).toLowerCase();
+
+        app.logger.info('Upload file details received: ', {
+          laCode: req.session?.authentication?.laCode,
+          fileName: fileInfo.filename,
+          mimeType: fileInfo.mimeType,
         });
       }
-    );
 
-    bb.on('error', (err: any) => {
+      uploadErrors = validateDetails(uploadDetails, res.locals.text.VALIDATION);
+
+      if (Object.keys(uploadErrors).length > 0) {
+        req.session.errors = _.clone(uploadErrors);
+        uploadValid = false;
+      }
+
+      if (!uploadValid) {
+        // If upload invalid drain the incoming file stream return early
+        try {
+          file.resume();
+        } catch (err) {
+          app.logger.crit('Error draining incoming file stream: ', {
+            laCode: req.session?.authentication?.laCode,
+            fileName: fileInfo.filename,
+            error: err,
+          });
+        }
+        return;
+      }
+
+      // Upload details valid, proceed with upload to Azure blob storage
+      if (uploadValid) {
+        uploadDetails.azureDataFilepath = `${uploadDetails.azureDataFolder}/${uploadDetails.fileName}`;
+
+        try {
+          fileStream = file;
+
+          // Configure azure container client
+          connectionString = process.env.AZURE_STORAGE_CONNECTION_STRING as string;
+          if (!connectionString) {
+            throw new Error('Azure connection string not found');
+          }
+
+          blobServiceClient = BlobServiceClient.fromConnectionString(connectionString);
+          containerName = process.env.AZURE_STORAGE_CONTAINER_NAME as string;
+          containerClient = blobServiceClient.getContainerClient(containerName);
+
+          // Verify container exists
+          const exists = await containerClient.exists();
+          if (!exists) {
+            throw new Error(`Container "${containerName}" does not exist.`);
+          }
+
+          const bufferSize = 5 * 1024 * 1024; // 5MB buffer size for streaming upload
+          const maxConcurrency = 5; // max concurrency for parallel uploads
+          const uploadOptions = {
+            blobHTTPHeaders: {
+              blobContentType: uploadDetails.fileMimeType || 'application/octet-stream',
+            },
+          };
+          const dataBlobName = `${uploadDetails.azureDataFolder}/${uploadDetails.fileName}`;
+          blockBlobClient = containerClient.getBlockBlobClient(dataBlobName);
+
+          app.logger.info('Start upload data stream to azure: ', {
+            laCode: req.session?.authentication?.laCode,
+            fileName: uploadDetails.fileName,
+            fileSize: uploadDetails.fileSize,
+            mimeType: uploadDetails.fileMimeType,
+            blobUrl: blockBlobClient.url,
+          });
+          // Stream upload directly to Azure storage
+          await blockBlobClient.uploadStream(file as unknown as Readable, bufferSize, maxConcurrency, uploadOptions);
+
+          uploadDetails.fileUploadSuccessful = true;
+
+          app.logger.info('Data file upload successful: ', {
+            laCode: req.session?.authentication?.laCode,
+            fileName: uploadDetails.fileName,
+            fileSize: uploadDetails.fileSize,
+            mimeType: uploadDetails.fileMimeType,
+            blobUrl: blockBlobClient.url,
+          });
+        } catch (err) {
+          const message = err instanceof Error ? err.message : String(err);
+          app.logger.crit('Error uploading file to Azure Blob Storage:', {
+            error: message,
+            laCode: req.session?.authentication?.laCode,
+            fileName: uploadDetails.fileName,
+            blobUrl: blockBlobClient.url,
+          });
+          uploadAborted = true;
+        }
+      }
+
+      // handle file too large error
+      file.on('limit', () => {
+        app.logger.crit('File size limit exceeded: ', {
+          laCode: req.session?.authentication?.laCode,
+          fileName: uploadDetails.fileName,
+          mimeType: uploadDetails.fileMimeType,
+          uploadBytesReceived: uploadDetails.uploadBytesReceived,
+        });
+        uploadAborted = true;
+        file.resume();
+      });
+
+      // handle incoming file chunks
+      file.on('data', (data: Buffer) => {
+        uploadDetails.uploadBytesReceived += data.length;
+      });
+
+      file.on('end', () => {
+        app.logger.info('Finished receiving file data: ', {
+          laCode: req.session?.authentication?.laCode,
+          fileName: uploadDetails.fileName,
+          mimeType: uploadDetails.fileMimeType,
+          uploadBytesReceived: uploadDetails.uploadBytesReceived,
+        });
+      });
+    });
+
+    bb.on('error', (err: unknown) => {
       const message = err instanceof Error ? err.message : String(err);
 
       app.logger.crit('Error processing file upload: ', {
@@ -424,12 +405,6 @@ export default function (app: Application): void {
         req.session.formFields = _.clone(formData);
         req.destroy();
 
-        /*
-        app.logger.warn('Upload request invalid', {
-          laCode: req.session.authentication?.laCode
-        });
-        */
-
         return res.redirect('/data-upload');
       } else {
         // create metadata file and upload to azure blob storage
@@ -438,19 +413,15 @@ export default function (app: Application): void {
         req.session.bannerMessage = 'File upload successful';
       }
 
-      // Call API to update LA upload status
-      let statusDetails;
-      let dashboardDetails;
-
       try {
-        let payload = {
+        const payload = {
           filename: uploadDetails.fileName,
           file_format: uploadDetails.dataFormat,
           file_size_bytes: uploadDetails.fileSize,
           other_information: uploadDetails.otherInformation,
         };
 
-        const apiResponse = await uploadStatusUpdateDAO.post(app, req.session.authToken, payload);
+        await uploadStatusUpdateDAO.post(app, req.session.authToken, payload);
       } catch (err) {
         app.logger.crit('Failed to update upload status', {
           error: typeof err.error !== 'undefined' ? err.error : err.toString(),
@@ -469,11 +440,12 @@ export default function (app: Application): void {
   });
 
   function sanitizeFilename(name = '') {
+    // eslint-disable-next-line no-useless-escape
     return name.replace(/\s+/g, '_').replace(/[^A-Za-z0-9_\-\.]/g, '');
   }
 
-  function validateDetails(uploadDetails: UploadDetails, messageText: any) {
-    let uploadErrors: { [key: string]: string } = {};
+  function validateDetails(uploadDetails: UploadDetails, messageText: { [key: string]: { [key: string]: string } }) {
+    const uploadErrors: { [key: string]: string } = {};
 
     if (!uploadDetails.fileName) {
       uploadErrors['fileUpload'] = messageText.FILE_UPLOAD.FILE_REQUIRED;
@@ -504,7 +476,11 @@ export default function (app: Application): void {
     return uploadErrors;
   }
 
-  async function createAzureMetadataFile(req: any, containerClient: ContainerClient, uploadDetails: UploadDetails) {
+  async function createAzureMetadataFile(
+    req: Express.Request,
+    containerClient: ContainerClient,
+    uploadDetails: UploadDetails
+  ) {
     const currentDate = new Date();
     let fileData: string = '';
 
@@ -519,7 +495,7 @@ export default function (app: Application): void {
       fileData += `Over 76: ${uploadDetails.citizensOverAge}\n`;
       fileData += `Other Flags: ${uploadDetails.electorTypes}\n`;
       fileData += `Other Information: ${uploadDetails.otherInformation}\n`;
-      fileData += `\n`;
+      fileData += '\n';
       fileData += `User Name: ${uploadDetails.userName}\n`;
       fileData += `User Email: ${uploadDetails.userEmail}\n`;
       fileData += `Upload date: ${currentDate.toISOString()}`;
@@ -533,7 +509,7 @@ export default function (app: Application): void {
         fileName: blobName,
       });
 
-      const uploadBlobResponse: BlockBlobUploadResponse = await blockBlobClient.upload(fileData, fileData.length);
+      await blockBlobClient.upload(fileData, fileData.length);
 
       app.logger.info('Metadata file upload successful', {
         laCode: req.session.authentication?.laCode,
@@ -550,6 +526,4 @@ export default function (app: Application): void {
 
     return;
   }
-
-  async function deleteAzureBlob(req: any, containerClient: ContainerClient, blobName: string) {}
 }
