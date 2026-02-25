@@ -10,6 +10,8 @@ import { verify } from '../modules/auth';
 import { uploadDashboardDAO, uploadStatusUpdateDAO } from '../objects/upload';
 import 'dotenv/config';
 
+import csrf from 'csurf';
+
 export class UploadDetails {
   laCode: string = '';
   laName: string = '';
@@ -53,7 +55,9 @@ export default function (app: Application): void {
   const acceptedFileTypes = ['.csv', '.txt', '.xlsx', '.xlsm', '.xls', '.xltx', '.xltm', '.zip'];
   const MAX_FILE_SIZE = 100 * 1024 * 1024; // 100MB
 
-  app.get('/data-upload', verify, async (req, res) => {
+  const csrfProtection = csrf({ cookie: true });
+
+  app.get('/data-upload', csrfProtection, verify, async (req, res) => {
     const tmpErrors = _.clone(req.session.errors);
     const formData = _.clone(req.session.formFields);
     delete req.session.errors;
@@ -113,6 +117,7 @@ export default function (app: Application): void {
       fileTypes: acceptedFileTypes,
       bannerMessage,
       formData,
+      csrftoken: req.csrfToken(),
       errors: tmpErrors,
     });
   });

@@ -85,6 +85,8 @@
 
         <form action="{{ fileUploadPostUrl }}" method="POST" id="dataUploadForm" enctype="multipart/form-data" loading-spinner-message="Uploading file, please wait...">
 
+          {{ csrfProtection(csrftoken) }}
+
           {# Upload metadata #}
           <input type="hidden" id="fileSizeVal" name="fileSizeVal"  value="0">
           <input type="hidden" id="dataFormatVal" name="dataFormatVal" value="">
@@ -226,8 +228,6 @@
               id: "submitButton"
             }
           }) }}
-
-          {{ csrfProtection(csrftoken) }}
 
         </form>
 
