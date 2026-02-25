@@ -194,31 +194,6 @@ export default function (app: Application): void {
       userEmail: uploadDetails.userEmail,
     });
 
-    // Configure azure container client
-    try {
-      connectionString = process.env.AZURE_STORAGE_CONNECTION_STRING as string;
-      if (!connectionString) throw new Error('Azure connection string not found');
-
-      blobServiceClient = BlobServiceClient.fromConnectionString(connectionString);
-      containerName = process.env.AZURE_STORAGE_CONTAINER_NAME as string;
-      containerClient = blobServiceClient.getContainerClient(containerName);
-
-      // Verify container exists
-      const exists = await containerClient.exists();
-      if (!exists) {
-        throw new Error(`Container "${containerName}" does not exist.`);
-      }
-    } catch (err) {
-      const message = err instanceof Error ? err.message : String(err);
-      uploadValid = false;
-      app.logger.crit('Error configuring Azure Container Client: ', {
-        laCode: uploadDetails.laCode,
-        error: message,
-      });
-
-      return res.render('_errors/generic', { 'Error configuring Azure Container Client': message });
-    }
-
     const bb = busboy({
       headers: req.headers,
       limits: { fileSize: MAX_FILE_SIZE },
@@ -325,7 +300,7 @@ export default function (app: Application): void {
           // If upload invalid drain the incoming file stream return early
           try {
             (file as any).resume();
-          } catch (e) {}
+          } catch (err) {}
           return;
         }
 
@@ -335,6 +310,20 @@ export default function (app: Application): void {
 
           try {
             fileStream = file;
+
+            // Configure azure container client
+            connectionString = process.env.AZURE_STORAGE_CONNECTION_STRING as string;
+            if (!connectionString) throw new Error('Azure connection string not found');
+
+            blobServiceClient = BlobServiceClient.fromConnectionString(connectionString);
+            containerName = process.env.AZURE_STORAGE_CONTAINER_NAME as string;
+            containerClient = blobServiceClient.getContainerClient(containerName);
+
+            // Verify container exists
+            const exists = await containerClient.exists();
+            if (!exists) {
+              throw new Error(`Container "${containerName}" does not exist.`);
+            }
 
             const bufferSize = 5 * 1024 * 1024; // 5MB buffer size for streaming upload
             const maxConcurrency = 5; // max concurrency for parallel uploads
