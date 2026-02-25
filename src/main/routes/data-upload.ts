@@ -3,14 +3,13 @@ import { Readable } from 'stream';
 
 import { BlobServiceClient, BlockBlobClient, ContainerClient } from '@azure/storage-blob';
 import busboy, { FileInfo } from 'busboy';
+import csrf from 'csurf';
 import { Application } from 'express';
 import * as _ from 'lodash';
 
 import { verify } from '../modules/auth';
 import { uploadDashboardDAO, uploadStatusUpdateDAO } from '../objects/upload';
 import 'dotenv/config';
-
-import csrf from 'csurf';
 
 export class UploadDetails {
   laCode: string = '';
