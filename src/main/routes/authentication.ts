@@ -1,5 +1,6 @@
 import { IdTokenClaims } from '@azure/msal-node';
 import config from 'config';
+import csrf from 'csurf';
 import { Application } from 'express';
 import * as Express from 'express';
 import jwt, { JwtPayload } from 'jsonwebtoken';
@@ -11,7 +12,9 @@ import errors from '../modules/errors';
 import { authDAO } from '../objects/login';
 
 export default function (app: Application): void {
-  app.post('/dev/sign-in', async (req, res) => {
+  const csrfProtection = csrf({ cookie: true });
+
+  app.post('/dev/sign-in', csrfProtection, async (req, res) => {
     if (!req.body?.email) {
       app.logger.warn('No email provided for dev login');
       req.session.errors = { email: res.locals.text.VALIDATION.LOGIN.EMAIL_REQUIRED };

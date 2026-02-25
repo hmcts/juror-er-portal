@@ -1,0 +1,45 @@
+const path = require('path');
+
+const sourcePath = path.resolve(__dirname, 'src/main/assets/js');
+const govukFrontend = require(path.resolve(__dirname, 'webpack/govukFrontend'));
+const mojFrontend = require(path.resolve(__dirname, 'webpack/mojFrontend'));
+const scss = require(path.resolve(__dirname, 'webpack/scss'));
+const HtmlWebpack = require(path.resolve(__dirname, 'webpack/htmlWebpack'));
+const translation = require(path.resolve(__dirname, 'webpack/translation'));
+
+const debugFiles = require(path.resolve(__dirname, 'webpack/debugFiles'));
+
+const devMode = process.env.NODE_ENV !== 'production';
+const fileNameSuffix = devMode ? '-dev' : '.[contenthash]';
+const filename = `[name]${fileNameSuffix}.js`;
+
+module.exports = {
+  plugins: [
+    ...govukFrontend.plugins,
+    ...mojFrontend.plugins,
+    ...scss.plugins,
+    ...HtmlWebpack.plugins,
+    ...translation.plugins,
+    ...debugFiles.plugins,
+  ],
+  entry: path.resolve(sourcePath, 'index.ts'),
+  mode: devMode ? 'development' : 'production',
+  module: {
+    rules: [
+      ...scss.rules,
+      {
+        test: /\.ts$/,
+        use: 'ts-loader',
+        exclude: /node_modules/,
+      },
+    ],
+  },
+  resolve: {
+    extensions: ['.ts', '.js'],
+  },
+  output: {
+    path: path.resolve(__dirname, 'src/main/public/'),
+    publicPath: '',
+    filename,
+  },
+};

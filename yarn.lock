@@ -39,7 +39,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@azure/core-client@npm:^1.10.0, @azure/core-client@npm:^1.10.1, @azure/core-client@npm:^1.5.0, @azure/core-client@npm:^1.9.2":
+"@azure/core-client@npm:^1.10.0, @azure/core-client@npm:^1.10.1, @azure/core-client@npm:^1.5.0, @azure/core-client@npm:^1.9.2, @azure/core-client@npm:^1.9.3":
   version: 1.10.1
   resolution: "@azure/core-client@npm:1.10.1"
   dependencies:
@@ -65,7 +65,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@azure/core-lro@npm:^2.7.2":
+"@azure/core-lro@npm:^2.2.0, @azure/core-lro@npm:^2.7.2":
   version: 2.7.2
   resolution: "@azure/core-lro@npm:2.7.2"
   dependencies:
@@ -86,7 +86,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@azure/core-rest-pipeline@npm:^1.17.0, @azure/core-rest-pipeline@npm:^1.19.0, @azure/core-rest-pipeline@npm:^1.22.0, @azure/core-rest-pipeline@npm:^1.22.2, @azure/core-rest-pipeline@npm:^1.8.0":
+"@azure/core-rest-pipeline@npm:^1.17.0, @azure/core-rest-pipeline@npm:^1.19.0, @azure/core-rest-pipeline@npm:^1.19.1, @azure/core-rest-pipeline@npm:^1.22.0, @azure/core-rest-pipeline@npm:^1.22.2, @azure/core-rest-pipeline@npm:^1.8.0":
   version: 1.22.2
   resolution: "@azure/core-rest-pipeline@npm:1.22.2"
   dependencies:
@@ -121,6 +121,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@azure/core-xml@npm:^1.4.5":
+  version: 1.5.0
+  resolution: "@azure/core-xml@npm:1.5.0"
+  dependencies:
+    fast-xml-parser: "npm:^5.0.7"
+    tslib: "npm:^2.8.1"
+  checksum: 10/b7bdf6617c5268da49087cb7220ec9333f8bed6a6b903f7e427c0e2275e02ae9cbcd2515b4fe2098868b9e6c6e11e7e0792091758ff8c7a6461232f7915acd76
+  languageName: node
+  linkType: hard
+
 "@azure/functions-extensions-base@npm:0.2.0":
   version: 0.2.0
   resolution: "@azure/functions-extensions-base@npm:0.2.0"
@@ -150,7 +160,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@azure/identity@npm:^4.13.0, @azure/identity@npm:^4.6.0":
+"@azure/identity@npm:^4.1.0, @azure/identity@npm:^4.13.0, @azure/identity@npm:^4.6.0":
   version: 4.13.0
   resolution: "@azure/identity@npm:4.13.0"
   dependencies:
@@ -335,6 +345,45 @@ __metadata:
     "@opentelemetry/sdk-trace-web": "npm:^2.0.0"
     tslib: "npm:^2.7.0"
   checksum: 10/eb28a6242cf24722287dc3faaa5a91e3d954458d27ff9ec2326a83402e8b4dfcf53c8fc3341eaaa7b9c643279aa552fe99a64e4cc373cfe4b5910d4ebf74214b
+  languageName: node
+  linkType: hard
+
+"@azure/storage-blob@npm:^12.17.0":
+  version: 12.31.0
+  resolution: "@azure/storage-blob@npm:12.31.0"
+  dependencies:
+    "@azure/abort-controller": "npm:^2.1.2"
+    "@azure/core-auth": "npm:^1.9.0"
+    "@azure/core-client": "npm:^1.9.3"
+    "@azure/core-http-compat": "npm:^2.2.0"
+    "@azure/core-lro": "npm:^2.2.0"
+    "@azure/core-paging": "npm:^1.6.2"
+    "@azure/core-rest-pipeline": "npm:^1.19.1"
+    "@azure/core-tracing": "npm:^1.2.0"
+    "@azure/core-util": "npm:^1.11.0"
+    "@azure/core-xml": "npm:^1.4.5"
+    "@azure/logger": "npm:^1.1.4"
+    "@azure/storage-common": "npm:^12.3.0"
+    events: "npm:^3.0.0"
+    tslib: "npm:^2.8.1"
+  checksum: 10/19d5f48b62b54e8789bc87b90ec95efea74830c2088b4582de34abced873c5a7441d5c73bee4f12345f46600d1b1bba7ff1baf7566aa8afe385eb16d9a1308e6
+  languageName: node
+  linkType: hard
+
+"@azure/storage-common@npm:^12.3.0":
+  version: 12.3.0
+  resolution: "@azure/storage-common@npm:12.3.0"
+  dependencies:
+    "@azure/abort-controller": "npm:^2.1.2"
+    "@azure/core-auth": "npm:^1.9.0"
+    "@azure/core-http-compat": "npm:^2.2.0"
+    "@azure/core-rest-pipeline": "npm:^1.19.1"
+    "@azure/core-tracing": "npm:^1.2.0"
+    "@azure/core-util": "npm:^1.11.0"
+    "@azure/logger": "npm:^1.1.4"
+    events: "npm:^3.3.0"
+    tslib: "npm:^2.8.1"
+  checksum: 10/e5bb4c9395a9f5d390e0766f2b9c64b7d223c1b12704e4557025396f65c680150d36e9ebb9d85a3801337d8e09b6f2dca571233ddc5e71e8887d917b4ce17bb5
   languageName: node
   linkType: hard
 
@@ -4466,6 +4515,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/busboy@npm:1.5.4":
+  version: 1.5.4
+  resolution: "@types/busboy@npm:1.5.4"
+  dependencies:
+    "@types/node": "npm:*"
+  checksum: 10/43cdd26754603fbee81f538ac52769f2cc8445d5f238666845d99a9fee22e0b608a075d0c346f78c43ade4ce4ec04433a51a1ffa21524ca29ead9d2375f4ec9c
+  languageName: node
+  linkType: hard
+
 "@types/chai-as-promised@npm:8.0.2":
   version: 8.0.2
   resolution: "@types/chai-as-promised@npm:8.0.2"
@@ -4937,6 +4995,13 @@ __metadata:
   version: 1.3.5
   resolution: "@types/triple-beam@npm:1.3.5"
   checksum: 10/519b6a1b30d4571965c9706ad5400a200b94e4050feca3e7856e3ea7ac00ec9903e32e9a10e2762d0f7e472d5d03e5f4b29c16c0bd8c1f77c8876c683b2231f1
+  languageName: node
+  linkType: hard
+
+"@types/uuid@npm:^9.0.1":
+  version: 9.0.8
+  resolution: "@types/uuid@npm:9.0.8"
+  checksum: 10/b8c60b7ba8250356b5088302583d1704a4e1a13558d143c549c408bf8920535602ffc12394ede77f8a8083511b023704bc66d1345792714002bfa261b17c5275
   languageName: node
   linkType: hard
 
@@ -6722,7 +6787,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"busboy@npm:^1.6.0":
+"busboy@npm:1.6.0, busboy@npm:^1.6.0":
   version: 1.6.0
   resolution: "busboy@npm:1.6.0"
   dependencies:
@@ -9051,7 +9116,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"events@npm:^3.2.0":
+"events@npm:^3.0.0, events@npm:^3.2.0, events@npm:^3.3.0":
   version: 3.3.0
   resolution: "events@npm:3.3.0"
   checksum: 10/a3d47e285e28d324d7180f1e493961a2bbb4cad6412090e4dec114f4db1f5b560c7696ee8e758f55e23913ede856e3689cd3aa9ae13c56b5d8314cd3b3ddd1be
@@ -9289,6 +9354,17 @@ __metadata:
   version: 3.1.0
   resolution: "fast-uri@npm:3.1.0"
   checksum: 10/818b2c96dc913bcf8511d844c3d2420e2c70b325c0653633f51821e4e29013c2015387944435cd0ef5322c36c9beecc31e44f71b257aeb8e0b333c1d62bb17c2
+  languageName: node
+  linkType: hard
+
+"fast-xml-parser@npm:^5.0.7":
+  version: 5.3.6
+  resolution: "fast-xml-parser@npm:5.3.6"
+  dependencies:
+    strnum: "npm:^2.1.2"
+  bin:
+    fxparser: src/cli/cli.js
+  checksum: 10/03527ab0bdf49d960fdc8f6088cd0715c052e06b68b39459da87b1a1fbb3439a855b2d83cbf3c400e983b8e668b396296b072a4dd5c63403cf1e618c9326b6df
   languageName: node
   linkType: hard
 
@@ -12120,7 +12196,9 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "juror-er-portal@workspace:."
   dependencies:
+    "@azure/identity": "npm:^4.1.0"
     "@azure/msal-node": "npm:^5.0.3"
+    "@azure/storage-blob": "npm:^12.17.0"
     "@babel/core": "npm:^7.26.10"
     "@babel/eslint-parser": "npm:7.28.6"
     "@babel/preset-env": "npm:^7.26.9"
@@ -12132,6 +12210,7 @@ __metadata:
     "@hmcts/properties-volume": "npm:1.3.1"
     "@ministryofjustice/frontend": "npm:^8.0.0"
     "@types/body-parser": "npm:1.19.6"
+    "@types/busboy": "npm:1.5.4"
     "@types/chai": "npm:^5.2.1"
     "@types/chai-as-promised": "npm:8.0.2"
     "@types/config": "npm:3.3.5"
@@ -12152,6 +12231,7 @@ __metadata:
     "@types/require-directory": "npm:2.1.7"
     "@types/serve-favicon": "npm:^2.5.7"
     "@types/supertest": "npm:^6.0.3"
+    "@types/uuid": "npm:^9.0.1"
     "@typescript-eslint/eslint-plugin": "npm:^6.0.0"
     "@typescript-eslint/parser": "npm:^6.0.0"
     applicationinsights: "npm:3.13.0"
@@ -12159,6 +12239,7 @@ __metadata:
     axios-debug-log: "npm:1.0.0"
     babel-loader: "npm:10.0.0"
     body-parser: "npm:2.2.2"
+    busboy: "npm:1.6.0"
     chai: "npm:4.5.0"
     chai-as-promised: "npm:8.0.2"
     chokidar: "npm:^5.0.0"
@@ -12220,6 +12301,7 @@ __metadata:
     tsconfig-paths: "npm:4.2.0"
     tsx: "npm:^4.21.0"
     typescript: "npm:5.9.3"
+    uuid: "npm:^9.0.1"
     webpack: "npm:5.105.2"
     webpack-cli: "npm:6.0.1"
     webpack-dev-middleware: "npm:7.4.5"
@@ -16236,6 +16318,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"strnum@npm:^2.1.2":
+  version: 2.1.2
+  resolution: "strnum@npm:2.1.2"
+  checksum: 10/7d894dff385e3a5c5b29c012cf0a7ea7962a92c6a299383c3d6db945ad2b6f3e770511356a9774dbd54444c56af1dc7c435dad6466c47293c48173274dd6c631
+  languageName: node
+  linkType: hard
+
 "style-loader@npm:4.0.0":
   version: 4.0.0
   resolution: "style-loader@npm:4.0.0"
@@ -17318,6 +17407,15 @@ __metadata:
   bin:
     uuid: dist/bin/uuid
   checksum: 10/9a5f7aa1d6f56dd1e8d5f2478f855f25c645e64e26e347a98e98d95781d5ed20062d6cca2eecb58ba7c84bc3910be95c0451ef4161906abaab44f9cb68ffbdd1
+  languageName: node
+  linkType: hard
+
+"uuid@npm:^9.0.1":
+  version: 9.0.1
+  resolution: "uuid@npm:9.0.1"
+  bin:
+    uuid: dist/bin/uuid
+  checksum: 10/9d0b6adb72b736e36f2b1b53da0d559125ba3e39d913b6072f6f033e0c87835b414f0836b45bcfaf2bdf698f92297fea1c3cc19b0b258bc182c9c43cc0fab9f2
   languageName: node
   linkType: hard
 

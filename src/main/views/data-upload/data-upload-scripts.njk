@@ -1,0 +1,71 @@
+<script {%- if nonce %} nonce="{{ nonce }}"{% endif %} src="https://code.jquery.com/jquery-latest.min.js"></script>
+<script {%- if nonce %} nonce="{{ nonce }}"{% endif %}>console.log('JS on file-upload page');</script>
+
+<script {%- if nonce %} nonce="{{ nonce }}"{% endif %}>
+  $( document ).ready(function() {
+
+    // initialise metadata fields
+    document.getElementById('dataFormatVal').value = document.getElementById('dataFormat').value;
+    document.getElementById('otherInformationVal').value = document.getElementById('otherInformation').value;
+    document.getElementsByName('citizensOverAge').forEach(radio => {
+      if (radio.checked) {
+        document.getElementById('citizensOverAgeVal').value = radio.value;
+      }
+    });
+    const electorTypeCBs = document.getElementsByName('electorType');
+    const selectedElectorTypes = [];
+    electorTypeCBs.forEach(cb => {
+      if (cb.checked) {
+        selectedElectorTypes.push(cb.value);
+      }
+    });
+    document.getElementById('electorTypesVal').value = selectedElectorTypes.join(',');
+
+    // Get upload file size
+    document.getElementById('fileUpload-input').addEventListener('change', function(e) {
+      const file = e.target.files[0];
+      let fileSizeBytes = 0;
+      if (!file) {
+        fileSizeBytes = 0;
+      } else {
+        fileSizeBytes = file.size;
+      }
+      document.getElementById('fileSizeVal').value = fileSizeBytes.toString();
+      return;
+    });
+
+    document.getElementById('dataFormat').addEventListener('change', function(e) {
+      const selectedValue = e.target.value;
+      document.getElementById('dataFormatVal').value = selectedValue.toString();
+      return;
+    });
+
+    const citizensOverAgeRadios = document.getElementsByName('citizensOverAge');
+    citizensOverAgeRadios.forEach(radio => {
+      radio.addEventListener('change', function(e) {
+        if (e.target.checked) {
+          document.getElementById('citizensOverAgeVal').value = e.target.value;
+        }
+        return;
+      });
+    });
+
+    const electorTypeCheckboxes = document.getElementsByName('electorType');
+    electorTypeCheckboxes.forEach(checkbox => {
+      checkbox.addEventListener('change', function(e) {
+        const selectedElectorTypes = [];
+        electorTypeCheckboxes.forEach(cb => {
+          if (cb.checked) {
+            selectedElectorTypes.push(cb.value);
+          }
+        });
+        document.getElementById('electorTypesVal').value = selectedElectorTypes.join(',');
+      });
+    });
+
+    document.getElementById('otherInformation').addEventListener('input', function(e) {
+      document.getElementById('otherInformationVal').value = e.target.value;
+    });
+
+  });
+</script>

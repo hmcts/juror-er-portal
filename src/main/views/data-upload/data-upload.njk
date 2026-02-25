@@ -1,5 +1,18 @@
 {% extends "layouts/default.njk" %}
 
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/input/macro.njk" import govukInput %}
+{% from "govuk/components/tag/macro.njk" import govukTag %}
+{% from "govuk/components/file-upload/macro.njk" import govukFileUpload %}
+{% from "govuk/components/select/macro.njk" import govukSelect %}
+{% from "govuk/components/radios/macro.njk" import govukRadios %}
+{% from "govuk/components/checkboxes/macro.njk" import govukCheckboxes %}
+{% from "govuk/components/character-count/macro.njk" import govukCharacterCount %}
+{% from "govuk/components/warning-text/macro.njk" import govukWarningText %}
+{% from "moj/components/alert/macro.njk" import mojAlert %}
+
+{% from "macros/csrf.njk" import csrfProtection %}
+
 {% block page_title %}{{ serviceName }} - Data Upload{% endblock %}
 {% block page_identifier %}Data Upload{% endblock %}
 
@@ -7,7 +20,226 @@
 
 {% block content %}
 
+  {% if bannerMessage %}
+    {{ mojAlert({
+      variant: "success",
+      text: bannerMessage,
+      iconFallbackText: "Success"
+    }) }}
+  {% endif %}
+
+  {% include "includes/errors.njk" %}
+
+  {% set citizensOverAgeCheckedYes = undefined %}
+  {% set citizensOverAgeCheckedNo = undefined %}
+  {% if formData.citizensOverAge === 'Yes' %}
+    {% set citizensOverAgeCheckedYes = 'checked="checked"' %}
+  {% endif %}
+  {% if formData.citizensOverAge === 'No' %}
+    {% set citizensOverAgeCheckedNo = 'checked="checked"' %}
+  {% endif %}
+
   <div>
+
+    {# Submission dashboard #}
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-one-half">
+          <br/>
+          <h1 class="govuk-heading-l">{{ text.DATA_UPLOAD.PAGE_HEADING }}</h1>
+          <table class="govuk-table govuk-table--m">
+            <tbody class="govuk-table__body">
+              <tr class="govuk-table__row">
+                <th class="govuk-table__header">{{ text.DATA_UPLOAD.DEADLINE_ROW_LABEL }}</th>
+                <td class="govuk-table__cell">{{ deadlineDate }}</td>
+              </tr>
+              <tr class="govuk-table__row">
+                <th class="govuk-table__header">{{ text.DATA_UPLOAD.DAYS_REMAINING_ROW_LABEL }}</th>
+                <td class="govuk-table__cell">{{ daysRemaining }}</td>
+              </tr>
+              <tr class="govuk-table__row">
+                <th class="govuk-table__header">{{ text.DATA_UPLOAD.STATUS_ROW_LABEL }}</th>
+                {% if uploadStatus === "NOT_UPLOADED" %}
+                  <td class="govuk-table__cell">
+                    {{govukTag({
+                      text: "Not uploaded",
+                      classes: "govuk-body govuk-tag--red"
+                    })}}
+                  </td>
+                {% endif %}
+                {% if uploadStatus === "UPLOADED" %}
+                  <td class="govuk-table__cell">
+                    {{govukTag({
+                      text: "UPLOADED",
+                      classes: "govuk-body govuk-tag--green"
+                    })}}
+                  </td>
+                {% endif %}              
+              </tr>
+            </tbody>
+          </table>
+        </div>
+    </div>
+
+    <div class="govuk-grid-row">
+      <div class="govuk-grid-column-two-thirds">
+
+        <form action="{{ fileUploadPostUrl }}" method="POST" id="dataUploadForm" enctype="multipart/form-data" loading-spinner-message="Uploading file, please wait...">
+
+          {{ csrfProtection(csrftoken) }}
+
+          {# Upload metadata #}
+          <input type="hidden" id="fileSizeVal" name="fileSizeVal"  value="0">
+          <input type="hidden" id="dataFormatVal" name="dataFormatVal" value="">
+          <input type="hidden" id="citizensOverAgeVal" name="citizensOverAgeVal" value="">
+          <input type="hidden" id="electorTypesVal" name="electorTypesVal" value="">
+          <input type="hidden" id="otherInformationVal" name="otherInformationVal" value="">
+
+          <h2 class="govuk-heading-m">{{ text.DATA_UPLOAD.UPLOAD_SECTION_HEADING }}</h2>
+          <p class="govuk-body">
+            {{ text.DATA_UPLOAD.UPLOAD_INSTRUCTIONS_1 }}<br/>
+          </p>
+          {{ govukWarningText({
+            text: text.DATA_UPLOAD.UPLOAD_INSTRUCTIONS_2,
+            iconFallbackText: "Warning"
+          }) }}
+
+          {# File upload component #}
+          {{ govukFileUpload({
+            id: "fileUpload",
+            name: "fileUpload",
+            label: {
+              text: text.DATA_UPLOAD.UPLOAD_CHOOSE_FILE
+            },
+            accept: fileTypes,
+            multiple: false,
+            javascript: true,
+            errorMessage: { text: errors.fileUpload } if errors.fileUpload else null
+          }) }}
+
+          {# Select data format #}
+          {{ govukSelect({
+            id: "dataFormat",
+            name: "dataFormat",
+            label: {
+              text: text.DATA_UPLOAD.FORMAT_SECTION_HEADING,
+              classes: "govuk-label--m"
+            },
+            hint: {
+              text: text.DATA_UPLOAD.FORMAT_HINT
+            },
+            items: dataFormats,
+            value: formData.dataFormat,
+            errorMessage: { text: errors.dataFormat } if errors.dataFormat else null
+          }) }}
+
+          {# Citizens over 76 flag #}
+          {{ govukRadios({
+            classes: "govuk-radios--small govuk-radios--inline",
+            name: "citizensOverAge",
+            fieldset: {
+              legend: {
+                text: text.DATA_UPLOAD.AGE_SECTION_HEADING,
+                classes: "govuk-fieldset__legend--m"
+              }
+            },
+            items: [
+              {
+                id: "citizensOverAgeYes",
+                value: "Yes",
+                text: text.DATA_UPLOAD.OVER_76_YES_LABEL,
+                checked: citizensOverAgeCheckedYes
+              },
+              {
+                id: "citizensOverAgeNo",
+                value: "No",
+                text: text.DATA_UPLOAD.OVER_76_NO_LABEL,
+                checked: citizensOverAgeCheckedNo
+              }
+            ],
+            errorMessage: { text: errors.citizensOverAgeYes } if errors.citizensOverAgeYes else null
+          }) }}
+
+          {# Additional elector type flags #}
+          {{ govukCheckboxes({
+            name: "electorType",
+            classes: "govuk-checkboxes--small",
+            fieldset: {
+              legend: {
+                text: text.DATA_UPLOAD.ELECTOR_TYPES_SECTION_HEADING,
+                classes: "govuk-fieldset__legend--m"
+              }
+            },
+            hint: {
+              text: text.DATA_UPLOAD.ELECTOR_TYPES_HINT
+            },
+            items: [
+              {
+                value: text.DATA_UPLOAD.ELECTOR_TYPE_1_VALUE,
+                text: text.DATA_UPLOAD.ELECTOR_TYPE_1_VALUE + " - " + text.DATA_UPLOAD.ELECTOR_TYPE_1_DESC,
+                checked: true if formData.electorTypes and text.DATA_UPLOAD.ELECTOR_TYPE_1_VALUE in formData.electorTypes else false
+              },
+              {
+                value: text.DATA_UPLOAD.ELECTOR_TYPE_2_VALUE,
+                text: text.DATA_UPLOAD.ELECTOR_TYPE_2_VALUE + " - " + text.DATA_UPLOAD.ELECTOR_TYPE_2_DESC,
+                checked: true if formData.electorTypes and text.DATA_UPLOAD.ELECTOR_TYPE_2_VALUE in formData.electorTypes else false
+              },
+              {
+                value: text.DATA_UPLOAD.ELECTOR_TYPE_3_VALUE,
+                text: text.DATA_UPLOAD.ELECTOR_TYPE_3_VALUE + " - " + text.DATA_UPLOAD.ELECTOR_TYPE_3_DESC,
+                checked: true if formData.electorTypes and text.DATA_UPLOAD.ELECTOR_TYPE_3_VALUE in formData.electorTypes else false
+              },
+              {
+                value: text.DATA_UPLOAD.ELECTOR_TYPE_4_VALUE,
+                text: text.DATA_UPLOAD.ELECTOR_TYPE_4_VALUE + " - " + text.DATA_UPLOAD.ELECTOR_TYPE_4_DESC,
+                checked: true if formData.electorTypes and text.DATA_UPLOAD.ELECTOR_TYPE_4_VALUE in formData.electorTypes else false
+              },
+              {
+                value: text.DATA_UPLOAD.ELECTOR_TYPE_5_VALUE,
+                text: text.DATA_UPLOAD.ELECTOR_TYPE_5_VALUE + " - " + text.DATA_UPLOAD.ELECTOR_TYPE_5_DESC,
+                checked: true if formData.electorTypes and text.DATA_UPLOAD.ELECTOR_TYPE_5_VALUE in formData.electorTypes else false
+              },
+              {
+                value: text.DATA_UPLOAD.ELECTOR_TYPE_6_VALUE,
+                text: text.DATA_UPLOAD.ELECTOR_TYPE_6_VALUE + " - " + text.DATA_UPLOAD.ELECTOR_TYPE_6_DESC,
+                checked: true if formData.electorTypes and text.DATA_UPLOAD.ELECTOR_TYPE_6_VALUE in formData.electorTypes else false
+              }
+            ]
+          }) }}
+
+          {# Other information #}
+          {{ govukCharacterCount({
+            name: "otherInformation",
+            id: "otherInformation",
+            maxlength: 200,
+            label: {
+              text: text.DATA_UPLOAD.OTHER_INFORMATION_SECTION_HEADING,
+              classes: "govuk-label--m",
+              isPageHeading: false
+            },
+            value: formData.otherInformation,
+            errorMessage: { text: errors.otherInformation } if errors.otherInformation else null
+          }) }}
+
+          {# Submit button #}
+          {{ govukButton({
+            text: text.DATA_UPLOAD.SUBMIT_BUTTON,
+            type: "submit",
+            attributes: {
+              id: "submitButton"
+            }
+          }) }}
+
+        </form>
+
+      </div>
+    </div>
+
   </div>
 
+{% endblock %}
+
+{% block bodyEnd %}
+  {{ super() }}
+  {% include "includes/loading-spinner.njk" %}
+  {% include "data-upload/data-upload-scripts.njk" %}
 {% endblock %}
