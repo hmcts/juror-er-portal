@@ -320,14 +320,14 @@ export default function (app: Application): void {
 
           // Verify container exists
           app.logger.info('Checking if Azure container exists: ', {
-            containerName: containerName,
+            containerName,
           });
           const exists = await containerClient.exists();
           if (!exists) {
             throw new Error(`Container "${containerName}" does not exist.`);
           } else {
             app.logger.info('Azure container exists: ', {
-              containerName: containerName,
+              containerName,
             });
           }
 
