@@ -3,6 +3,7 @@ import { Readable } from 'stream';
 
 import { BlobServiceClient, BlockBlobClient, ContainerClient } from '@azure/storage-blob';
 import busboy, { FileInfo } from 'busboy';
+import config from 'config';
 import csrf from 'csurf';
 import { Application } from 'express';
 import * as _ from 'lodash';
@@ -29,7 +30,6 @@ export class UploadDetails {
   azureMetadataFolder: string = '';
   azureDataFilepath: string = '';
   azureMetadataFilepath: string = '';
-
   fileUploadSuccessful: boolean = false;
   metadataUploadSuccessful: boolean = false;
 }
@@ -224,7 +224,6 @@ export default function (app: Application): void {
 
       if (fieldname === 'filename') {
         uploadDetails.fileName = sanitizeFilename(val);
-
         formData.fileName = sanitizeFilename(val);
       }
     });
@@ -294,25 +293,42 @@ export default function (app: Application): void {
 
       // Upload details valid, proceed with upload to Azure blob storage
       if (uploadValid) {
-        uploadDetails.azureDataFilepath = `${uploadDetails.azureDataFolder}/${uploadDetails.fileName}`;
-
         try {
           fileStream = file;
 
           // Configure azure container client
-          connectionString = process.env.AZURE_STORAGE_CONNECTION_STRING as string;
+          connectionString = config.get('secrets.juror.er-portal-storage-connection-string') as string;
           if (!connectionString) {
             throw new Error('Azure connection string not found');
+          } else {
+            app.logger.info('Azure connection string retrieved');
+          }
+
+          containerName = process.env.AZURE_STORAGE_CONTAINER_NAME as string;
+          if (!containerName) {
+            throw new Error('Azure container name not found');
+          } else {
+            app.logger.info('Azure container name retrieved');
           }
 
           blobServiceClient = BlobServiceClient.fromConnectionString(connectionString);
-          containerName = process.env.AZURE_STORAGE_CONTAINER_NAME as string;
+          app.logger.info('Azure BlobServiceClient created: ', {
+            url: blobServiceClient.url,
+          });
+
           containerClient = blobServiceClient.getContainerClient(containerName);
 
           // Verify container exists
+          app.logger.info('Checking if Azure container exists: ', {
+            containerName: containerName,
+          });
           const exists = await containerClient.exists();
           if (!exists) {
             throw new Error(`Container "${containerName}" does not exist.`);
+          } else {
+            app.logger.info('Azure container exists: ', {
+              containerName: containerName,
+            });
           }
 
           const bufferSize = 5 * 1024 * 1024; // 5MB buffer size for streaming upload
@@ -322,8 +338,12 @@ export default function (app: Application): void {
               blobContentType: uploadDetails.fileMimeType || 'application/octet-stream',
             },
           };
-          const dataBlobName = `${uploadDetails.azureDataFolder}/${uploadDetails.fileName}`;
+          uploadDetails.azureDataFilepath = `${uploadDetails.azureDataFolder}/${uploadDetails.fileName}`;
+          const dataBlobName = uploadDetails.azureDataFilepath;
           blockBlobClient = containerClient.getBlockBlobClient(dataBlobName);
+          app.logger.info('BlockBlobClient created: ', {
+            url: blockBlobClient.url,
+          });
 
           app.logger.info('Start upload data stream to azure: ', {
             laCode: req.session?.authentication?.laCode,
@@ -434,9 +454,6 @@ export default function (app: Application): void {
         });
       }
 
-      req.unpipe(bb);
-      bb.removeAllListeners();
-      req.destroy();
       return res.redirect('/data-upload');
     });
 
@@ -488,10 +505,12 @@ export default function (app: Application): void {
     const currentDate = new Date();
     let fileData: string = '';
 
+    uploadDetails.azureMetadataFilepath = `${uploadDetails.azureDataFolder}/${uploadDetails.fileName}_metadata.txt`;
+
     try {
       app.logger.info('Creating metadata file ', {
         laCode: req.session.authentication?.laCode,
-        fileName: uploadDetails.fileName,
+        filePath: uploadDetails.azureMetadataFilepath,
       });
 
       fileData += `LA Name: ${uploadDetails.laName}\n`;
@@ -505,7 +524,7 @@ export default function (app: Application): void {
       fileData += `Upload date: ${currentDate.toISOString()}`;
 
       // Upload file to Azure container
-      const blobName = `${uploadDetails.azureMetadataFolder}/${uploadDetails.fileName}_metadata.txt`;
+      const blobName = uploadDetails.azureMetadataFilepath;
       const blockBlobClient: BlockBlobClient = containerClient.getBlockBlobClient(blobName);
 
       app.logger.info('Uploading metadata file to azure', {
@@ -514,6 +533,8 @@ export default function (app: Application): void {
       });
 
       await blockBlobClient.upload(fileData, fileData.length);
+
+      uploadDetails.metadataUploadSuccessful = true;
 
       app.logger.info('Metadata file upload successful', {
         laCode: req.session.authentication?.laCode,
