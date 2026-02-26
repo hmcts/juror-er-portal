@@ -150,7 +150,7 @@ export default function (app: Application): void {
     uploadDetails.laCode = req.session?.authentication?.laCode || '';
     uploadDetails.laName = req.session?.authentication?.laName || '';
     uploadDetails.userName = req.session?.authentication?.username || '';
-    uploadDetails.userEmail = req.session?.authentication?.userEmail || '';
+    uploadDetails.userEmail = req.session?.authentication?.username || '';
 
     // Set azure storage folder names for data and metadata
     const currentDate = new Date();
@@ -210,7 +210,9 @@ export default function (app: Application): void {
       }
 
       if (fieldname === 'electorType') {
-        uploadDetails.electorTypes.push(val);
+        if (!_.includes(uploadDetails.electorTypes, val)) {
+          uploadDetails.electorTypes.push(val);
+        }
       }
       if (fieldname === 'electorTypesVal') {
         uploadDetails.electorTypes = val.split(',').map(s => s.trim());
@@ -322,8 +324,8 @@ export default function (app: Application): void {
           app.logger.info('Checking if Azure container exists: ', {
             containerName,
           });
-          const exists = await containerClient.exists();
-          if (!exists) {
+          const containerExists = await containerClient.exists();
+          if (!containerExists) {
             throw new Error(`Container "${containerName}" does not exist.`);
           } else {
             app.logger.info('Azure container exists: ', {
@@ -369,10 +371,10 @@ export default function (app: Application): void {
           app.logger.crit('Error uploading file to Azure Blob Storage:', {
             error: message,
             laCode: req.session?.authentication?.laCode,
-            fileName: uploadDetails.fileName,
-            blobUrl: blockBlobClient.url,
+            filePath: uploadDetails.azureDataFilepath,
           });
           uploadAborted = true;
+          uploadDetails.fileUploadSuccessful = false;
         }
       }
 
@@ -385,6 +387,7 @@ export default function (app: Application): void {
           uploadBytesReceived: uploadDetails.uploadBytesReceived,
         });
         uploadAborted = true;
+        uploadDetails.fileUploadSuccessful = false;
         file.resume();
       });
 
@@ -419,12 +422,14 @@ export default function (app: Application): void {
     });
 
     bb.on('finish', async () => {
+
       if (Object.keys(uploadErrors).length > 0) {
         req.session.errors = _.clone(uploadErrors);
         uploadValid = false;
       }
 
-      if (!uploadValid) {
+      if (!uploadValid || !uploadDetails.fileUploadSuccessful) {
+        req.session.bannerMessage = 'File upload failed';
         req.session.errors = _.clone(uploadErrors);
         req.session.formFields = _.clone(formData);
         req.destroy();
@@ -505,7 +510,7 @@ export default function (app: Application): void {
     const currentDate = new Date();
     let fileData: string = '';
 
-    uploadDetails.azureMetadataFilepath = `${uploadDetails.azureDataFolder}/${uploadDetails.fileName}_metadata.txt`;
+    uploadDetails.azureMetadataFilepath = `${uploadDetails.azureMetadataFolder}/${uploadDetails.fileName}_metadata.txt`;
 
     try {
       app.logger.info('Creating metadata file ', {
@@ -513,15 +518,26 @@ export default function (app: Application): void {
         filePath: uploadDetails.azureMetadataFilepath,
       });
 
+      let formattedDateTime = new Date().toLocaleDateString('en-GB', {
+        day: 'numeric',
+        month: 'short',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+      });
+
       fileData += `LA Name: ${uploadDetails.laName}\n`;
       fileData += `Format: ${uploadDetails.dataFormat}\n`;
+      fileData += `File Type: ${uploadDetails.fileExtension.slice(1)}\n`;
       fileData += `Over 76: ${uploadDetails.citizensOverAge}\n`;
       fileData += `Other Flags: ${uploadDetails.electorTypes}\n`;
       fileData += `Other Information: ${uploadDetails.otherInformation}\n`;
       fileData += '\n';
       fileData += `User Name: ${uploadDetails.userName}\n`;
       fileData += `User Email: ${uploadDetails.userEmail}\n`;
-      fileData += `Upload date: ${currentDate.toISOString()}`;
+      fileData += '\n';
+      fileData += `Date/Time: ${formattedDateTime}`;
 
       // Upload file to Azure container
       const blobName = uploadDetails.azureMetadataFilepath;
