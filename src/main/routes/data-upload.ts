@@ -506,7 +506,7 @@ export default function (app: Application): void {
     containerClient: ContainerClient,
     uploadDetails: UploadDetails
   ) {
-    const currentDate = new Date();
+
     let fileData: string = '';
 
     uploadDetails.azureMetadataFilepath = `${uploadDetails.azureMetadataFolder}/${uploadDetails.fileName}_metadata.txt`;
@@ -517,7 +517,7 @@ export default function (app: Application): void {
         filePath: uploadDetails.azureMetadataFilepath,
       });
 
-      let formattedDateTime = new Date().toLocaleDateString('en-GB', {
+      const formattedDateTime = new Date().toLocaleDateString('en-GB', {
         day: 'numeric',
         month: 'short',
         year: 'numeric',
