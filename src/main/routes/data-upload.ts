@@ -62,7 +62,7 @@ export default function (app: Application): void {
     delete req.session.errors;
     delete req.session.formFields;
 
-    let bannerMessage: string = '';
+    let bannerMessage: { type: string; message: string } | undefined = undefined;
     if (req.session.bannerMessage) {
       bannerMessage = req.session.bannerMessage;
       delete req.session.bannerMessage;
@@ -146,6 +146,7 @@ export default function (app: Application): void {
 
     delete req.session.errors;
     delete req.session.formFields;
+    delete req.session.bannerMessage;
 
     uploadDetails.laCode = req.session?.authentication?.laCode || '';
     uploadDetails.laName = req.session?.authentication?.laName || '';
@@ -358,6 +359,7 @@ export default function (app: Application): void {
           await blockBlobClient.uploadStream(file as unknown as Readable, bufferSize, maxConcurrency, uploadOptions);
 
           uploadDetails.fileUploadSuccessful = true;
+          req.session.bannerMessage = { type: 'success', message: 'File upload successful.' };
 
           app.logger.info('Data file upload successful: ', {
             laCode: req.session?.authentication?.laCode,
@@ -375,6 +377,7 @@ export default function (app: Application): void {
           });
           uploadAborted = true;
           uploadDetails.fileUploadSuccessful = false;
+          req.session.bannerMessage = { type: 'error', message: 'File upload failed.' };
         }
       }
 
@@ -422,14 +425,12 @@ export default function (app: Application): void {
     });
 
     bb.on('finish', async () => {
-
       if (Object.keys(uploadErrors).length > 0) {
         req.session.errors = _.clone(uploadErrors);
         uploadValid = false;
       }
 
-      if (!uploadValid || !uploadDetails.fileUploadSuccessful) {
-        req.session.bannerMessage = 'File upload failed';
+      if (!uploadValid) {
         req.session.errors = _.clone(uploadErrors);
         req.session.formFields = _.clone(formData);
         req.destroy();
@@ -438,8 +439,6 @@ export default function (app: Application): void {
       } else {
         // create metadata file and upload to azure blob storage
         await createAzureMetadataFile(req, containerClient, uploadDetails);
-
-        req.session.bannerMessage = 'File upload successful';
       }
 
       try {
