@@ -9,6 +9,6 @@ declare module 'express-session' {
     isDevLogin?: boolean;
     formFields: { [key: string]: string | string[] };
     errors: { [key: string]: string };
-    bannerMessage?: { type: string, message: string };
+    bannerMessage?: { type: string; message: string };
   }
 }
