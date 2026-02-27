@@ -506,7 +506,6 @@ export default function (app: Application): void {
     containerClient: ContainerClient,
     uploadDetails: UploadDetails
   ) {
-
     let fileData: string = '';
 
     uploadDetails.azureMetadataFilepath = `${uploadDetails.azureMetadataFolder}/${uploadDetails.fileName}_metadata.txt`;
