@@ -360,6 +360,11 @@ export default function (app: Application): void {
 
           uploadDetails.fileUploadSuccessful = true;
           req.session.bannerMessage = { type: 'success', message: 'File upload successful.' };
+          req.session.save(err => {
+            if (err) {
+              app.logger.error('Failed to save session:', err);
+            }
+          });
 
           app.logger.info('Data file upload successful: ', {
             laCode: req.session?.authentication?.laCode,
