@@ -22,9 +22,9 @@
 
   {% if bannerMessage %}
     {{ mojAlert({
-      variant: "success",
-      text: bannerMessage,
-      iconFallbackText: "Success"
+      variant: bannerMessage.type,
+      text: bannerMessage.message,
+      iconFallbackText: "Success" if bannerMessage.type === "success" else "Error"
     }) }}
   {% endif %}
 

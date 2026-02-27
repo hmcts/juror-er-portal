@@ -62,7 +62,7 @@ export default function (app: Application): void {
     delete req.session.errors;
     delete req.session.formFields;
 
-    let bannerMessage: string = '';
+    let bannerMessage: { type: string; message: string } | undefined = undefined;
     if (req.session.bannerMessage) {
       bannerMessage = req.session.bannerMessage;
       delete req.session.bannerMessage;
@@ -146,11 +146,12 @@ export default function (app: Application): void {
 
     delete req.session.errors;
     delete req.session.formFields;
+    delete req.session.bannerMessage;
 
     uploadDetails.laCode = req.session?.authentication?.laCode || '';
     uploadDetails.laName = req.session?.authentication?.laName || '';
     uploadDetails.userName = req.session?.authentication?.username || '';
-    uploadDetails.userEmail = req.session?.authentication?.userEmail || '';
+    uploadDetails.userEmail = req.session?.authentication?.username || '';
 
     // Set azure storage folder names for data and metadata
     const currentDate = new Date();
@@ -210,7 +211,9 @@ export default function (app: Application): void {
       }
 
       if (fieldname === 'electorType') {
-        uploadDetails.electorTypes.push(val);
+        if (!_.includes(uploadDetails.electorTypes, val)) {
+          uploadDetails.electorTypes.push(val);
+        }
       }
       if (fieldname === 'electorTypesVal') {
         uploadDetails.electorTypes = val.split(',').map(s => s.trim());
@@ -322,8 +325,8 @@ export default function (app: Application): void {
           app.logger.info('Checking if Azure container exists: ', {
             containerName,
           });
-          const exists = await containerClient.exists();
-          if (!exists) {
+          const containerExists = await containerClient.exists();
+          if (!containerExists) {
             throw new Error(`Container "${containerName}" does not exist.`);
           } else {
             app.logger.info('Azure container exists: ', {
@@ -356,6 +359,12 @@ export default function (app: Application): void {
           await blockBlobClient.uploadStream(file as unknown as Readable, bufferSize, maxConcurrency, uploadOptions);
 
           uploadDetails.fileUploadSuccessful = true;
+          req.session.bannerMessage = { type: 'success', message: 'File upload successful.' };
+          req.session.save(err => {
+            if (err) {
+              app.logger.error('Failed to save session:', err);
+            }
+          });
 
           app.logger.info('Data file upload successful: ', {
             laCode: req.session?.authentication?.laCode,
@@ -369,10 +378,11 @@ export default function (app: Application): void {
           app.logger.crit('Error uploading file to Azure Blob Storage:', {
             error: message,
             laCode: req.session?.authentication?.laCode,
-            fileName: uploadDetails.fileName,
-            blobUrl: blockBlobClient.url,
+            filePath: uploadDetails.azureDataFilepath,
           });
           uploadAborted = true;
+          uploadDetails.fileUploadSuccessful = false;
+          req.session.bannerMessage = { type: 'error', message: 'File upload failed.' };
         }
       }
 
@@ -385,6 +395,7 @@ export default function (app: Application): void {
           uploadBytesReceived: uploadDetails.uploadBytesReceived,
         });
         uploadAborted = true;
+        uploadDetails.fileUploadSuccessful = false;
         file.resume();
       });
 
@@ -433,8 +444,6 @@ export default function (app: Application): void {
       } else {
         // create metadata file and upload to azure blob storage
         await createAzureMetadataFile(req, containerClient, uploadDetails);
-
-        req.session.bannerMessage = 'File upload successful';
       }
 
       try {
@@ -502,10 +511,9 @@ export default function (app: Application): void {
     containerClient: ContainerClient,
     uploadDetails: UploadDetails
   ) {
-    const currentDate = new Date();
     let fileData: string = '';
 
-    uploadDetails.azureMetadataFilepath = `${uploadDetails.azureDataFolder}/${uploadDetails.fileName}_metadata.txt`;
+    uploadDetails.azureMetadataFilepath = `${uploadDetails.azureMetadataFolder}/${uploadDetails.fileName}_metadata.txt`;
 
     try {
       app.logger.info('Creating metadata file ', {
@@ -513,15 +521,26 @@ export default function (app: Application): void {
         filePath: uploadDetails.azureMetadataFilepath,
       });
 
+      const formattedDateTime = new Date().toLocaleDateString('en-GB', {
+        day: 'numeric',
+        month: 'short',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+      });
+
       fileData += `LA Name: ${uploadDetails.laName}\n`;
       fileData += `Format: ${uploadDetails.dataFormat}\n`;
+      fileData += `File Type: ${uploadDetails.fileExtension.slice(1)}\n`;
       fileData += `Over 76: ${uploadDetails.citizensOverAge}\n`;
       fileData += `Other Flags: ${uploadDetails.electorTypes}\n`;
       fileData += `Other Information: ${uploadDetails.otherInformation}\n`;
       fileData += '\n';
       fileData += `User Name: ${uploadDetails.userName}\n`;
       fileData += `User Email: ${uploadDetails.userEmail}\n`;
-      fileData += `Upload date: ${currentDate.toISOString()}`;
+      fileData += '\n';
+      fileData += `Date/Time: ${formattedDateTime}`;
 
       // Upload file to Azure container
       const blobName = uploadDetails.azureMetadataFilepath;
