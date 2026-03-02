@@ -3,6 +3,56 @@
 
 <script {%- if nonce %} nonce="{{ nonce }}"{% endif %}>
   $( document ).ready(function() {
+    var form = document.getElementById('dataUploadForm');
+
+    form.onsubmit = async (e) => {
+      e.preventDefault();
+      const form = e.currentTarget;
+
+      try {
+
+        const fd = new FormData();
+        fd.append('fileSizeVal', document.getElementById('fileSizeVal').value);
+        fd.append('dataFormatVal', document.getElementById('dataFormatVal').value);
+        fd.append('citizensOverAgeVal', document.getElementById('citizensOverAgeVal').value);
+        fd.append('electorTypesVal', document.getElementById('electorTypesVal').value);
+        fd.append('otherInformationVal', document.getElementById('otherInformationVal').value);
+
+        if ($('#fileUpload-input')[0].files && $('#fileUpload-input')[0].files.length > 0) {
+          const file = $('#fileUpload-input')[0].files[0];
+          fd.append('fileUpload', file);
+        }
+
+        var message = form ? form.getAttribute('loading-spinner-message') : "Loading, please wait...";
+
+        // Find the outermost main-content ancestor and replace its content
+        var container = document.querySelector('#main-content');
+        container.innerHTML =
+          '<div class="loading-spinner" id="request-pool-spinner">' +
+            '<div class="loading-spinner__spinner" aria-live="polite" role="status"></div>' +
+            '<div class="loading-spinner__content">' +
+              '<h1 class="govuk-heading-m"> ' + message + ' </h1>' +
+            '</div>' +
+          '</div>'
+        
+
+        const response = await fetch('/submit-data-upload', {
+          method: 'POST',
+          headers: {
+            'X-CSRF-Token': "{{ csrftoken }}"
+          },
+          body: fd,
+          credentials: 'same-origin',
+          redirect: 'manual'
+        });
+
+        window.location.href = '/data-upload';
+        return;
+
+      } catch (error) {
+          console.error(error);
+      }
+    }
 
     // initialise metadata fields
     document.getElementById('dataFormatVal').value = document.getElementById('dataFormat').value;
