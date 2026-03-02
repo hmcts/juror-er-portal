@@ -3,57 +3,56 @@
 
 <script {%- if nonce %} nonce="{{ nonce }}"{% endif %}>
   $( document ).ready(function() {
+    var form = document.getElementById('dataUploadForm');
 
+    form.onsubmit = async (e) => {
+      e.preventDefault();
+      const form = e.currentTarget;
 
-      //alert ('page ready');
+      try {
 
-    const form = $('#dataUploadForm');
-    const fileSelect = $('#fileUpload-input');
-  
-    form.on('submit', async function(event) {
+        const fd = new FormData();
+        fd.append('fileSizeVal', document.getElementById('fileSizeVal').value);
+        fd.append('dataFormatVal', document.getElementById('dataFormatVal').value);
+        fd.append('citizensOverAgeVal', document.getElementById('citizensOverAgeVal').value);
+        fd.append('electorTypesVal', document.getElementById('electorTypesVal').value);
+        fd.append('otherInformationVal', document.getElementById('otherInformationVal').value);
 
-      event.preventDefault();
+        if ($('#fileUpload-input')[0].files && $('#fileUpload-input')[0].files.length > 0) {
+          const file = $('#fileUpload-input')[0].files[0];
+          fd.append('fileUpload', file);
+        }
 
-      // include CSRF token in header or as form field (here header)
-      const csrfToken = "{{csrftoken}}";
+        var message = form ? form.getAttribute('loading-spinner-message') : "Loading, please wait...";
 
-      //alert('Submitting form with CSRF token: ' + csrfToken);
+        // Find the outermost main-content ancestor and replace its content
+        var container = document.querySelector('#main-content');
+        container.innerHTML =
+          '<div class="loading-spinner" id="request-pool-spinner">' +
+            '<div class="loading-spinner__spinner" aria-live="polite" role="status"></div>' +
+            '<div class="loading-spinner__content">' +
+              '<h1 class="govuk-heading-m"> ' + message + ' </h1>' +
+            '</div>' +
+          '</div>'
+        
 
-      let file;
+        const response = await fetch('/submit-data-upload', {
+          method: 'POST',
+          headers: {
+            'X-CSRF-Token': "{{ csrftoken }}"
+          },
+          body: fd,
+          credentials: 'same-origin',
+          redirect: 'manual'
+        });
 
-      if (fileSelect[0].files && fileSelect[0].files.length > 0) {
-        file = fileSelect.files[0]; 
-      }
-
-      const fd = new FormData();
-      fd.append('fileSizeVal', document.getElementById('fileSizeVal').value);
-      fd.append('dataFormatVal', document.getElementById('dataFormatVal').value);
-      fd.append('citizensOverAgeVal', document.getElementById('citizensOverAgeVal').value);
-      fd.append('electorTypesVal', document.getElementById('electorTypesVal').value);
-      fd.append('otherInformationVal', document.getElementById('otherInformationVal').value);
-      
-      fd.append('fileUpload', file);
-
-    
-      const resp = await fetch('/submit-data-upload', {
-        method: 'POST',
-        credentials: 'same-origin',     // important if server uses session cookies
-        headers: {
-          'X-CSRF-Token': csrfToken    // csurf will accept this header
-        },
-        body: fd
-      });
-
-      if (resp.redirected) {
-        // resp.url is the final URL after redirects
-        console.log('Fetch followed a redirect to', resp.url);
-
-        window.location.assign(resp.url);
+        window.location.href = '/data-upload';
         return;
-      }
-    
-    });
 
+      } catch (error) {
+          console.error(error);
+      }
+    }
 
     // initialise metadata fields
     document.getElementById('dataFormatVal').value = document.getElementById('dataFormat').value;

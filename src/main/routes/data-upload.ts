@@ -132,7 +132,6 @@ export default function (app: Application): void {
 
   app.post('/submit-data-upload', csrfProtection, async (req, res) => {
     const uploadDetails: UploadDetails = new UploadDetails();
-
     let connectionString = '';
     let containerName = '';
     let blobServiceClient: BlobServiceClient;
@@ -183,9 +182,6 @@ export default function (app: Application): void {
     // Process form fields
     bb.on('field', (fieldname: string, val: string) => {
       val = val.trim();
-
-      console.log(`Received form field: ${fieldname}=${val}`);
-
       if (fieldname === 'fileSizeVal' && val) {
         try {
           uploadDetails.fileSize = parseInt(val, 10);
@@ -432,6 +428,13 @@ export default function (app: Application): void {
     });
 
     bb.on('finish', async () => {
+      uploadErrors = validateDetails(uploadDetails, res.locals.text.VALIDATION);
+
+      if (Object.keys(uploadErrors).length > 0) {
+        req.session.errors = _.clone(uploadErrors);
+        uploadValid = false;
+      }
+
       if (Object.keys(uploadErrors).length > 0) {
         req.session.errors = _.clone(uploadErrors);
         uploadValid = false;
