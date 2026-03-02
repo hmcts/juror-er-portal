@@ -4,6 +4,57 @@
 <script {%- if nonce %} nonce="{{ nonce }}"{% endif %}>
   $( document ).ready(function() {
 
+
+      //alert ('page ready');
+
+    const form = $('#dataUploadForm');
+    const fileSelect = $('#fileUpload-input');
+  
+    form.on('submit', async function(event) {
+
+      event.preventDefault();
+
+      // include CSRF token in header or as form field (here header)
+      const csrfToken = "{{csrftoken}}";
+
+      //alert('Submitting form with CSRF token: ' + csrfToken);
+
+      let file;
+
+      if (fileSelect[0].files && fileSelect[0].files.length > 0) {
+        file = fileSelect.files[0]; 
+      }
+
+      const fd = new FormData();
+      fd.append('fileSizeVal', document.getElementById('fileSizeVal').value);
+      fd.append('dataFormatVal', document.getElementById('dataFormatVal').value);
+      fd.append('citizensOverAgeVal', document.getElementById('citizensOverAgeVal').value);
+      fd.append('electorTypesVal', document.getElementById('electorTypesVal').value);
+      fd.append('otherInformationVal', document.getElementById('otherInformationVal').value);
+      
+      fd.append('fileUpload', file);
+
+    
+      const resp = await fetch('/submit-data-upload', {
+        method: 'POST',
+        credentials: 'same-origin',     // important if server uses session cookies
+        headers: {
+          'X-CSRF-Token': csrfToken    // csurf will accept this header
+        },
+        body: fd
+      });
+
+      if (resp.redirected) {
+        // resp.url is the final URL after redirects
+        console.log('Fetch followed a redirect to', resp.url);
+
+        window.location.assign(resp.url);
+        return;
+      }
+    
+    });
+
+
     // initialise metadata fields
     document.getElementById('dataFormatVal').value = document.getElementById('dataFormat').value;
     document.getElementById('otherInformationVal').value = document.getElementById('otherInformation').value;
@@ -66,6 +117,12 @@
     document.getElementById('otherInformation').addEventListener('input', function(e) {
       document.getElementById('otherInformationVal').value = e.target.value;
     });
+
+
+
+    
+
+
 
   });
 </script>
