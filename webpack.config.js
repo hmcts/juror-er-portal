@@ -6,6 +6,7 @@ const mojFrontend = require(path.resolve(__dirname, 'webpack/mojFrontend'));
 const scss = require(path.resolve(__dirname, 'webpack/scss'));
 const HtmlWebpack = require(path.resolve(__dirname, 'webpack/htmlWebpack'));
 const translation = require(path.resolve(__dirname, 'webpack/translation'));
+const jquery = require(path.resolve(__dirname, 'webpack/jquery'));
 
 const devMode = process.env.NODE_ENV !== 'production';
 const fileNameSuffix = devMode ? '-dev' : '.[contenthash]';
@@ -18,6 +19,7 @@ module.exports = {
     ...scss.plugins,
     ...HtmlWebpack.plugins,
     ...translation.plugins,
+    ...jquery.plugins,
   ],
   entry: path.resolve(sourcePath, 'index.ts'),
   mode: devMode ? 'development' : 'production',

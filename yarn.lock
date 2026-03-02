@@ -11912,7 +11912,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"jquery@npm:4.0.0":
+"jquery@npm:^4.0.0":
   version: 4.0.0
   resolution: "jquery@npm:4.0.0"
   checksum: 10/722be14779518f27f50463d9aaa8d6b42782673a23f65335c4ff9e2ad124cb4d5267696dfc7bc4f40ecf04e852cbb05b1630b50daacf2821737d5d3b480fbf19
@@ -12229,7 +12229,7 @@ __metadata:
     jest: "npm:^30.0.0"
     jest-html-reporter: "npm:4.3.0"
     jest-junit: "npm:16.0.0"
-    jquery: "npm:4.0.0"
+    jquery: "npm:^4.0.0"
     jsonwebtoken: "npm:^9.0.3"
     lint-staged: "npm:16.3.1"
     lodash: "npm:4.17.23"

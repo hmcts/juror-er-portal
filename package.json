@@ -61,7 +61,7 @@
     "glob": "13.0.6",
     "govuk-frontend": "^5.14.0",
     "helmet": "8.1.0",
-    "jquery": "4.0.0",
+    "jquery": "^4.0.0",
     "jsonwebtoken": "^9.0.3",
     "lodash": "4.17.23",
     "moment": "^2.30.1",
