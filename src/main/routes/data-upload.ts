@@ -1,7 +1,7 @@
 import path from 'path';
 import { Readable } from 'stream';
 
-import { BlobServiceClient, BlockBlobClient, ContainerClient } from '@azure/storage-blob';
+import { BlobServiceClient, BlobUploadCommonResponse, BlockBlobClient, ContainerClient } from '@azure/storage-blob';
 import busboy, { FileInfo } from 'busboy';
 import config from 'config';
 import csrf from 'csurf';
@@ -174,8 +174,8 @@ export default function (app: Application): void {
       userEmail: uploadDetails.userEmail,
     });
 
-    const uploadPromises: any[] = [];
-    const bb = busboy({
+    const uploadPromises: Promise<BlobUploadCommonResponse>[] = [];
+    const bb: busboy.Busboy = busboy({
       headers: req.headers,
       limits: { fileSize: MAX_FILE_SIZE },
     });
@@ -404,11 +404,6 @@ export default function (app: Application): void {
         fileStream.resume();
       });
 
-      // handle incoming file chunks
-      fileStream.on('data', (data: Buffer) => {
-        app.logger.info('on.data received file chunk');
-      });
-
       fileStream.on('end', () => {
         app.logger.info('Finished receiving file data: ', {
           laCode: req.session?.authentication?.laCode,
@@ -435,7 +430,6 @@ export default function (app: Application): void {
     });
 
     bb.on('finish', async () => {
-      //app.logger.info('Finish data processing event');
       // Validate details after file event
       uploadErrors = validateDetails(uploadDetails, res.locals.text.VALIDATION);
 
@@ -520,11 +514,10 @@ export default function (app: Application): void {
     return new Promise((resolve, reject) => {
       let buffer = Buffer.alloc(0);
 
-      function onData(chunk: any) {
+      function onData(chunk: Buffer) {
         stream.pause();
 
         buffer = Buffer.concat([buffer, chunk]);
-        app.logger.info(`Data chunk received: ${chunk.length} bytes, total buffered: ${buffer.length} bytes`);
 
         if (buffer.length >= byteCount) {
           stream.removeListener('data', onData);
@@ -544,7 +537,7 @@ export default function (app: Application): void {
     });
   }
 
-  function isPasswordProtected(headerBuffer: any) {
+  function isPasswordProtected(headerBuffer: Buffer) {
     const hex = headerBuffer.toString('hex');
 
     if (hex.startsWith('d0cf11e0')) {
@@ -593,10 +586,6 @@ export default function (app: Application): void {
     }
 
     return uploadErrors;
-  }
-
-  function getContainerClient() {
-    // Configure azure container client
   }
 
   async function createAzureMetadataFile(
