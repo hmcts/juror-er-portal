@@ -1,7 +1,7 @@
 import path from 'path';
 import { Readable } from 'stream';
 
-import { BlobServiceClient, BlockBlobClient, ContainerClient } from '@azure/storage-blob';
+import { BlobServiceClient, BlobUploadCommonResponse, BlockBlobClient, ContainerClient } from '@azure/storage-blob';
 import busboy, { FileInfo } from 'busboy';
 import config from 'config';
 import csrf from 'csurf';
@@ -32,6 +32,7 @@ export class UploadDetails {
   azureMetadataFilepath: string = '';
   fileUploadSuccessful: boolean = false;
   metadataUploadSuccessful: boolean = false;
+  filePasswordProtected: boolean = false;
 }
 export class UploadFormData {
   dataFormat: string = '';
@@ -51,7 +52,7 @@ export default function (app: Application): void {
     { value: 'Other compatible formats', text: 'Other' },
   ];
 
-  const acceptedFileTypes = ['.csv', '.txt', '.xlsx', '.xlsm', '.xls', '.xltx', '.xltm', '.zip'];
+  const acceptedFileTypes = ['.csv', '.txt', '.xlsx', '.xls', '.zip'];
   const MAX_FILE_SIZE = 100 * 1024 * 1024; // 100MB
 
   const csrfProtection = csrf();
@@ -138,7 +139,6 @@ export default function (app: Application): void {
     let containerClient: ContainerClient;
     let blockBlobClient: BlockBlobClient;
 
-    let fileStream: NodeJS.ReadableStream | null = null;
     let uploadAborted = false;
     let uploadValid: boolean = true;
     let uploadErrors: { [key: string]: string } = {};
@@ -174,7 +174,8 @@ export default function (app: Application): void {
       userEmail: uploadDetails.userEmail,
     });
 
-    const bb = busboy({
+    const uploadPromises: Promise<BlobUploadCommonResponse>[] = [];
+    const bb: busboy.Busboy = busboy({
       headers: req.headers,
       limits: { fileSize: MAX_FILE_SIZE },
     });
@@ -230,16 +231,16 @@ export default function (app: Application): void {
     });
 
     // Process file upload
-    bb.on('file', async (_fieldname: string, file: NodeJS.ReadableStream, fileInfo: FileInfo) => {
-      if (uploadAborted || fileStream) {
-        // If upload aborted or have an active stream, drain the incoming file stream return early
+    bb.on('file', async (_fieldname: string, fileStream: NodeJS.ReadableStream, fileInfo: FileInfo) => {
+      if (uploadAborted) {
+        // If upload aborted, drain the incoming file stream return early
         app.logger.warn('Upload aborted or file stream active - draining incoming file stream', {
           laCode: req.session?.authentication?.laCode,
           fileName: fileInfo.filename,
           fileStreamActive: !!fileStream,
         });
         try {
-          file.resume();
+          fileStream.resume();
         } catch (err) {
           app.logger.crit('Error draining incoming file stream: ', {
             laCode: req.session?.authentication?.laCode,
@@ -250,6 +251,7 @@ export default function (app: Application): void {
         return;
       }
 
+      // Check filename exists and extract file details
       if (!fileInfo.filename) {
         app.logger.warn('No file details received: ', {
           laCode: req.session?.authentication?.laCode,
@@ -264,10 +266,13 @@ export default function (app: Application): void {
         uploadDetails.fileMimeType = fileInfo.mimeType;
         uploadDetails.fileExtension = path.extname(fileInfo.filename).toLowerCase();
 
-        app.logger.info('Upload file details received: ', {
+        app.logger.info('Upload details received: ', {
           laCode: req.session?.authentication?.laCode,
-          fileName: fileInfo.filename,
+          dataFormat: uploadDetails.dataFormat,
+          citizensOverAge: uploadDetails.citizensOverAge,
+          fileName: uploadDetails.fileName,
           mimeType: fileInfo.mimeType,
+          fileSize: uploadDetails.fileSize,
         });
       }
 
@@ -276,12 +281,13 @@ export default function (app: Application): void {
       if (Object.keys(uploadErrors).length > 0) {
         req.session.errors = _.clone(uploadErrors);
         uploadValid = false;
+        app.logger.info('File upload validation failed');
       }
 
       if (!uploadValid) {
-        // If upload invalid drain the incoming file stream return early
+        // If upload invalid drain the incoming file stream
         try {
-          file.resume();
+          fileStream.resume();
         } catch (err) {
           app.logger.crit('Error draining incoming file stream: ', {
             laCode: req.session?.authentication?.laCode,
@@ -295,7 +301,27 @@ export default function (app: Application): void {
       // Upload details valid, proceed with upload to Azure blob storage
       if (uploadValid) {
         try {
-          fileStream = file;
+          delete req.session.errors;
+
+          const fileHeader = await readHeaderBytes(fileStream, 4);
+
+          if (isPasswordProtected(fileHeader)) {
+            fileStream.resume();
+
+            app.logger.info('File password protected', {
+              laCode: req.session?.authentication?.laCode,
+              fileName: fileInfo.filename,
+            });
+
+            uploadAborted = true;
+            uploadValid = false;
+            uploadDetails.filePasswordProtected = true;
+            throw new Error('File is password protected');
+          }
+          app.logger.info('File header checked', {
+            laCode: req.session?.authentication?.laCode,
+            fileName: fileInfo.filename,
+          });
 
           // Configure azure container client
           connectionString = config.get('secrets.juror.er-portal-storage-connection-string') as string;
@@ -319,19 +345,6 @@ export default function (app: Application): void {
 
           containerClient = blobServiceClient.getContainerClient(containerName);
 
-          // Verify container exists
-          app.logger.info('Checking if Azure container exists: ', {
-            containerName,
-          });
-          const containerExists = await containerClient.exists();
-          if (!containerExists) {
-            throw new Error(`Container "${containerName}" does not exist.`);
-          } else {
-            app.logger.info('Azure container exists: ', {
-              containerName,
-            });
-          }
-
           const bufferSize = 5 * 1024 * 1024; // 5MB buffer size for streaming upload
           const maxConcurrency = 5; // max concurrency for parallel uploads
           const uploadOptions = {
@@ -346,31 +359,25 @@ export default function (app: Application): void {
             url: blockBlobClient.url,
           });
 
-          app.logger.info('Start upload data stream to azure: ', {
+          app.logger.info('Start upload stream to azure: ', {
             laCode: req.session?.authentication?.laCode,
             fileName: uploadDetails.fileName,
             fileSize: uploadDetails.fileSize,
             mimeType: uploadDetails.fileMimeType,
             blobUrl: blockBlobClient.url,
           });
+
+          fileStream.resume();
+
           // Stream upload directly to Azure storage
-          await blockBlobClient.uploadStream(file as unknown as Readable, bufferSize, maxConcurrency, uploadOptions);
-
-          uploadDetails.fileUploadSuccessful = true;
-          req.session.bannerMessage = { type: 'success', message: 'File upload successful.' };
-          req.session.save(err => {
-            if (err) {
-              app.logger.error('Failed to save session:', err);
-            }
-          });
-
-          app.logger.info('Data file upload successful: ', {
-            laCode: req.session?.authentication?.laCode,
-            fileName: uploadDetails.fileName,
-            fileSize: uploadDetails.fileSize,
-            mimeType: uploadDetails.fileMimeType,
-            blobUrl: blockBlobClient.url,
-          });
+          //await blockBlobClient.uploadStream(fileStream as unknown as Readable, bufferSize, maxConcurrency, uploadOptions);
+          const uploadPromise = blockBlobClient.uploadStream(
+            fileStream as unknown as Readable,
+            bufferSize,
+            maxConcurrency,
+            uploadOptions
+          );
+          uploadPromises.push(uploadPromise);
         } catch (err) {
           const message = err instanceof Error ? err.message : String(err);
           app.logger.crit('Error uploading file to Azure Blob Storage:', {
@@ -385,7 +392,7 @@ export default function (app: Application): void {
       }
 
       // handle file too large error
-      file.on('limit', () => {
+      fileStream.on('limit', () => {
         app.logger.crit('File size limit exceeded: ', {
           laCode: req.session?.authentication?.laCode,
           fileName: uploadDetails.fileName,
@@ -394,15 +401,10 @@ export default function (app: Application): void {
         });
         uploadAborted = true;
         uploadDetails.fileUploadSuccessful = false;
-        file.resume();
+        fileStream.resume();
       });
 
-      // handle incoming file chunks
-      file.on('data', (data: Buffer) => {
-        uploadDetails.uploadBytesReceived += data.length;
-      });
-
-      file.on('end', () => {
+      fileStream.on('end', () => {
         app.logger.info('Finished receiving file data: ', {
           laCode: req.session?.authentication?.laCode,
           fileName: uploadDetails.fileName,
@@ -428,44 +430,78 @@ export default function (app: Application): void {
     });
 
     bb.on('finish', async () => {
+      // Validate details after file event
       uploadErrors = validateDetails(uploadDetails, res.locals.text.VALIDATION);
 
       if (Object.keys(uploadErrors).length > 0) {
         req.session.errors = _.clone(uploadErrors);
         uploadValid = false;
-      }
-
-      if (Object.keys(uploadErrors).length > 0) {
-        req.session.errors = _.clone(uploadErrors);
-        uploadValid = false;
-      }
-
-      if (!uploadValid) {
-        req.session.errors = _.clone(uploadErrors);
         req.session.formFields = _.clone(formData);
+        delete req.session.bannerMessage;
         req.destroy();
-
         return res.redirect('/data-upload');
       } else {
-        // create metadata file and upload to azure blob storage
+        uploadValid = true;
+      }
+
+      // proceed with file upload
+      if (uploadValid && !uploadAborted) {
+        app.logger.info('Proceeding with file uploads to Azure');
+
+        try {
+          await Promise.all(uploadPromises);
+
+          uploadDetails.fileUploadSuccessful = true;
+          req.session.bannerMessage = { type: 'success', message: 'File upload successful.' };
+          req.session.save(err => {
+            if (err) {
+              app.logger.error('Failed to save session:', err);
+            }
+          });
+
+          app.logger.info('Data file upload successful: ', {
+            laCode: req.session?.authentication?.laCode,
+            fileName: uploadDetails.fileName,
+            fileSize: uploadDetails.fileSize,
+            mimeType: uploadDetails.fileMimeType,
+            blobUrl: blockBlobClient.url,
+          });
+        } catch (err) {
+          const message = err instanceof Error ? err.message : String(err);
+          app.logger.crit('Error uploading file to Azure blob storage:', {
+            error: message,
+            laCode: req.session?.authentication?.laCode,
+            filePath: uploadDetails.azureDataFilepath,
+          });
+          uploadAborted = true;
+          uploadDetails.fileUploadSuccessful = false;
+          req.session.bannerMessage = { type: 'error', message: 'File upload failed.' };
+        }
+      }
+
+      // proceed with metadata file upload
+      if (!uploadAborted && uploadDetails.fileUploadSuccessful) {
         await createAzureMetadataFile(req, containerClient, uploadDetails);
       }
 
-      try {
-        const payload = {
-          filename: uploadDetails.fileName,
-          file_format: uploadDetails.dataFormat,
-          file_size_bytes: uploadDetails.fileSize,
-          other_information: uploadDetails.otherInformation,
-        };
+      // update LA upload status
+      if (uploadDetails.fileUploadSuccessful && uploadDetails.metadataUploadSuccessful) {
+        try {
+          const payload = {
+            filename: uploadDetails.fileName,
+            file_format: uploadDetails.dataFormat,
+            file_size_bytes: uploadDetails.fileSize,
+            other_information: uploadDetails.otherInformation,
+          };
 
-        await uploadStatusUpdateDAO.post(app, req.session.authToken, payload);
-      } catch (err) {
-        app.logger.crit('Failed to update upload status', {
-          error: typeof err.error !== 'undefined' ? err.error : err.toString(),
-          laCode: req.session?.authentication?.laCode,
-          fileName: uploadDetails.fileName,
-        });
+          await uploadStatusUpdateDAO.post(app, req.session.authToken, payload);
+        } catch (err) {
+          app.logger.crit('Failed to update upload status', {
+            error: typeof err.error !== 'undefined' ? err.error : err.toString(),
+            laCode: req.session?.authentication?.laCode,
+            fileName: uploadDetails.fileName,
+          });
+        }
       }
 
       return res.redirect('/data-upload');
@@ -473,6 +509,43 @@ export default function (app: Application): void {
 
     req.pipe(bb);
   });
+
+  function readHeaderBytes(stream: NodeJS.ReadableStream, byteCount: number) {
+    return new Promise<Buffer>((resolve, reject) => {
+      let buffer = Buffer.alloc(0);
+
+      function onData(chunk: Buffer) {
+        stream.pause();
+
+        buffer = Buffer.concat([buffer, chunk]);
+
+        if (buffer.length >= byteCount) {
+          stream.removeListener('data', onData);
+          stream.removeListener('error', reject);
+
+          const head = buffer.slice(0, byteCount);
+
+          // Return all data to the stream for uploading
+          stream.unshift(buffer);
+
+          resolve(head);
+        }
+      }
+
+      stream.on('data', onData);
+      stream.on('error', reject);
+    });
+  }
+
+  function isPasswordProtected(headerBuffer: Buffer) {
+    const hex = headerBuffer.toString('hex');
+
+    if (hex.startsWith('d0cf11e0')) {
+      return true;
+    }
+
+    return false;
+  }
 
   function sanitizeFilename(name = '') {
     // eslint-disable-next-line no-useless-escape
@@ -482,20 +555,6 @@ export default function (app: Application): void {
   function validateDetails(uploadDetails: UploadDetails, messageText: { [key: string]: { [key: string]: string } }) {
     const uploadErrors: { [key: string]: string } = {};
 
-    if (!uploadDetails.fileName) {
-      uploadErrors['fileUpload'] = messageText.FILE_UPLOAD.FILE_REQUIRED;
-    }
-
-    if (uploadDetails.fileExtension) {
-      if (!acceptedFileTypes.includes(uploadDetails.fileExtension)) {
-        uploadErrors['fileUpload'] = messageText.FILE_UPLOAD.INVALID_FILE_TYPE;
-      }
-    }
-
-    if (uploadDetails.fileSize > MAX_FILE_SIZE) {
-      uploadErrors['fileUpload'] = messageText.FILE_UPLOAD.FILE_TOO_LARGE;
-    }
-
     if (!uploadDetails.dataFormat) {
       uploadErrors['dataFormat'] = messageText.FILE_UPLOAD.DATA_FORMAT_REQUIRED;
     }
@@ -504,8 +563,26 @@ export default function (app: Application): void {
       uploadErrors['citizensOverAgeYes'] = messageText.FILE_UPLOAD.CITIZENS_OVER_AGE_REQUIRED;
     }
 
-    if (!uploadDetails.otherInformation && uploadDetails.electorTypes.length > 200) {
+    if (uploadDetails.otherInformation.length > 500) {
       uploadErrors['otherInformation'] = messageText.FILE_UPLOAD.OTHER_INFORMATION_TOO_LONG;
+    }
+
+    if (uploadDetails.filePasswordProtected) {
+      uploadErrors['fileUpload'] = messageText.FILE_UPLOAD.FILE_PASSWORD_PROTECTED;
+    }
+
+    if (uploadDetails.fileSize > MAX_FILE_SIZE) {
+      uploadErrors['fileUpload'] = messageText.FILE_UPLOAD.FILE_TOO_LARGE;
+    }
+
+    if (uploadDetails.fileExtension) {
+      if (!acceptedFileTypes.includes(uploadDetails.fileExtension)) {
+        uploadErrors['fileUpload'] = messageText.FILE_UPLOAD.INVALID_FILE_TYPE;
+      }
+    }
+
+    if (!uploadDetails.fileName) {
+      uploadErrors['fileUpload'] = messageText.FILE_UPLOAD.FILE_REQUIRED;
     }
 
     return uploadErrors;
@@ -538,7 +615,7 @@ export default function (app: Application): void {
       fileData += `LA Name: ${uploadDetails.laName}\n`;
       fileData += `Format: ${uploadDetails.dataFormat}\n`;
       fileData += `File Type: ${uploadDetails.fileExtension.slice(1)}\n`;
-      fileData += `Over 76: ${uploadDetails.citizensOverAge}\n`;
+      fileData += `Over 76: ${uploadDetails.citizensOverAge === 'Yes' ? 'X' : ''}\n`;
       fileData += `Other Flags: ${uploadDetails.electorTypes}\n`;
       fileData += `Other Information: ${uploadDetails.otherInformation}\n`;
       fileData += '\n';
