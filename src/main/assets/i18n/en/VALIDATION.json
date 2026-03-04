@@ -15,6 +15,7 @@
     "CITIZENS_OVER_AGE_REQUIRED": "Indicate if the data includes citizens over 76 years old",
     "DATA_FORMAT_REQUIRED": "Select the data format",
     "FILE_TYPE_NOT_PERMITTED": "File type not permitted",
-    "OTHER_INFORMATION_TOO_LONG": "Other Information must be 200 characters or less"
+    "OTHER_INFORMATION_TOO_LONG": "Other Information must be 500 characters or less",
+    "FILE_PASSWORD_PROTECTED": "The uploaded file is password protected."
   }
 }
