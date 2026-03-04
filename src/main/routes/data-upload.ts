@@ -511,7 +511,7 @@ export default function (app: Application): void {
   });
 
   function readHeaderBytes(stream: NodeJS.ReadableStream, byteCount: number) {
-    return new Promise((resolve, reject) => {
+    return new Promise<Buffer>((resolve, reject) => {
       let buffer = Buffer.alloc(0);
 
       function onData(chunk: Buffer) {
