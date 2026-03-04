@@ -2801,106 +2801,106 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@jsonjoy.com/fs-core@npm:4.56.10":
-  version: 4.56.10
-  resolution: "@jsonjoy.com/fs-core@npm:4.56.10"
+"@jsonjoy.com/fs-core@npm:4.56.11":
+  version: 4.56.11
+  resolution: "@jsonjoy.com/fs-core@npm:4.56.11"
   dependencies:
-    "@jsonjoy.com/fs-node-builtins": "npm:4.56.10"
-    "@jsonjoy.com/fs-node-utils": "npm:4.56.10"
+    "@jsonjoy.com/fs-node-builtins": "npm:4.56.11"
+    "@jsonjoy.com/fs-node-utils": "npm:4.56.11"
     thingies: "npm:^2.5.0"
   peerDependencies:
     tslib: 2
-  checksum: 10/4ff94bf45f11a87f7a2efa46af4bcdc7d3a3d89c44d834529bd32be9e4563910bd28ecb0e232bfcdd9365b7696a8ee4c5bc4928b8abd03ac14167209eff033a8
+  checksum: 10/46adecf53d79246eed43503e999f3068b38d6c5b209e305c5b6ca55cfbb68fd2780a2fe3ddc2de3535c51a6db76e4acaca67dc127d1ce54399cf786a5ccbd4ca
   languageName: node
   linkType: hard
 
-"@jsonjoy.com/fs-fsa@npm:4.56.10":
-  version: 4.56.10
-  resolution: "@jsonjoy.com/fs-fsa@npm:4.56.10"
+"@jsonjoy.com/fs-fsa@npm:4.56.11":
+  version: 4.56.11
+  resolution: "@jsonjoy.com/fs-fsa@npm:4.56.11"
   dependencies:
-    "@jsonjoy.com/fs-core": "npm:4.56.10"
-    "@jsonjoy.com/fs-node-builtins": "npm:4.56.10"
-    "@jsonjoy.com/fs-node-utils": "npm:4.56.10"
+    "@jsonjoy.com/fs-core": "npm:4.56.11"
+    "@jsonjoy.com/fs-node-builtins": "npm:4.56.11"
+    "@jsonjoy.com/fs-node-utils": "npm:4.56.11"
     thingies: "npm:^2.5.0"
   peerDependencies:
     tslib: 2
-  checksum: 10/1b5213fe0c47f8ef675477bd4d66a76a5650f5891fce32599303d5a498614e248dec06cead4bcb58a0721f1c31dd2e2400b2a0941d4dc04db1861359d015aac6
+  checksum: 10/ed322ec4596f0b385d17dfeca6f2e1c2de51aa7c356f092700ad7b8930816f27f7f49234ba5eb544f03d173ea3cf5f9509597a5c64f0c03d2c4c456b751e2a16
   languageName: node
   linkType: hard
 
-"@jsonjoy.com/fs-node-builtins@npm:4.56.10":
-  version: 4.56.10
-  resolution: "@jsonjoy.com/fs-node-builtins@npm:4.56.10"
+"@jsonjoy.com/fs-node-builtins@npm:4.56.11":
+  version: 4.56.11
+  resolution: "@jsonjoy.com/fs-node-builtins@npm:4.56.11"
   peerDependencies:
     tslib: 2
-  checksum: 10/49ebcc00bb794960b591808ce242c17604556a6b8792413876e75344e0506dd73d4ea4ea3cd566447e399cfacd8a41a2a0fbd361cdcb00a43bbb32a37d2c60d9
+  checksum: 10/04ca8c56cd3b883149b42cce5d9376d18445a071b6d88c5366f930c2ba93505a7d708ad8f5af1a15e691dd87ffb971048b906450287d5faf363472ced43ea884
   languageName: node
   linkType: hard
 
-"@jsonjoy.com/fs-node-to-fsa@npm:4.56.10":
-  version: 4.56.10
-  resolution: "@jsonjoy.com/fs-node-to-fsa@npm:4.56.10"
+"@jsonjoy.com/fs-node-to-fsa@npm:4.56.11":
+  version: 4.56.11
+  resolution: "@jsonjoy.com/fs-node-to-fsa@npm:4.56.11"
   dependencies:
-    "@jsonjoy.com/fs-fsa": "npm:4.56.10"
-    "@jsonjoy.com/fs-node-builtins": "npm:4.56.10"
-    "@jsonjoy.com/fs-node-utils": "npm:4.56.10"
+    "@jsonjoy.com/fs-fsa": "npm:4.56.11"
+    "@jsonjoy.com/fs-node-builtins": "npm:4.56.11"
+    "@jsonjoy.com/fs-node-utils": "npm:4.56.11"
   peerDependencies:
     tslib: 2
-  checksum: 10/171ad50c365829684deda3cb27de69a482dbb9916b2ea944d70f2f61a337a2994d8e5b0c17df08700fbf11f71e1a513d0332d8d9379bc3ed9e707ef0ec9967bf
+  checksum: 10/e4e8b6ea18969665925b97055cb06636fbd74e5025cd126280ede2245ba2efe328146e0b7a5e45c45a64175dc74231caa982de4dda51bffb061c028c931f2fad
   languageName: node
   linkType: hard
 
-"@jsonjoy.com/fs-node-utils@npm:4.56.10":
-  version: 4.56.10
-  resolution: "@jsonjoy.com/fs-node-utils@npm:4.56.10"
+"@jsonjoy.com/fs-node-utils@npm:4.56.11":
+  version: 4.56.11
+  resolution: "@jsonjoy.com/fs-node-utils@npm:4.56.11"
   dependencies:
-    "@jsonjoy.com/fs-node-builtins": "npm:4.56.10"
+    "@jsonjoy.com/fs-node-builtins": "npm:4.56.11"
   peerDependencies:
     tslib: 2
-  checksum: 10/6a64c96e7b3e31580e747d675ddb380de05635970cd597c185aa254a987873410fd03cffdf52ad18512a4c9692f148a45292fbc736f1a8c0fcf03be532dd6f99
+  checksum: 10/72ca92de077c34d26c935b1ec6011de587bc2f382e822d9e57c76318d506f3c40f5075d04ede666b59d45e275e577ea77032a10b48161483040f3e3f7c381232
   languageName: node
   linkType: hard
 
-"@jsonjoy.com/fs-node@npm:4.56.10":
-  version: 4.56.10
-  resolution: "@jsonjoy.com/fs-node@npm:4.56.10"
+"@jsonjoy.com/fs-node@npm:4.56.11":
+  version: 4.56.11
+  resolution: "@jsonjoy.com/fs-node@npm:4.56.11"
   dependencies:
-    "@jsonjoy.com/fs-core": "npm:4.56.10"
-    "@jsonjoy.com/fs-node-builtins": "npm:4.56.10"
-    "@jsonjoy.com/fs-node-utils": "npm:4.56.10"
-    "@jsonjoy.com/fs-print": "npm:4.56.10"
-    "@jsonjoy.com/fs-snapshot": "npm:4.56.10"
+    "@jsonjoy.com/fs-core": "npm:4.56.11"
+    "@jsonjoy.com/fs-node-builtins": "npm:4.56.11"
+    "@jsonjoy.com/fs-node-utils": "npm:4.56.11"
+    "@jsonjoy.com/fs-print": "npm:4.56.11"
+    "@jsonjoy.com/fs-snapshot": "npm:4.56.11"
     glob-to-regex.js: "npm:^1.0.0"
     thingies: "npm:^2.5.0"
   peerDependencies:
     tslib: 2
-  checksum: 10/5cb12740f9294d3e3ffe2d5fa19d620df7c1fddcefeb41940df62ff1c5fb7ca7c2d077cb4e285f35dd7abe1075a0998ce92c264c9d7551f5d8b0edf030c5332a
+  checksum: 10/a6a7e84de467d644bd2b23f34afaf61e93eb05245f40325a067403d2af5b4b22adce806639b80ff0f8431049dda706a803e6f73f2bf944d73a1ad78ac04bbd15
   languageName: node
   linkType: hard
 
-"@jsonjoy.com/fs-print@npm:4.56.10":
-  version: 4.56.10
-  resolution: "@jsonjoy.com/fs-print@npm:4.56.10"
+"@jsonjoy.com/fs-print@npm:4.56.11":
+  version: 4.56.11
+  resolution: "@jsonjoy.com/fs-print@npm:4.56.11"
   dependencies:
-    "@jsonjoy.com/fs-node-utils": "npm:4.56.10"
+    "@jsonjoy.com/fs-node-utils": "npm:4.56.11"
     tree-dump: "npm:^1.1.0"
   peerDependencies:
     tslib: 2
-  checksum: 10/48cb69d7d2c4567d6938e59d3bcd2ddaca4d2154dcb3922064a2968727009cf239b54def9fe9e5818a9042bfd749cc11c961efbec58dd686a2ece59d127bb333
+  checksum: 10/352fb4932c0ed44b5fb148b253754748b6d3e9859452ef1b03cebb6b9601e9f84336ef0932ca4de9687b2f3ec703083d4572c7bf2036537f787673229c3ed68b
   languageName: node
   linkType: hard
 
-"@jsonjoy.com/fs-snapshot@npm:4.56.10":
-  version: 4.56.10
-  resolution: "@jsonjoy.com/fs-snapshot@npm:4.56.10"
+"@jsonjoy.com/fs-snapshot@npm:4.56.11":
+  version: 4.56.11
+  resolution: "@jsonjoy.com/fs-snapshot@npm:4.56.11"
   dependencies:
     "@jsonjoy.com/buffers": "npm:^17.65.0"
-    "@jsonjoy.com/fs-node-utils": "npm:4.56.10"
+    "@jsonjoy.com/fs-node-utils": "npm:4.56.11"
     "@jsonjoy.com/json-pack": "npm:^17.65.0"
     "@jsonjoy.com/util": "npm:^17.65.0"
   peerDependencies:
     tslib: 2
-  checksum: 10/151f38050afe22d724d3a543b5363f43f3e0e7a6904fc1c1ba890569e34c80332dbd5f30d829fad02e76ccd0a141419a3ba331b89edb86ebc3a6d1896c1b7d04
+  checksum: 10/97665962c5bf609720ac2913111da540235fa8aed52241e017da16ae2ac0228ae9e1938906d51e61f85fdaa0511c46db22b3c8212c9ba77a0ae4082cd20e4d57
   languageName: node
   linkType: hard
 
@@ -3187,12 +3187,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@opentelemetry/context-async-hooks@npm:2.5.1":
-  version: 2.5.1
-  resolution: "@opentelemetry/context-async-hooks@npm:2.5.1"
+"@opentelemetry/context-async-hooks@npm:2.6.0":
+  version: 2.6.0
+  resolution: "@opentelemetry/context-async-hooks@npm:2.6.0"
   peerDependencies:
     "@opentelemetry/api": ">=1.0.0 <1.10.0"
-  checksum: 10/06e29a59ae114628a3d83337443c469407367eed375ed3e69fc3886840016b8805b3071ff4f1877db6d2d71dadb5dd6c34a0abc6561deb030c6033a89908b615
+  checksum: 10/a1f746fb9bb25b4c40c0da4cc68a7412e82f120a6ddc80dcf0117432418e64c947527bca87895ebce4211a09992863a75a0f5b5f8e7185a573244cccb4809c42
   languageName: node
   linkType: hard
 
@@ -3218,14 +3218,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@opentelemetry/core@npm:2.5.1, @opentelemetry/core@npm:^2.0.0, @opentelemetry/core@npm:^2.1.0, @opentelemetry/core@npm:^2.2.0":
-  version: 2.5.1
-  resolution: "@opentelemetry/core@npm:2.5.1"
+"@opentelemetry/core@npm:2.6.0, @opentelemetry/core@npm:^2.0.0, @opentelemetry/core@npm:^2.1.0, @opentelemetry/core@npm:^2.2.0":
+  version: 2.6.0
+  resolution: "@opentelemetry/core@npm:2.6.0"
   dependencies:
     "@opentelemetry/semantic-conventions": "npm:^1.29.0"
   peerDependencies:
     "@opentelemetry/api": ">=1.0.0 <1.10.0"
-  checksum: 10/35c8493d07aebfc9c7b39e487a0e55232a18ee84b2c8cfdaef0f9a3432f8e98e691f4c34548e554c0c5d45363820f20244f6cd1a6bae2bb1aeadf2cacc48f532
+  checksum: 10/21c017cc68fe7836d06ecac31abeba6ad610dd42e9c1cb9562cd13eed3f644c48111a1fc7d00dfc2b7cc179d40f059482c69c978c24352ac0c605f30686a01a4
   languageName: node
   linkType: hard
 
@@ -3628,15 +3628,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@opentelemetry/resources@npm:2.5.1, @opentelemetry/resources@npm:^2.0.0, @opentelemetry/resources@npm:^2.1.0, @opentelemetry/resources@npm:^2.2.0":
-  version: 2.5.1
-  resolution: "@opentelemetry/resources@npm:2.5.1"
+"@opentelemetry/resources@npm:2.6.0, @opentelemetry/resources@npm:^2.0.0, @opentelemetry/resources@npm:^2.1.0, @opentelemetry/resources@npm:^2.2.0":
+  version: 2.6.0
+  resolution: "@opentelemetry/resources@npm:2.6.0"
   dependencies:
-    "@opentelemetry/core": "npm:2.5.1"
+    "@opentelemetry/core": "npm:2.6.0"
     "@opentelemetry/semantic-conventions": "npm:^1.29.0"
   peerDependencies:
     "@opentelemetry/api": ">=1.3.0 <1.10.0"
-  checksum: 10/5a9fc07fede70eb9b72d25c654b1ab0e7133e1ed0f7940418e9e637b9298a07c7a7db38b5765d6690865aeb88934b1544631ca183e32e518fd012ca7ffa6ee87
+  checksum: 10/837e76911d013e52c1c0cd8da6f2912818fcc107fd1c6fcb2ec8faa6e617b802e0eef1aa53bd4417c7a77c96ea02b6f5bbdccb9ff411ef8efeff49c2e02d9443
   languageName: node
   linkType: hard
 
@@ -3679,14 +3679,14 @@ __metadata:
   linkType: hard
 
 "@opentelemetry/sdk-metrics@npm:^2.1.0, @opentelemetry/sdk-metrics@npm:^2.2.0":
-  version: 2.5.1
-  resolution: "@opentelemetry/sdk-metrics@npm:2.5.1"
+  version: 2.6.0
+  resolution: "@opentelemetry/sdk-metrics@npm:2.6.0"
   dependencies:
-    "@opentelemetry/core": "npm:2.5.1"
-    "@opentelemetry/resources": "npm:2.5.1"
+    "@opentelemetry/core": "npm:2.6.0"
+    "@opentelemetry/resources": "npm:2.6.0"
   peerDependencies:
     "@opentelemetry/api": ">=1.9.0 <1.10.0"
-  checksum: 10/7ebdc04717e29358d97bc4dd8df0a3f847e5d449a52dc813eb6fe232e6fbd0cabb6e80cf1d83a06f9386d49261bd3c6d6b7fdfad14253441721ec2abe5d4153a
+  checksum: 10/5fd1254ab86cdb6573999f3c5d60b8332fb3a2b7d50d1befcfd9d8ef021d5e9e405e31394f7aa4a106a4546bd6308a652a78cd9a35d6fbe56e44984d605cb5d5
   languageName: node
   linkType: hard
 
@@ -3735,16 +3735,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@opentelemetry/sdk-trace-base@npm:2.5.1, @opentelemetry/sdk-trace-base@npm:^2.1.0, @opentelemetry/sdk-trace-base@npm:^2.2.0":
-  version: 2.5.1
-  resolution: "@opentelemetry/sdk-trace-base@npm:2.5.1"
+"@opentelemetry/sdk-trace-base@npm:2.6.0, @opentelemetry/sdk-trace-base@npm:^2.1.0, @opentelemetry/sdk-trace-base@npm:^2.2.0":
+  version: 2.6.0
+  resolution: "@opentelemetry/sdk-trace-base@npm:2.6.0"
   dependencies:
-    "@opentelemetry/core": "npm:2.5.1"
-    "@opentelemetry/resources": "npm:2.5.1"
+    "@opentelemetry/core": "npm:2.6.0"
+    "@opentelemetry/resources": "npm:2.6.0"
     "@opentelemetry/semantic-conventions": "npm:^1.29.0"
   peerDependencies:
     "@opentelemetry/api": ">=1.3.0 <1.10.0"
-  checksum: 10/5d8de3fa2cbfc09f45e042423e32a67098261ca8a0e326bca6f33cbe866670709332b81cf5a73bf35f44f165c506aed910215a5294a6ba204fb4bd3d8ea0f531
+  checksum: 10/8ca3c1c4d7a95ec8a28ab5237162e31334216a59408e9d9d10ad51f5709911a405699ad69f445c212aad55fb6cc2c70f473b835e9e52bf4ed63f237c4d1813af
   languageName: node
   linkType: hard
 
@@ -3762,27 +3762,27 @@ __metadata:
   linkType: hard
 
 "@opentelemetry/sdk-trace-node@npm:^2.2.0":
-  version: 2.5.1
-  resolution: "@opentelemetry/sdk-trace-node@npm:2.5.1"
+  version: 2.6.0
+  resolution: "@opentelemetry/sdk-trace-node@npm:2.6.0"
   dependencies:
-    "@opentelemetry/context-async-hooks": "npm:2.5.1"
-    "@opentelemetry/core": "npm:2.5.1"
-    "@opentelemetry/sdk-trace-base": "npm:2.5.1"
+    "@opentelemetry/context-async-hooks": "npm:2.6.0"
+    "@opentelemetry/core": "npm:2.6.0"
+    "@opentelemetry/sdk-trace-base": "npm:2.6.0"
   peerDependencies:
     "@opentelemetry/api": ">=1.0.0 <1.10.0"
-  checksum: 10/a525d14773c29056176fa3fcb16bd0b1c3f94ab0dbdb838238b58dd1fb6bf757aef86d4f2f07936a51611a01373baf017dbb7d606b9f33f049e7dffe60306b75
+  checksum: 10/b1576f44198ae18ab36dea92e5c254eb6a96ca5793a5adbb96a01c586dd992e3532eb291c9ea225e2cd6979f7f6dd3fca2fad56ab360ba573f8b3bfb462dd2aa
   languageName: node
   linkType: hard
 
 "@opentelemetry/sdk-trace-web@npm:^2.0.0":
-  version: 2.5.1
-  resolution: "@opentelemetry/sdk-trace-web@npm:2.5.1"
+  version: 2.6.0
+  resolution: "@opentelemetry/sdk-trace-web@npm:2.6.0"
   dependencies:
-    "@opentelemetry/core": "npm:2.5.1"
-    "@opentelemetry/sdk-trace-base": "npm:2.5.1"
+    "@opentelemetry/core": "npm:2.6.0"
+    "@opentelemetry/sdk-trace-base": "npm:2.6.0"
   peerDependencies:
     "@opentelemetry/api": ">=1.0.0 <1.10.0"
-  checksum: 10/a86f8a8c9701f9497b89e62b7f7f06bf1d37ff1f8fc9f99e266dc2c78aa6af755f2e9978cdb900aa291a1a6baae56898ec218c172b0e7109d1fefba874e205f5
+  checksum: 10/afdde7390a1f1e7ce3c2256f60bb758bc9507916ef155f5d98de2d37d7716a920b0d7ea8c5e0b1580c4d8b97724b68f57d6d90a14bb712a14d6c1487711aafb1
   languageName: node
   linkType: hard
 
@@ -6274,9 +6274,9 @@ __metadata:
   linkType: hard
 
 "bare-os@npm:^3.0.1":
-  version: 3.7.0
-  resolution: "bare-os@npm:3.7.0"
-  checksum: 10/e55935bfeeea1684ae86a5bc836779530c76e76925ba07adc227637cab99483bf1b0c9c2a0cd9c3dc340135f8bf77230b5982416860faeb7ce3d7f07caabfcbb
+  version: 3.7.1
+  resolution: "bare-os@npm:3.7.1"
+  checksum: 10/7e0df668caefc634e44e269953e7379416a6f611f50f6659dc038c6aadfc7b44d76c2d8cd5e880e3162d76682ed59d9b75dd9215bd2e553bf86307f5274b3039
   languageName: node
   linkType: hard
 
@@ -7880,10 +7880,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"devtools-protocol@npm:0.0.1566079":
-  version: 0.0.1566079
-  resolution: "devtools-protocol@npm:0.0.1566079"
-  checksum: 10/38e6cbaa037215fd2dc56317188182f0ed08585991c17c225a7d1d6ca6a059265c2b6626f3e73b1829e70b2c82c60dd87ead7c74c43c72d11fe7966ba7daf3cb
+"devtools-protocol@npm:0.0.1581282":
+  version: 0.0.1581282
+  resolution: "devtools-protocol@npm:0.0.1581282"
+  checksum: 10/e8b8c8842d9705927bc333c815dca95f6c775006ff71803b6a63999642d173da5d69f9ffe2f50106d781a1b339e1d19706fe6a166a0f4bed70af76d410e1a802
   languageName: node
   linkType: hard
 
@@ -9362,7 +9362,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"fs-extra@npm:11.3.3, fs-extra@npm:^11.0.0, fs-extra@npm:^11.3.3":
+"fs-extra@npm:11.3.3":
   version: 11.3.3
   resolution: "fs-extra@npm:11.3.3"
   dependencies:
@@ -9370,6 +9370,17 @@ __metadata:
     jsonfile: "npm:^6.0.1"
     universalify: "npm:^2.0.0"
   checksum: 10/daeaefafbebe8fa6efd2fb96fc926f2c952be5877811f00a6794f0d64e0128e3d0d93368cd328f8f063b45deacf385c40e3d931aa46014245431cd2f4f89c67a
+  languageName: node
+  linkType: hard
+
+"fs-extra@npm:^11.0.0, fs-extra@npm:^11.3.3":
+  version: 11.3.4
+  resolution: "fs-extra@npm:11.3.4"
+  dependencies:
+    graceful-fs: "npm:^4.2.0"
+    jsonfile: "npm:^6.0.1"
+    universalify: "npm:^2.0.0"
+  checksum: 10/1b8deea9c540a2efe63c750bc9e1ba6238115579d1571d67fe8fb58e3fb6df19aba29fd4ebb81217cf0bf5bce0df30ca68dbc3e06f6652b856edd385ce0ff649
   languageName: node
   linkType: hard
 
@@ -10229,9 +10240,9 @@ __metadata:
   linkType: hard
 
 "immutable@npm:^5.0.2":
-  version: 5.1.4
-  resolution: "immutable@npm:5.1.4"
-  checksum: 10/0655b33af249ff99c7a56f9e6d7aee632af2dc25758710ddf224bda645f66dd2dd98119c0d86986895ea52cc889b6c5127a848c6fba21aadabdc4c5ead04be2b
+  version: 5.1.5
+  resolution: "immutable@npm:5.1.5"
+  checksum: 10/7aec2740239772ec8e92e793c991bd809203a97694f4ff3a18e50e28f9a6b02393ad033d87b458037bdf8c0ea37d4446d640e825f6171df3405cf6cf300ce028
   languageName: node
   linkType: hard
 
@@ -12380,17 +12391,17 @@ __metadata:
   linkType: hard
 
 "memfs@npm:^4.43.1":
-  version: 4.56.10
-  resolution: "memfs@npm:4.56.10"
+  version: 4.56.11
+  resolution: "memfs@npm:4.56.11"
   dependencies:
-    "@jsonjoy.com/fs-core": "npm:4.56.10"
-    "@jsonjoy.com/fs-fsa": "npm:4.56.10"
-    "@jsonjoy.com/fs-node": "npm:4.56.10"
-    "@jsonjoy.com/fs-node-builtins": "npm:4.56.10"
-    "@jsonjoy.com/fs-node-to-fsa": "npm:4.56.10"
-    "@jsonjoy.com/fs-node-utils": "npm:4.56.10"
-    "@jsonjoy.com/fs-print": "npm:4.56.10"
-    "@jsonjoy.com/fs-snapshot": "npm:4.56.10"
+    "@jsonjoy.com/fs-core": "npm:4.56.11"
+    "@jsonjoy.com/fs-fsa": "npm:4.56.11"
+    "@jsonjoy.com/fs-node": "npm:4.56.11"
+    "@jsonjoy.com/fs-node-builtins": "npm:4.56.11"
+    "@jsonjoy.com/fs-node-to-fsa": "npm:4.56.11"
+    "@jsonjoy.com/fs-node-utils": "npm:4.56.11"
+    "@jsonjoy.com/fs-print": "npm:4.56.11"
+    "@jsonjoy.com/fs-snapshot": "npm:4.56.11"
     "@jsonjoy.com/json-pack": "npm:^1.11.0"
     "@jsonjoy.com/util": "npm:^1.9.0"
     glob-to-regex.js: "npm:^1.0.1"
@@ -12399,7 +12410,7 @@ __metadata:
     tslib: "npm:^2.0.0"
   peerDependencies:
     tslib: 2
-  checksum: 10/9358ab01174207aa3de7c47d7810dd32d0b6c0cdcbef455f3a51628c454e29feb4f1bfc15f25bfc59354ba6645fb3a10fcbb0dd1fbfc42e0595fae33fbc73bd1
+  checksum: 10/2d99bce59dee0f5c96a039851892e39c09c1eee11d8978cf37dbb93462d706d842d6a5b0b3d5081d47f19883ed4b6d973c8086301a9155b098b80d66c3e79cb7
   languageName: node
   linkType: hard
 
@@ -13197,9 +13208,9 @@ __metadata:
   linkType: hard
 
 "node-releases@npm:^2.0.27":
-  version: 2.0.27
-  resolution: "node-releases@npm:2.0.27"
-  checksum: 10/f6c78ddb392ae500719644afcbe68a9ea533242c02312eb6a34e8478506eb7482a3fb709c70235b01c32fe65625b68dfa9665113f816d87f163bc3819b62b106
+  version: 2.0.36
+  resolution: "node-releases@npm:2.0.36"
+  checksum: 10/b31ead96e328b1775f07cad80c17b0601d0ee2894650b737e7ab5cbeb14e284e82dbc37ef38f1d915fa46dd7909781bd933d19b79cfe31b352573fac6da377aa
   languageName: node
   linkType: hard
 
@@ -14242,34 +14253,34 @@ __metadata:
   languageName: node
   linkType: hard
 
-"puppeteer-core@npm:24.37.5":
-  version: 24.37.5
-  resolution: "puppeteer-core@npm:24.37.5"
+"puppeteer-core@npm:24.38.0":
+  version: 24.38.0
+  resolution: "puppeteer-core@npm:24.38.0"
   dependencies:
     "@puppeteer/browsers": "npm:2.13.0"
     chromium-bidi: "npm:14.0.0"
     debug: "npm:^4.4.3"
-    devtools-protocol: "npm:0.0.1566079"
-    typed-query-selector: "npm:^2.12.0"
+    devtools-protocol: "npm:0.0.1581282"
+    typed-query-selector: "npm:^2.12.1"
     webdriver-bidi-protocol: "npm:0.4.1"
     ws: "npm:^8.19.0"
-  checksum: 10/b3f49b8396441cd9792672d35b80feaa545f5e2bd4df21e507a3ef547dbb76ca64977848363ffb6b3ba69552182480cc65795a0d08b0fb8bc8e8aace547691dc
+  checksum: 10/34bf234e5edcc39b0e14b98bd1b3a12efdfb767a662ce6d0cff1c7339a17b77f5076cbed16b65800df19119a8a41f81b8e77dbab15607690443b8ec12bdd3c36
   languageName: node
   linkType: hard
 
 "puppeteer@npm:^24.37.5":
-  version: 24.37.5
-  resolution: "puppeteer@npm:24.37.5"
+  version: 24.38.0
+  resolution: "puppeteer@npm:24.38.0"
   dependencies:
     "@puppeteer/browsers": "npm:2.13.0"
     chromium-bidi: "npm:14.0.0"
     cosmiconfig: "npm:^9.0.0"
-    devtools-protocol: "npm:0.0.1566079"
-    puppeteer-core: "npm:24.37.5"
-    typed-query-selector: "npm:^2.12.0"
+    devtools-protocol: "npm:0.0.1581282"
+    puppeteer-core: "npm:24.38.0"
+    typed-query-selector: "npm:^2.12.1"
   bin:
     puppeteer: lib/cjs/puppeteer/node/cli.js
-  checksum: 10/f87665866295ec4bc690cb2af90db56c2cf4fd25b6f9ce7616a5b045df30c30e4715f43bcddf1e968a30674775dcc648bb61ee25f92dd94cdad94a37f4bfae05
+  checksum: 10/a724fe5a2da7c0dc1f29f0bb4cbd809dea5f99103af5a8d7cae71b6281625822f8fd3b6b5940c89c1a16799628c2d27e2e0a7f96d80f4a0f8f45ed48fac0c900
   languageName: node
   linkType: hard
 
@@ -16017,13 +16028,12 @@ __metadata:
   linkType: hard
 
 "terser-webpack-plugin@npm:^5.3.16":
-  version: 5.3.16
-  resolution: "terser-webpack-plugin@npm:5.3.16"
+  version: 5.3.17
+  resolution: "terser-webpack-plugin@npm:5.3.17"
   dependencies:
     "@jridgewell/trace-mapping": "npm:^0.3.25"
     jest-worker: "npm:^27.4.5"
     schema-utils: "npm:^4.3.0"
-    serialize-javascript: "npm:^6.0.2"
     terser: "npm:^5.31.1"
   peerDependencies:
     webpack: ^5.1.0
@@ -16034,7 +16044,7 @@ __metadata:
       optional: true
     uglify-js:
       optional: true
-  checksum: 10/09dfbff602acfa114cdd174254b69a04adbc47856021ab351e37982202fd1ec85e0b62ffd5864c98beb8e96aef2f43da490b3448b4541db539c2cff6607394a6
+  checksum: 10/e51b00fe5e54beff82e8c2bea72b5104a2608e375d612ee56887e521210f840f2297fda2e0778c26bbd726b3c77ba2ec3234b2bdaa20b2f9174733745a457b33
   languageName: node
   linkType: hard
 
@@ -16465,7 +16475,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typed-query-selector@npm:^2.12.0":
+"typed-query-selector@npm:^2.12.1":
   version: 2.12.1
   resolution: "typed-query-selector@npm:2.12.1"
   checksum: 10/d0947b3f6898b7e187c23b284a0b225351530858aaefd3490ff6176df7e5625b0af067281cb980776fa102b313ae7641d2f08774c0a495445676303cfd7dfaf0
