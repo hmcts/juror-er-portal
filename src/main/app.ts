@@ -23,8 +23,8 @@ const developmentMode = env === 'development';
 const enContent = require(path.join(__dirname, 'public/assets/i18n/en.json'));
 
 const limiter = RateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 100, // max 100 requests per windowMs
+  windowMs: (process.env.RATE_LIMIT_TIME as unknown as number) || 1 * 60 * 1000, // time window in milliseconds
+  max: (process.env.RATE_LIMIT_MAX as unknown as number) || 1000000,
 });
 
 export const app = express();
@@ -39,7 +39,9 @@ new Nunjucks(developmentMode).enableFor(app);
 new Helmet(config.get('security')).enableFor(app);
 new SessionConfig().start(app);
 
-app.get('/favicon.ico', limiter, (req, res) => {
+app.use(limiter);
+
+app.get('/favicon.ico', (req, res) => {
   res.sendFile(path.join(__dirname, '/public/assets/images/favicon.ico'));
 });
 
