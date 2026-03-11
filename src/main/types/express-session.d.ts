@@ -10,5 +10,7 @@ declare module 'express-session' {
     formFields: { [key: string]: string | string[] };
     errors: { [key: string]: string };
     bannerMessage?: { type: string; message: string };
+    email?: string;
+    selectedLa?: string;
   }
 }
