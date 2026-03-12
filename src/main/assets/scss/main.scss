@@ -95,3 +95,9 @@
     transform: rotate(360deg);
   }
 }
+
+.mod-header {
+  &--blue {
+    background-color: govuk-colour('blue');
+  }
+}

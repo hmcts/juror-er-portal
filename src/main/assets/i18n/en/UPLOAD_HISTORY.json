@@ -1,0 +1,7 @@
+{
+  "PAGE_HEADING": "Upload history",
+  "COLUMN_HEADING_FILE_NAME": "File name",
+  "COLUMN_HEADING_FILE_SIZE": "File size",
+  "COLUMN_HEADING_UPLOAD_DATE": "Upload date",
+  "NO_UPLOAD_HISTORY_MESSAGE": "No files uploaded"
+}
