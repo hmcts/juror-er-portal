@@ -18,7 +18,7 @@ export default function (app: Application): void {
     delete req.session.errors;
     delete req.session.formFields;
 
-    res.render('login', {
+    res.render('login/login', {
       azureLoginUrl: '/auth/sign-in',
       devLoginUrl: '/dev/sign-in',
       tmpBody,
