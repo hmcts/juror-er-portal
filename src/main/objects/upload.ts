@@ -41,3 +41,14 @@ export const uploadStatusUpdateDAO = {
     return axiosInstance(url, app, jwtToken, options);
   },
 };
+
+export const uploadHistoryDAO = {
+  resource: 'juror-er/upload/upload-history',
+  get: (app: Application, jwtToken: string | undefined): Promise<AxiosResponse['data']> => {
+    const url = uploadHistoryDAO.resource;
+    const options: AxiosRequestConfig = {
+      method: 'get',
+    };
+    return axiosInstance(url, app, jwtToken, options);
+  },
+};

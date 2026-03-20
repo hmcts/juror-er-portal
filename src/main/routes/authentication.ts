@@ -4,12 +4,13 @@ import csrf from 'csurf';
 import { Application } from 'express';
 import * as Express from 'express';
 import jwt, { JwtPayload } from 'jsonwebtoken';
+import _ from 'lodash';
 
 import { logout } from '../modules/auth';
 import { authConfig } from '../modules/auth/azure/authConfig';
 import { acquireTokenByCode, getAuthCodeUrl } from '../modules/auth/azure/authProvider';
 import errors from '../modules/errors';
-import { authDAO } from '../objects/login';
+import { authDAO, laListDAO } from '../objects/login';
 
 export default function (app: Application): void {
   const csrfProtection = csrf({ cookie: true });
@@ -21,19 +22,10 @@ export default function (app: Application): void {
       return res.redirect('/');
     }
 
-    try {
-      await doLogin(app)(req, res, { email: req.body.email });
-      req.session.isDevLogin = true;
-      return res.redirect('/data-upload');
-    } catch (err) {
-      app.logger.crit('Failed to log in in using developer email field', {
-        email: req.body.email,
-        error: typeof err.error !== 'undefined' ? err.error : err.toString(),
-      });
-      req.session.formFields = { email: req.body.email };
-      req.session.errors = { email: handleLoginError(res, err.error) };
-      return res.redirect('/');
-    }
+    req.session.email = req.body.email;
+    req.session.isDevLogin = true;
+
+    return res.redirect('/auth/la-list');
   });
 
   app.get('/auth/sign-in', async (req, res) => {
@@ -48,6 +40,78 @@ export default function (app: Application): void {
       res.redirect(url);
     } catch (err) {
       throw err;
+    }
+  });
+
+  app.get('/auth/la-list', async (req, res) => {
+    const body = { email: req.session.email || req.session.authentication?.username };
+    if (!body) {
+      req.session.errors = { email: 'Email is required for local authority list' };
+
+      return res.redirect('/');
+    }
+
+    let localAuthorityList;
+    try {
+      localAuthorityList = await laListDAO.post(app, body);
+    } catch (err) {
+      app.logger.crit('Failed to get local authority list', {
+        email: body.email,
+        error: typeof err.error !== 'undefined' ? err.error : err.toString(),
+      });
+      req.session.errors = { email: res.locals.text.VALIDATION.LOGIN.LOGIN_FAILED };
+      return res.redirect('/');
+    }
+
+    if (localAuthorityList.length === 1) {
+      try {
+        await doLogin(app)(req, res, localAuthorityList[0].laCode, { email: body.email });
+        return res.redirect('/data-upload');
+      } catch (err) {
+        app.logger.crit('Failed to log in using a single local authority', {
+          email: body.email,
+          error: typeof err.error !== 'undefined' ? err.error : err.toString(),
+        });
+        req.session.formFields = { email: body.email };
+        req.session.errors = { email: handleLoginError(res, err.error) };
+        return res.redirect('/');
+      }
+    }
+
+    const tmpErrors = _.clone(req.session.errors);
+    delete req.session.errors;
+
+    res.render('login/la-list.njk', {
+      laList: localAuthorityList,
+      email: req.session.email,
+      selectedLa: req.session.selectedLa, // this only gets set if the user is authenticated
+      postUrl: '/auth/la-list',
+      cancelUrl: '/',
+      errors: tmpErrors,
+    });
+  });
+
+  app.post('/auth/la-list', async (req, res) => {
+    const laCode = req.body.la?.split('-').pop();
+    const body = { email: req.session.email || req.session?.authentication?.username, laCode };
+
+    if (!laCode) {
+      req.session.errors = { laList: 'Select the local authority you want to manage' };
+
+      return res.redirect('/auth/la-list');
+    }
+
+    try {
+      await doLogin(app)(req, res, laCode, body);
+      return res.redirect('/data-upload');
+    } catch (err) {
+      app.logger.crit('Failed to log in when selecting a local authority', {
+        email: body.email,
+        error: typeof err.error !== 'undefined' ? err.error : err.toString(),
+      });
+      req.session.formFields = { email: body.email };
+      req.session.errors = { email: handleLoginError(res, err.error) };
+      return res.redirect('/');
     }
   });
 
@@ -78,17 +142,9 @@ export default function (app: Application): void {
 
     const email = idTokenClaims.preferred_username;
 
-    try {
-      await doLogin(app)(req, res, { email });
-      return res.redirect('/data-upload');
-    } catch (err) {
-      app.logger.crit('Failed to log in in using azure auth', {
-        email,
-        error: typeof err.error !== 'undefined' ? err.error : err.toString(),
-      });
-      req.session.errors = { login: handleLoginError(res, err.error) };
-      return res.redirect('/');
-    }
+    req.session.email = email;
+
+    return res.redirect('/auth/la-list');
   });
 
   app.get('/auth/sign-out', (req, res) => {
@@ -109,14 +165,15 @@ export default function (app: Application): void {
 
 export const doLogin =
   (app: Application) =>
-  async (req: Express.Request, res: Express.Response, body: Record<string, string>): Promise<void> => {
-    const jwtResponse = await authDAO.post(app, body);
+  async (req: Express.Request, res: Express.Response, laCode: string, body: Record<string, string>): Promise<void> => {
+    const jwtResponse = await authDAO.post(app, laCode, body);
     req.session.authKey = config.get('secrets.juror.er-portal-jwtKey');
     req.session.authToken = jwtResponse.jwt;
 
     if (req.session.authToken) {
       req.session.authentication = jwt.decode(req.session.authToken) as JwtPayload;
     }
+    delete req.session.email;
 
     app.logger.info('User logged in', {
       auth: req.session.authentication,

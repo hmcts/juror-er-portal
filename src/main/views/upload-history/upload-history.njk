@@ -1,0 +1,23 @@
+{% extends "layouts/default.njk" %}
+
+{% block page_title %}{{ serviceName }} - Upload History{% endblock %}
+{% block page_identifier %}Upload History{% endblock %}
+
+{% set currentApp = "upload-history" %}
+
+{% block content %}
+<div>
+  <div class="govuk-grid-row">
+  <div class="govuk-grid-column-full">
+    <h1 class="govuk-heading-l">{{text.UPLOAD_HISTORY.PAGE_HEADING}}</h1>
+
+    {# Upload history table #}
+    {% if uploadHistoryList | length %}
+      {% include "upload-history/upload-history-list.njk" %}
+    {% else %}
+      <p class="govuk-body">{{text.UPLOAD_HISTORY.NO_UPLOAD_HISTORY_MESSAGE}}</p>
+    {% endif %}
+  </div>
+  </div>
+</div>
+{% endblock %}
