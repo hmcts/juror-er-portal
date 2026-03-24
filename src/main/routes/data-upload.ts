@@ -131,7 +131,7 @@ export default function (app: Application): void {
     });
   });
 
-  app.post('/submit-data-upload', csrfProtection, async (req, res) => {
+  app.post('/submit-data-upload', csrfProtection, verify, async (req, res) => {
     const uploadDetails: UploadDetails = new UploadDetails();
     let connectionString = '';
     let containerName = '';
