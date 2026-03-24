@@ -15,18 +15,20 @@ import { authDAO, laListDAO } from '../objects/login';
 export default function (app: Application): void {
   const csrfProtection = csrf({ cookie: true });
 
-  app.post('/dev/sign-in', csrfProtection, async (req, res) => {
-    if (!req.body?.email) {
-      app.logger.warn('No email provided for dev login');
-      req.session.errors = { email: res.locals.text.VALIDATION.LOGIN.EMAIL_REQUIRED };
-      return res.redirect('/');
-    }
+  if (process.env.NODE_ENV === 'development' || process.env.SKIP_SSO === 'true') {
+    app.post('/dev/sign-in', csrfProtection, async (req, res) => {
+      if (!req.body?.email) {
+        app.logger.warn('No email provided for dev login');
+        req.session.errors = { email: res.locals.text.VALIDATION.LOGIN.EMAIL_REQUIRED };
+        return res.redirect('/');
+      }
 
-    req.session.email = req.body.email;
-    req.session.isDevLogin = true;
+      req.session.email = req.body.email;
+      req.session.isDevLogin = true;
 
-    return res.redirect('/auth/la-list');
-  });
+      return res.redirect('/auth/la-list');
+    });
+  }
 
   app.get('/auth/sign-in', async (req, res) => {
     if (authConfig.auth.clientId === '[client-id]' || authConfig.auth.clientSecret === '[client-secret]') {
