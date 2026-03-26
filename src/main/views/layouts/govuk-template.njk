@@ -57,10 +57,16 @@
         },
         navigation: {
           label: "Account navigation",
-          items: [{
-            text: text.NAVIGATION.SIGN_OUT,
-            href: "/auth/sign-out"
-          }]
+          items: [
+            {
+              text: "Change local authority",
+              href: "/auth/la-list"
+            } if authentication.localAuthorities | length > 1,
+            {
+              text: text.NAVIGATION.SIGN_OUT,
+              href: "/auth/sign-out"
+            }
+          ]
         } if authentication
       }) }}
     {% endblock %}

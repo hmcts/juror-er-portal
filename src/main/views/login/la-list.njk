@@ -1,0 +1,75 @@
+{% extends "layouts/default.njk" %}
+
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/input/macro.njk" import govukInput %}
+{% from "macros/csrf.njk" import csrfProtection %}
+
+{% block page_title %}{{ serviceName }} - Sign in - Select local authority{% endblock %}
+{% block page_identifier %}Sign in - Select local authority{% endblock %}
+
+{% block content %}
+
+  {% include "includes/errors.njk" %}
+
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-full">
+      <h1 class="govuk-heading-l">Which local authority do you want to manage?</h1>
+
+      <form action="{{ postUrl }}" method="POST" id="laToManageForm">
+
+        {% if errors["laList"] %}
+          <div class="govuk-form-group govuk-form-group--error">
+          <div class="error-allocation">
+            <p class="govuk-error-message">{{ errors['laList'] }}</p>
+          </div>
+        {% endif %}
+
+        <table class="govuk-table" data-module="moj-sortable-table">
+          <caption class="govuk-table__caption govuk-table__caption--m">Select local authority</caption>  
+
+          <thead class="govuk-table__head">
+            <tr class="govuk-table__row">
+              <th class="govuk-table__header govuk-!-padding-left-7" scope="col" aria-sort="ascending">Local authority name</th>
+            </tr>
+          </thead>
+          <tbody class="govuk-table__body">
+
+            {% for la in laList %}
+              <tr class="govuk-table__row govuk-table__row--selected">
+                <td class="govuk-table__cell">
+                  <div class="govuk-radios__item govuk-radios--small">
+                    <input type="radio" class="govuk-radios__input" name="la" id="la-{{ la.laName }}" value="{{ la.laName }}-{{ la.laCode }}" {% if la.laName == selectedLa %}checked{% endif %}>
+                    <label class="govuk-label govuk-radios__label" for="la-{{ la.laName }}">
+                      <span class="govuk-!-margin-left-1">{{ la.laName }}</span>
+                      <span class="govuk-visually-hidden">Select local authority {{ la.laName }}</span>
+                    </label>
+                  </div>
+                </td>
+              </tr>
+
+            {% endfor %}
+          </tbody>
+        </table>
+
+        {% if errors["laList"] %}</div>{% endif %}
+
+        <input type="hidden" name="email" id="email" value="{{ email }}">
+        {{ csrfProtection(csrftoken) }}
+
+        <div class="govuk-button-group">
+          {{ govukButton({
+            text: "Continue",
+            attributes: {
+              id: "continueButton",
+              "aria-label": "Continue selecting local authority"
+            }
+          }) }}
+
+          <a class="govuk-link" href="{{ cancelUrl }}" id="cancelAnchor" aria-label="cancel">Cancel</a>
+        </div>
+
+      </form>
+    </div>
+  </div>
+
+{% endblock %}
