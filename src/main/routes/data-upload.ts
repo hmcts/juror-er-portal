@@ -305,10 +305,14 @@ export default function (app: Application): void {
 
           const fileHeader = await readHeaderBytes(fileStream, 4);
 
-          const passwordProtected =
+          let uploadStream: Readable = fileStream as unknown as Readable;
+          const passwordProtectedResult =
             uploadDetails.fileExtension === '.xls'
-              ? await isPasswordProtectedXls(fileStream, fileHeader)
-              : isPasswordProtected(fileHeader);
+              ? await isPasswordProtectedXls(uploadStream, fileHeader)
+              : { passwordProtected: isPasswordProtected(fileHeader), fileStream: uploadStream };
+
+          uploadStream = passwordProtectedResult.fileStream;
+          const passwordProtected = passwordProtectedResult.passwordProtected;
 
           if (passwordProtected) {
             fileStream.resume();
@@ -372,16 +376,11 @@ export default function (app: Application): void {
             blobUrl: blockBlobClient.url,
           });
 
-          fileStream.resume();
+          uploadStream.resume();
 
           // Stream upload directly to Azure storage
           //await blockBlobClient.uploadStream(fileStream as unknown as Readable, bufferSize, maxConcurrency, uploadOptions);
-          const uploadPromise = blockBlobClient.uploadStream(
-            fileStream as unknown as Readable,
-            bufferSize,
-            maxConcurrency,
-            uploadOptions
-          );
+          const uploadPromise = blockBlobClient.uploadStream(uploadStream, bufferSize, maxConcurrency, uploadOptions);
           uploadPromises.push(uploadPromise);
         } catch (err) {
           const message = err instanceof Error ? err.message : String(err);
@@ -559,9 +558,10 @@ export default function (app: Application): void {
     const MAX_PEEK_BYTES = 64 * 1024;
     const HEADER_BYTES = 512;
 
-    return new Promise<boolean>((resolve, reject) => {
+    return new Promise<{ passwordProtected: boolean; fileStream: Readable }>((resolve, reject) => {
       let buffer = Buffer.alloc(0);
       let resolved = false;
+      let ended = false;
 
       function cleanup() {
         stream.removeListener('data', onData);
@@ -569,10 +569,23 @@ export default function (app: Application): void {
         stream.removeListener('error', onError);
       }
 
+      function createReplacementStream(): Readable {
+        const replacementStream = Readable.from(buffer);
+        replacementStream.pause();
+        return replacementStream;
+      }
+
       function restoreStream() {
         stream.pause();
-
         cleanup();
+
+        // If the original stream has already ended, callers cannot reuse it.
+        // Return a new readable with the bytes we already consumed so the
+        // upload step can continue using the same data.
+        if (ended) {
+          resolve({ passwordProtected: false, fileStream: createReplacementStream() });
+          return;
+        }
 
         if (buffer.length > 0) {
           stream.unshift(buffer);
@@ -586,7 +599,9 @@ export default function (app: Application): void {
 
         resolved = true;
         restoreStream();
-        resolve(value);
+        if (!ended) {
+          resolve({ passwordProtected: value, fileStream: stream as unknown as Readable });
+        }
       }
 
       function fail(err: unknown) {
@@ -595,12 +610,17 @@ export default function (app: Application): void {
         }
 
         resolved = true;
-        restoreStream();
+        cleanup();
         reject(err);
       }
 
       function onEnd() {
-        finish(false);
+        ended = true;
+        if (!resolved) {
+          resolved = true;
+          cleanup();
+          resolve({ passwordProtected: false, fileStream: createReplacementStream() });
+        }
       }
 
       function onError(err: unknown) {
