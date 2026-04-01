@@ -569,18 +569,23 @@ export default function (app: Application): void {
         stream.removeListener('error', onError);
       }
 
+      function restoreStream() {
+        stream.pause();
+
+        cleanup();
+
+        if (buffer.length > 0) {
+          stream.unshift(buffer);
+        }
+      }
+
       function finish(value: boolean) {
         if (resolved) {
           return;
         }
 
         resolved = true;
-        cleanup();
-
-        if (buffer.length > 0) {
-          stream.unshift(buffer);
-        }
-
+        restoreStream();
         resolve(value);
       }
 
@@ -590,12 +595,7 @@ export default function (app: Application): void {
         }
 
         resolved = true;
-        cleanup();
-
-        if (buffer.length > 0) {
-          stream.unshift(buffer);
-        }
-
+        restoreStream();
         reject(err);
       }
 
@@ -642,8 +642,6 @@ export default function (app: Application): void {
           return false;
         }
 
-        // For .xls, the workbook stream is typically the first regular sector stream.
-        // We keep this lightweight by scanning the first chunk after the OLE header.
         const workbookBytes = buffer.slice(HEADER_BYTES);
         const result = scanWorkbookBytes(workbookBytes);
 
