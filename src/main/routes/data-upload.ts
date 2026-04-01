@@ -305,7 +305,12 @@ export default function (app: Application): void {
 
           const fileHeader = await readHeaderBytes(fileStream, 4);
 
-          if (isPasswordProtected(fileHeader)) {
+          const passwordProtected =
+            uploadDetails.fileExtension === '.xls'
+              ? await isPasswordProtectedXls(fileStream, fileHeader)
+              : isPasswordProtected(fileHeader);
+
+          if (passwordProtected) {
             fileStream.resume();
 
             app.logger.info('File password protected', {
@@ -545,6 +550,134 @@ export default function (app: Application): void {
     }
 
     return false;
+  }
+
+  async function isPasswordProtectedXls(stream: NodeJS.ReadableStream, _headerBuffer: Buffer) {
+    const OLE_SIGNATURE = 0xe011cfd0;
+    const BOF_SID = 0x0809;
+    const FILEPASS_SID = 0x002f;
+    const MAX_PEEK_BYTES = 64 * 1024;
+    const HEADER_BYTES = 512;
+
+    return new Promise<boolean>((resolve, reject) => {
+      let buffer = Buffer.alloc(0);
+      let resolved = false;
+
+      function cleanup() {
+        stream.removeListener('data', onData);
+        stream.removeListener('end', onEnd);
+        stream.removeListener('error', onError);
+      }
+
+      function finish(value: boolean) {
+        if (resolved) {
+          return;
+        }
+
+        resolved = true;
+        cleanup();
+
+        if (buffer.length > 0) {
+          stream.unshift(buffer);
+        }
+
+        resolve(value);
+      }
+
+      function fail(err: unknown) {
+        if (resolved) {
+          return;
+        }
+
+        resolved = true;
+        cleanup();
+
+        if (buffer.length > 0) {
+          stream.unshift(buffer);
+        }
+
+        reject(err);
+      }
+
+      function onEnd() {
+        finish(false);
+      }
+
+      function onError(err: unknown) {
+        fail(err);
+      }
+
+      function scanWorkbookBytes(workbookBytes: Buffer): boolean | null {
+        let offset = 0;
+        let seenBof = false;
+
+        while (offset + 4 <= workbookBytes.length) {
+          const sid = workbookBytes.readUInt16LE(offset);
+          const len = workbookBytes.readUInt16LE(offset + 2);
+
+          if (offset + 4 + len > workbookBytes.length) {
+            return null;
+          }
+
+          if (sid === BOF_SID) {
+            seenBof = true;
+          }
+
+          if (sid === FILEPASS_SID && seenBof) {
+            return true;
+          }
+
+          offset += 4 + len;
+        }
+
+        return false;
+      }
+
+      function tryParse(): boolean | null {
+        if (buffer.length < HEADER_BYTES + 4) {
+          return null;
+        }
+
+        if (buffer.readUInt32LE(0) !== OLE_SIGNATURE) {
+          return false;
+        }
+
+        // For .xls, the workbook stream is typically the first regular sector stream.
+        // We keep this lightweight by scanning the first chunk after the OLE header.
+        const workbookBytes = buffer.slice(HEADER_BYTES);
+        const result = scanWorkbookBytes(workbookBytes);
+
+        if (result === true || result === false) {
+          return result;
+        }
+
+        return null;
+      }
+
+      function onData(chunk: Buffer) {
+        buffer = Buffer.concat([buffer, chunk]);
+
+        const result = tryParse();
+        if (result === true) {
+          finish(true);
+          return;
+        }
+
+        if (result === false && buffer.length >= HEADER_BYTES + 4096) {
+          finish(false);
+          return;
+        }
+
+        if (buffer.length >= MAX_PEEK_BYTES) {
+          finish(false);
+        }
+      }
+
+      stream.on('data', onData);
+      stream.once('end', onEnd);
+      stream.once('error', onError);
+      stream.resume();
+    });
   }
 
   function sanitizeFilename(name = '') {
