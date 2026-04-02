@@ -55,6 +55,8 @@ export default function (app: Application): void {
   const acceptedFileTypes = ['.csv', '.txt', '.xlsx', '.xls', '.zip'];
   const MAX_FILE_SIZE = 100 * 1024 * 1024; // 100MB
 
+  let xlsPasswordCheckCompleted = false;
+
   const csrfProtection = csrf();
 
   app.get('/data-upload', csrfProtection, verify, async (req, res) => {
@@ -449,7 +451,7 @@ export default function (app: Application): void {
       }
 
       // proceed with file upload
-      if (uploadValid && !uploadAborted) {
+      if (uploadValid && !uploadAborted && (uploadDetails.fileExtension !== '.xls' || xlsPasswordCheckCompleted)) {
         app.logger.info('Proceeding with file uploads to Azure');
 
         try {
@@ -583,6 +585,7 @@ export default function (app: Application): void {
         // Return a new readable with the bytes we already consumed so the
         // upload step can continue using the same data.
         if (ended) {
+          xlsPasswordCheckCompleted = true;
           resolve({ passwordProtected: false, fileStream: createReplacementStream() });
           return;
         }
@@ -594,12 +597,14 @@ export default function (app: Application): void {
 
       function finish(value: boolean) {
         if (resolved) {
+          xlsPasswordCheckCompleted = true;
           return;
         }
 
         resolved = true;
         restoreStream();
         if (!ended) {
+          xlsPasswordCheckCompleted = true;
           resolve({ passwordProtected: value, fileStream: stream as unknown as Readable });
         }
       }
@@ -619,6 +624,7 @@ export default function (app: Application): void {
         if (!resolved) {
           resolved = true;
           cleanup();
+          xlsPasswordCheckCompleted = true;
           resolve({ passwordProtected: false, fileStream: createReplacementStream() });
         }
       }
