@@ -1,6 +1,5 @@
+import appInsights from 'applicationinsights';
 import config from 'config';
-
-const appInsights = require('applicationinsights');
 
 export class AppInsights {
   enable(): void {
@@ -10,9 +9,10 @@ export class AppInsights {
       return;
     }
 
-    appInsights.setup(connectionString).setSendLiveMetrics(true).setAutoCollectConsole(true, true);
+    process.env.OTEL_SERVICE_NAME = 'juror-er-portal';
+    process.env.OTEL_RESOURCE_ATTRIBUTES = 'service.name=juror-er-portal';
 
-    appInsights.defaultClient.context.tags[appInsights.defaultClient.context.keys.cloudRoleName] = 'juror-er-portal';
+    appInsights.setup(connectionString).setSendLiveMetrics(true).setAutoCollectConsole(true, true);
 
     appInsights.start();
 
