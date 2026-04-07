@@ -55,6 +55,8 @@ export default function (app: Application): void {
   const acceptedFileTypes = ['.csv', '.txt', '.xlsx', '.xls', '.zip'];
   const MAX_FILE_SIZE = 100 * 1024 * 1024; // 100MB
 
+  let xlsPasswordCheckCompleted = false;
+
   const csrfProtection = csrf();
 
   app.get('/data-upload', csrfProtection, verify, async (req, res) => {
@@ -305,7 +307,16 @@ export default function (app: Application): void {
 
           const fileHeader = await readHeaderBytes(fileStream, 4);
 
-          if (isPasswordProtected(fileHeader)) {
+          let uploadStream: Readable = fileStream as unknown as Readable;
+          const passwordProtectedResult =
+            uploadDetails.fileExtension === '.xls'
+              ? await isPasswordProtectedXls(uploadStream, fileHeader)
+              : { passwordProtected: isPasswordProtected(fileHeader), fileStream: uploadStream };
+
+          uploadStream = passwordProtectedResult.fileStream;
+          const passwordProtected = passwordProtectedResult.passwordProtected;
+
+          if (passwordProtected) {
             fileStream.resume();
 
             app.logger.info('File password protected', {
@@ -367,16 +378,11 @@ export default function (app: Application): void {
             blobUrl: blockBlobClient.url,
           });
 
-          fileStream.resume();
+          uploadStream.resume();
 
           // Stream upload directly to Azure storage
           //await blockBlobClient.uploadStream(fileStream as unknown as Readable, bufferSize, maxConcurrency, uploadOptions);
-          const uploadPromise = blockBlobClient.uploadStream(
-            fileStream as unknown as Readable,
-            bufferSize,
-            maxConcurrency,
-            uploadOptions
-          );
+          const uploadPromise = blockBlobClient.uploadStream(uploadStream, bufferSize, maxConcurrency, uploadOptions);
           uploadPromises.push(uploadPromise);
         } catch (err) {
           const message = err instanceof Error ? err.message : String(err);
@@ -445,7 +451,7 @@ export default function (app: Application): void {
       }
 
       // proceed with file upload
-      if (uploadValid && !uploadAborted) {
+      if (uploadValid && !uploadAborted && (uploadDetails.fileExtension !== '.xls' || xlsPasswordCheckCompleted)) {
         app.logger.info('Proceeding with file uploads to Azure');
 
         try {
@@ -545,6 +551,157 @@ export default function (app: Application): void {
     }
 
     return false;
+  }
+
+  async function isPasswordProtectedXls(stream: NodeJS.ReadableStream, _headerBuffer: Buffer) {
+    const OLE_SIGNATURE = 0xe011cfd0;
+    const BOF_SID = 0x0809;
+    const FILEPASS_SID = 0x002f;
+    const MAX_PEEK_BYTES = 64 * 1024;
+    const HEADER_BYTES = 512;
+
+    return new Promise<{ passwordProtected: boolean; fileStream: Readable }>((resolve, reject) => {
+      let buffer = Buffer.alloc(0);
+      let resolved = false;
+      let ended = false;
+
+      function cleanup() {
+        stream.removeListener('data', onData);
+        stream.removeListener('end', onEnd);
+        stream.removeListener('error', onError);
+      }
+
+      function createReplacementStream(): Readable {
+        const replacementStream = Readable.from(buffer);
+        replacementStream.pause();
+        return replacementStream;
+      }
+
+      function restoreStream() {
+        stream.pause();
+        cleanup();
+
+        // If the original stream has already ended, callers cannot reuse it.
+        // Return a new readable with the bytes we already consumed so the
+        // upload step can continue using the same data.
+        if (ended) {
+          xlsPasswordCheckCompleted = true;
+          resolve({ passwordProtected: false, fileStream: createReplacementStream() });
+          return;
+        }
+
+        if (buffer.length > 0) {
+          stream.unshift(buffer);
+        }
+      }
+
+      function finish(value: boolean) {
+        if (resolved) {
+          xlsPasswordCheckCompleted = true;
+          return;
+        }
+
+        resolved = true;
+        restoreStream();
+        if (!ended) {
+          xlsPasswordCheckCompleted = true;
+          resolve({ passwordProtected: value, fileStream: stream as unknown as Readable });
+        }
+      }
+
+      function fail(err: unknown) {
+        if (resolved) {
+          return;
+        }
+
+        resolved = true;
+        cleanup();
+        reject(err);
+      }
+
+      function onEnd() {
+        ended = true;
+        if (!resolved) {
+          resolved = true;
+          cleanup();
+          xlsPasswordCheckCompleted = true;
+          resolve({ passwordProtected: false, fileStream: createReplacementStream() });
+        }
+      }
+
+      function onError(err: unknown) {
+        fail(err);
+      }
+
+      function scanWorkbookBytes(workbookBytes: Buffer): boolean | null {
+        let offset = 0;
+        let seenBof = false;
+
+        while (offset + 4 <= workbookBytes.length) {
+          const sid = workbookBytes.readUInt16LE(offset);
+          const len = workbookBytes.readUInt16LE(offset + 2);
+
+          if (offset + 4 + len > workbookBytes.length) {
+            return null;
+          }
+
+          if (sid === BOF_SID) {
+            seenBof = true;
+          }
+
+          if (sid === FILEPASS_SID && seenBof) {
+            return true;
+          }
+
+          offset += 4 + len;
+        }
+
+        return false;
+      }
+
+      function tryParse(): boolean | null {
+        if (buffer.length < HEADER_BYTES + 4) {
+          return null;
+        }
+
+        if (buffer.readUInt32LE(0) !== OLE_SIGNATURE) {
+          return false;
+        }
+
+        const workbookBytes = buffer.slice(HEADER_BYTES);
+        const result = scanWorkbookBytes(workbookBytes);
+
+        if (result === true || result === false) {
+          return result;
+        }
+
+        return null;
+      }
+
+      function onData(chunk: Buffer) {
+        buffer = Buffer.concat([buffer, chunk]);
+
+        const result = tryParse();
+        if (result === true) {
+          finish(true);
+          return;
+        }
+
+        if (result === false && buffer.length >= HEADER_BYTES + 4096) {
+          finish(false);
+          return;
+        }
+
+        if (buffer.length >= MAX_PEEK_BYTES) {
+          finish(false);
+        }
+      }
+
+      stream.on('data', onData);
+      stream.once('end', onEnd);
+      stream.once('error', onError);
+      stream.resume();
+    });
   }
 
   function sanitizeFilename(name = '') {
