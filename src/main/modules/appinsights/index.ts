@@ -12,7 +12,7 @@ export class AppInsights {
 
     appInsights.setup(connectionString).setSendLiveMetrics(true).setAutoCollectConsole(true, true);
 
-    appInsights.defaultClient.context.tags[appInsights.defaultClient.context.keys.cloudRole] = 'juror-er-portal';
+    appInsights.defaultClient.context.tags[appInsights.defaultClient.context.keys.cloudRoleName] = 'juror-er-portal';
 
     appInsights.start();
 
