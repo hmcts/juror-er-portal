@@ -9,13 +9,9 @@ export class AppInsights {
       return;
     }
 
-    process.env.OTEL_SERVICE_NAME = 'juror-er-portal';
-    process.env.OTEL_RESOURCE_ATTRIBUTES = 'service.name=juror-er-portal';
+    appInsights.setup(config.get('secrets.juror.app-insights-connection-string')).setSendLiveMetrics(true).start();
 
-    appInsights.setup(connectionString).setSendLiveMetrics(true).setAutoCollectConsole(true, true);
-
-    appInsights.start();
-
+    appInsights.defaultClient.context.tags[appInsights.defaultClient.context.keys.cloudRole] = 'juror-er-portal';
     appInsights.defaultClient.trackTrace({
       message: 'App insights activated',
     });
