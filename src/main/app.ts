@@ -8,6 +8,7 @@ import RateLimit from 'express-rate-limit';
 import { glob } from 'glob';
 
 import { HTTPError } from './HttpError';
+import { AppInsights } from './modules/appinsights';
 import { Helmet } from './modules/helmet';
 import { Logger } from './modules/logger';
 import { Nunjucks } from './modules/nunjucks';
@@ -15,7 +16,6 @@ import { PropertiesVolume } from './modules/properties-volume';
 import { SessionConfig } from './modules/session';
 
 const { setupDev } = require('./development');
-const { AppInsights } = require('./modules/appinsights');
 
 const env = process.env.NODE_ENV || 'development';
 const skipSSO = !!process.env.SKIP_SSO || false;
@@ -31,7 +31,7 @@ export const app = express();
 app.locals.ENV = env;
 
 app.set('trust proxy', 1);
-new AppInsights();
+new AppInsights().enable();
 new Logger(config.get('logger')).initLogger(app);
 new PropertiesVolume().enableFor(app);
 new Nunjucks(developmentMode).enableFor(app);
