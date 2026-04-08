@@ -4,20 +4,19 @@ const appInsights = require('applicationinsights');
 
 export class AppInsights {
   enable(): void {
-    if (config.get('secrets.juror.app-insights-connection-string')) {
-      console.log('Enabling app insights');
-      appInsights
-        .setup(config.get('secrets.juror.app-insights-connection-string'))
-        .setAutoCollectConsole(true, true)
-        .setSendLiveMetrics(true)
-        .start();
+    const connectionString = config.get<string>('secrets.juror.app-insights-connection-string');
 
-      appInsights.defaultClient.context.tags[appInsights.defaultClient.context.keys.cloudRole] = 'juror-er-portal';
-      appInsights.defaultClient.trackTrace({
-        message: 'App insights activated',
-      });
-    } else {
+    if (!connectionString) {
       console.log('App insights connection string not found, app insights will not be enabled');
+      return;
     }
+
+    console.log('Enabling app insights');
+    appInsights.setup(connectionString).setAutoCollectConsole(true, true).setSendLiveMetrics(true).start();
+
+    appInsights.defaultClient.context.tags[appInsights.defaultClient.context.keys.cloudRole] = 'juror-er-portal';
+    appInsights.defaultClient.trackTrace({
+      message: 'App insights activated',
+    });
   }
 }
