@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import * as express from 'express';
 
 const _ = require('lodash');
@@ -13,21 +12,23 @@ interface SanitisableValue {
 
 interface Logger {
   log?: (...args: unknown[]) => void;
-  [key: string]: any;
+  [key: string]: unknown;
 }
+
+type LogFunction = (...args: unknown[]) => void;
 
 function sanitise(obj: SanitisableValue): SanitisableValue {
   const cloned = _.cloneDeep(obj);
 
-  function sanitiseObject(value: any | any[]): any | any[] {
+  function sanitiseObject(value: unknown): unknown {
     if (_.isString(value)) {
       return value;
     } // do not alter free-form strings
     if (_.isArray(value)) {
-      return value.map(sanitiseObject);
+      return (value as unknown[]).map(sanitiseObject);
     }
     if (_.isObject(value)) {
-      return _.mapValues(value, (v: any, k: string) => {
+      return _.mapValues(value as Record<string, unknown>, (v: unknown, k: string) => {
         if (k) {
           const nk = _.camelCase(String(k)).toLowerCase();
           if (UNWRAPPED_KEYS.includes(nk)) {
@@ -43,7 +44,7 @@ function sanitise(obj: SanitisableValue): SanitisableValue {
     return value;
   }
 
-  return sanitiseObject(cloned);
+  return sanitiseObject(cloned) as SanitisableValue;
 }
 
 // Wrap the app.logger and mutate Logger. `levels` should be
@@ -61,12 +62,12 @@ module.exports.sanitiseLog = function (origLogger: Logger, levels: Record<string
 
     targetLevels.forEach(lvl => {
       if (typeof origLogger[lvl] === 'function') {
-        wrapper[lvl] = function (...args: any[]) {
+        wrapper[lvl] = function (...args: unknown[]) {
           try {
-            const sanitisedArgs = args.map(a => (_.isObject(a) ? sanitise(a) : a));
-            return origLogger[lvl](...sanitisedArgs);
+            const sanitisedArgs = args.map(a => (_.isObject(a) ? sanitise(a as SanitisableValue) : a));
+            return (origLogger[lvl] as LogFunction)(...sanitisedArgs);
           } catch (err) {
-            return origLogger[lvl](...args);
+            return (origLogger[lvl] as LogFunction)(...args);
           }
         };
       }
@@ -81,9 +82,9 @@ module.exports.sanitiseLog = function (origLogger: Logger, levels: Record<string
   targetLevels.forEach(lvl => {
     if (typeof origLogger[lvl] === 'function') {
       const origFn = origLogger[lvl].bind(origLogger);
-      origLogger[lvl] = function (...args: any[]) {
+      origLogger[lvl] = function (...args: unknown[]) {
         try {
-          const sanitisedArgs = args.map(a => (_.isObject(a) ? sanitise(a) : a));
+          const sanitisedArgs = args.map(a => (_.isObject(a) ? sanitise(a as SanitisableValue) : a));
           return origFn(...sanitisedArgs);
         } catch (err) {
           return origFn(...args);
