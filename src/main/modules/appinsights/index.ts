@@ -7,11 +7,9 @@ export class AppInsights {
     const connectionString = config.get<string>('secrets.juror.app-insights-connection-string');
 
     if (!connectionString) {
-      console.log('App insights connection string not found, app insights will not be enabled');
       return;
     }
 
-    console.log('Enabling app insights');
     appInsights.setup(connectionString).setAutoCollectConsole(true, true).setSendLiveMetrics(true).start();
 
     appInsights.defaultClient.context.tags[appInsights.defaultClient.context.keys.cloudRole] = 'juror-er-portal';
