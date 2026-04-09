@@ -102,7 +102,7 @@
     "@typescript-eslint/parser": "^8.58.1",
     "axios-debug-log": "1.0.0",
     "babel-loader": "10.1.1",
-    "chai": "^5.0.0",
+    "chai": "^5.3.3",
     "chai-as-promised": "8.0.2",
     "chokidar": "^5.0.0",
     "codeceptjs": "^3.7.8",
