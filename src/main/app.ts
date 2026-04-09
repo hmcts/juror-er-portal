@@ -31,9 +31,9 @@ export const app = express();
 app.locals.ENV = env;
 
 app.set('trust proxy', 1);
-new Logger(config.get('logger')).initLogger(app);
 new PropertiesVolume().enableFor(app);
 new AppInsights().enable();
+new Logger(config.get('logger')).initLogger(app);
 new Nunjucks(developmentMode).enableFor(app);
 // secure the application by adding various HTTP headers to its responses
 new Helmet(config.get('security')).enableFor(app);
