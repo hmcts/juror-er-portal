@@ -44,7 +44,7 @@
     "@types/nunjucks": "3.2.6",
     "@types/require-directory": "2.1.7",
     "applicationinsights": "2.9.6",
-    "axios": "1.13.6",
+    "axios": "1.15.0",
     "body-parser": "2.2.2",
     "busboy": "1.6.0",
     "config": "4.4.1",
