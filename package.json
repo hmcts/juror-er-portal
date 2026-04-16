@@ -58,7 +58,7 @@
     "express-session": "^1.19.0",
     "fs-extra": "^11.3.4",
     "glob": "13.0.6",
-    "govuk-frontend": "^5.14.0",
+    "govuk-frontend": "^6.0.0",
     "helmet": "8.1.0",
     "jquery": "^4.0.0",
     "jsonwebtoken": "^9.0.3",
