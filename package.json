@@ -150,7 +150,7 @@
   },
   "packageManager": "yarn@4.12.0",
   "resolutions": {
-    "csurf/cookie": "0.7.2",
+    "csurf/cookie": "1.1.1",
     "codeceptjs/axios": "1.15.0"
   }
 }
