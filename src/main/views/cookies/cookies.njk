@@ -1,0 +1,58 @@
+{% extends "layouts/default.njk" %}
+
+{% from "govuk/components/table/macro.njk" import govukTable %}
+
+{% block page_title %}{{ serviceName }} - Cookies{% endblock %}
+{% block page_identifier %}Cookies{% endblock %}
+
+{% block content %}
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-two-thirds">
+    <h1 class="govuk-heading-l">{{- text.COOKIES.PAGE_HEADING -}}</h1>
+    <p class="govuk-body">{{- text .COOKIES.COOKIE_GUIDANCE_1 -}}</p>
+    <p class="govuk-body">{{- text .COOKIES.COOKIE_GUIDANCE_2 -}}</p>
+    <h2 class="govuk-heading-m">{{- text.COOKIES.ESSENTIAL_COOKIES_HEADING -}}</h2>
+    <p class="govuk-body">{{- text .COOKIES.ESSENTIAL_COOKIES_GUIDANCE -}}</p>
+    {{ govukTable({
+      caption: text.COOKIES.ESSENTIAL_COOKIES_TABLE.CAPTION,
+      captionClasses: "govuk-table__caption--s",
+      firstCellIsHeader: false,
+      head: [
+        {
+          text: text.COOKIES.ESSENTIAL_COOKIES_TABLE.HEADINGS[0]
+        },
+        {
+          text: text.COOKIES.ESSENTIAL_COOKIES_TABLE.HEADINGS[1]
+        },
+        {
+          text: text.COOKIES.ESSENTIAL_COOKIES_TABLE.HEADINGS[2]
+        }
+      ],
+      rows: [
+        [
+          {
+            text: text.COOKIES.ESSENTIAL_COOKIES_TABLE.ROWS[0][0]
+          },
+          {
+            text: text.COOKIES.ESSENTIAL_COOKIES_TABLE.ROWS[0][1]
+          },
+          {
+            text: text.COOKIES.ESSENTIAL_COOKIES_TABLE.ROWS[0][2]
+          }
+        ],
+        [
+          {
+            text: text.COOKIES.ESSENTIAL_COOKIES_TABLE.ROWS[1][0]
+          },
+          {
+            text: text.COOKIES.ESSENTIAL_COOKIES_TABLE.ROWS[1][1]
+          },
+          {
+            text: text.COOKIES.ESSENTIAL_COOKIES_TABLE.ROWS[1][2]
+          }
+        ]
+      ]
+    }) }}
+  </div>
+</div>
+{% endblock %}

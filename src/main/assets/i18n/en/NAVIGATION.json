@@ -5,5 +5,9 @@
   "DATA_UPLOAD": "Data upload",
   "UPLOAD_HISTORY": "Upload history",
   "UPLOAD_GUIDANCE": "Upload guidance",
-  "ACCOUNT_ACCESS": "Account access"
+  "ACCOUNT_ACCESS": "Account access",
+  "LINK_OPENS_NEW_WINDOW": "Opens in a new window",
+  "FOOTER_LINKS": {
+    "COOKIES": "Cookies"
+  }
 }
