@@ -4,6 +4,8 @@
   "DAYS_REMAINING_ROW_LABEL": "Days remaining",
   "STATUS_ROW_LABEL": "Status",
 
+  "JAVASCRIPT_REQUIRED_MESSAGE": "JavaScript must be enabled to upload a file.",
+
   "STATUS_NOT_UPLOADED:": "Not uploaded",
   "STATUS_UPLOADED": "Uploaded",
 

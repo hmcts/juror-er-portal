@@ -1,6 +1,18 @@
 <script {%- if nonce %} nonce="{{ nonce }}"{% endif %}>
   $( document ).ready(function() {
     var form = document.getElementById('dataUploadForm');
+    var javascriptEnabled = document.getElementById('javascriptEnabled');
+    var submitButton = document.getElementById('submitButton');
+
+    if (javascriptEnabled) {
+      javascriptEnabled.value = 'true';
+    }
+
+    // enable the submit upload button
+    if (submitButton) {
+      submitButton.disabled = false;
+      submitButton.removeAttribute('aria-disabled');
+    }
 
     form.onsubmit = async (e) => {
       e.preventDefault();
@@ -14,6 +26,7 @@
         fd.append('citizensOverAgeVal', document.getElementById('citizensOverAgeVal').value);
         fd.append('electorTypesVal', document.getElementById('electorTypesVal').value);
         fd.append('otherInformationVal', document.getElementById('otherInformationVal').value);
+        fd.append('javascriptEnabled', document.getElementById('javascriptEnabled').value);
 
         if ($('#fileUpload-input')[0].files && $('#fileUpload-input')[0].files.length > 0) {
           const file = $('#fileUpload-input')[0].files[0];
