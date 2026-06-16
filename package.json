@@ -77,7 +77,7 @@
     "tsconfig-paths": "4.2.0",
     "tsx": "^4.22.4",
     "typescript": "5.9.3",
-    "uuid": "^9.0.1",
+    "uuid": "11.1.1",
     "winston": "^3.19.0"
   },
   "devDependencies": {
@@ -150,6 +150,13 @@
   },
   "packageManager": "yarn@4.12.0",
   "resolutions": {
-    "csurf/cookie": "0.7.2"
+    "csurf/cookie": "0.7.2",
+    "minimatch@npm:10.2.5/brace-expansion": "^5.0.6",
+    "ajv/fast-uri": "^3.1.2",
+    "@azure/core-xml/fast-xml-parser": "^5.7.0",
+    "form-data": "^4.0.6",
+    "ip-address": "^10.2.0",
+    "qs": "^6.15.2",
+    "tar": "^7.5.16"
   }
 }
