@@ -43,7 +43,7 @@
     "@types/lodash": "4.17.24",
     "@types/nunjucks": "3.2.6",
     "@types/require-directory": "2.1.7",
-    "applicationinsights": "2.9.8",
+    "applicationinsights": "^3.15.0",
     "axios": "^1.18.0",
     "body-parser": "2.3.0",
     "busboy": "1.6.0",
@@ -162,6 +162,8 @@
     "serialize-javascript": "^7.0.5",
     "mocha/diff": "^8.0.3",
     "@xmldom/xmldom": "^0.9.10",
-    "codeceptjs/uuid": "^11.1.1"
+    "codeceptjs/uuid": "^11.1.1",
+    "protobufjs": "^8.6.0",
+    "@opentelemetry/core@npm:2.7.1": "^2.8.0"
   }
 }
