@@ -4812,7 +4812,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@typescript-eslint/utils@npm:^8.0.0":
+"@typescript-eslint/utils@npm:^6.0.0 || ^7.0.0 || ^8.0.0":
   version: 8.61.1
   resolution: "@typescript-eslint/utils@npm:8.61.1"
   dependencies:
@@ -8004,24 +8004,21 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-plugin-jest@npm:^29.15.2":
-  version: 29.15.2
-  resolution: "eslint-plugin-jest@npm:29.15.2"
+"eslint-plugin-jest@npm:28.14.0":
+  version: 28.14.0
+  resolution: "eslint-plugin-jest@npm:28.14.0"
   dependencies:
-    "@typescript-eslint/utils": "npm:^8.0.0"
+    "@typescript-eslint/utils": "npm:^6.0.0 || ^7.0.0 || ^8.0.0"
   peerDependencies:
-    "@typescript-eslint/eslint-plugin": ^8.0.0
-    eslint: ^8.57.0 || ^9.0.0 || ^10.0.0
+    "@typescript-eslint/eslint-plugin": ^6.0.0 || ^7.0.0 || ^8.0.0
+    eslint: ^7.0.0 || ^8.0.0 || ^9.0.0
     jest: "*"
-    typescript: ">=4.8.4 <7.0.0"
   peerDependenciesMeta:
     "@typescript-eslint/eslint-plugin":
       optional: true
     jest:
       optional: true
-    typescript:
-      optional: true
-  checksum: 10/c7bc4dc705e5613e51a1d19bb924a439db9897c67e694f091e29dbacaa218b758040aacbb8d3f9136f2af0171ad69c1c49736b5e3f30098bdf44d4c1e93c6381
+  checksum: 10/6032497bd97d6dd010450d5fdf535b8613a2789f4f83764ae04361c48d06d92f3d9b2e4350914b8fd857b6e611ba2b5282a1133ab8ec51b3e7053f9d336058e6
   languageName: node
   linkType: hard
 
@@ -10823,7 +10820,7 @@ __metadata:
     eslint: "npm:8.57.1"
     eslint-config-prettier: "npm:10.1.8"
     eslint-plugin-import: "npm:2.32.0"
-    eslint-plugin-jest: "npm:^29.15.2"
+    eslint-plugin-jest: "npm:28.14.0"
     express: "npm:5.2.1"
     express-nunjucks: "npm:3.1.2"
     express-rate-limit: "npm:^8.5.2"
@@ -10857,7 +10854,7 @@ __metadata:
     sass-loader: "npm:^17.0.0"
     serve-favicon: "npm:2.5.1"
     sinon: "npm:^22.0.0"
-    sinon-chai: "npm:4.0.1"
+    sinon-chai: "npm:3.7.0"
     style-loader: "npm:4.0.0"
     stylelint: "npm:^17.13.0"
     stylelint-config-standard: "npm:^40.0.0"
@@ -13554,13 +13551,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"sinon-chai@npm:4.0.1":
-  version: 4.0.1
-  resolution: "sinon-chai@npm:4.0.1"
+"sinon-chai@npm:3.7.0":
+  version: 3.7.0
+  resolution: "sinon-chai@npm:3.7.0"
   peerDependencies:
-    chai: ^5.0.0 || ^6.0.0
+    chai: ^4.0.0
     sinon: ">=4.0.0"
-  checksum: 10/cc417d196133353cfd08775a6b259264d06bf8b4dea135de1f601d295726010660f20cbeb601c281504935810fcb7781aef1c56596edc0eaaff57be52717bbc8
+  checksum: 10/028853eb8a545ca613c6863014a40f07d1e6b81467e20939fefcd13f170206d24165b91099fb297aeb4d137745e321da25daa8e2d665cc0a78f90d5b877e8bbe
   languageName: node
   linkType: hard
 
