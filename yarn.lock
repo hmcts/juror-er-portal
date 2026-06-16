@@ -11181,7 +11181,7 @@ __metadata:
     tsconfig-paths: "npm:4.2.0"
     tsx: "npm:^4.22.4"
     typescript: "npm:5.9.3"
-    uuid: "npm:11.1.1"
+    uuid: "npm:^11.1.1"
     webpack: "npm:5.107.2"
     webpack-cli: "npm:6.0.1"
     webpack-dev-middleware: "npm:7.4.5"
@@ -15961,7 +15961,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"uuid@npm:11.1.1":
+"uuid@npm:^11.1.1":
   version: 11.1.1
   resolution: "uuid@npm:11.1.1"
   bin:
