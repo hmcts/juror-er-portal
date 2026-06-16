@@ -160,6 +160,7 @@
     "tar": "^7.5.16",
     "codeceptjs/axios": "^1.18.0",
     "@typescript-eslint/typescript-estree/minimatch": "^9.0.7",
-    "mocha/diff": "^8.0.3"
+    "mocha/diff": "^8.0.3",
+    "joi": "^18.2.1"
   }
 }
