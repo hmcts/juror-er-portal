@@ -20,7 +20,7 @@
     "test:routes": "jest -c jest.routes.config.js",
     "test:a11y": "jest --detectOpenHandles -c jest.a11y.config.js --maxWorkers 15",
     "test:smoke": "NODE_TLS_REJECT_UNAUTHORIZED=0 jest -c jest.smoke.config.js",
-    "test:functional": "NODE_TLS_REJECT_UNAUTHORIZED=0 yarn playwright install && codeceptjs run --steps",
+    "test:functional": "yarn playwright install && NODE_TLS_REJECT_UNAUTHORIZED=0 codeceptjs run -c src/test/codecept.conf.ts --steps",
     "cichecks": "yarn install && yarn build && yarn rebuild puppeteer && yarn lint && yarn test && yarn test:routes && yarn test:a11y",
     "prepare": "husky install"
   },
@@ -84,7 +84,6 @@
     "@babel/core": "^7.29.7",
     "@babel/eslint-parser": "7.29.7",
     "@babel/preset-env": "^7.29.7",
-    "@codeceptjs/allure-legacy": "^1.0.2",
     "@codeceptjs/configure": "^1.0.6",
     "@types/chai": "^5.2.3",
     "@types/chai-as-promised": "8.0.2",
@@ -105,7 +104,7 @@
     "chai": "4.5.0",
     "chai-as-promised": "8.0.2",
     "chokidar": "^5.0.0",
-    "codeceptjs": "^3.7.9",
+    "codeceptjs": "^4.0.0",
     "copy-webpack-plugin": "10.2.4",
     "css-loader": "7.1.4",
     "debug": "4.4.3",
@@ -158,12 +157,9 @@
     "ip-address": "^10.2.0",
     "qs": "^6.15.2",
     "tar": "^7.5.16",
-    "codeceptjs/axios": "^1.18.0",
     "@typescript-eslint/typescript-estree/minimatch": "^9.0.7",
-    "mocha/diff": "^8.0.3",
-    "joi": "^18.2.1",
     "@istanbuljs/load-nyc-config/js-yaml": "^4.2.0",
     "serialize-javascript": "^7.0.5",
-    "codeceptjs/uuid": "^11.1.1"
+    "mocha/diff": "^8.0.3"
   }
 }

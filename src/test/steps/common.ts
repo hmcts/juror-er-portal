@@ -1,4 +1,4 @@
-import { config as testConfig } from '../config';
+import { config as testConfig } from '../config.ts';
 
 const { I } = inject();
 
