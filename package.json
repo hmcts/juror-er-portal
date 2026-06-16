@@ -160,6 +160,7 @@
     "@typescript-eslint/typescript-estree/minimatch": "^9.0.7",
     "@istanbuljs/load-nyc-config/js-yaml": "^4.2.0",
     "serialize-javascript": "^7.0.5",
-    "mocha/diff": "^8.0.3"
+    "mocha/diff": "^8.0.3",
+    "@xmldom/xmldom": "^0.9.10"
   }
 }
