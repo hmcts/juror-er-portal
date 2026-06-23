@@ -5,7 +5,7 @@ import _ from 'lodash';
 import { logout } from '../modules/auth';
 
 export default function (app: Application): void {
-  const csrfProtection = csrf({ cookie: true });
+  const csrfProtection = csrf();
 
   app.get('/', csrfProtection, (req, res) => {
     // If already logged in, force logout
