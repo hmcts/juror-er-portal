@@ -1,31 +1,28 @@
-import { config as testConfig } from './src/test/config.ts';
+import { setHeadlessWhen } from '@codeceptjs/configure';
 
-const { setHeadlessWhen } = require('@codeceptjs/configure');
+import { config as testConfig } from './config.ts';
 
 setHeadlessWhen(testConfig.TestHeadlessBrowser);
+
 export const config: CodeceptJS.MainConfig = {
   name: 'functional',
+  noGlobals: true,
   gherkin: testConfig.Gherkin,
-  output: './functional-output/functional/reports',
+  output: '../../functional-output/functional/reports',
   helpers: testConfig.helpers,
   tests: './*_test.{js,ts}',
   plugins: {
-    allure: {
-      enabled: true,
-      require: '@codeceptjs/allure-legacy',
-    },
-    pauseOnFail: {
+    pause: {
       enabled: !testConfig.TestHeadlessBrowser,
+      on: 'fail',
     },
     retryFailedStep: {
       enabled: true,
     },
-    tryTo: {
-      enabled: true,
-    },
-    screenshotOnFail: {
+    screenshot: {
       enabled: true,
       fullPageScreenshots: true,
+      on: 'fail',
     },
   },
 };
