@@ -13,7 +13,7 @@ import errors from '../modules/errors';
 import { authDAO, laListDAO } from '../objects/login';
 
 export default function (app: Application): void {
-  const csrfProtection = csrf({ cookie: true });
+  const csrfProtection = csrf();
 
   if (process.env.NODE_ENV === 'development' || process.env.SKIP_SSO === 'true') {
     app.post('/dev/sign-in', csrfProtection, async (req, res) => {
