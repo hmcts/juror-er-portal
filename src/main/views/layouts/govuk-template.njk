@@ -1,17 +1,13 @@
 {% from "../govuk/macros/attributes.njk" import govukAttributes -%}
 {% from "../govuk/components/skip-link/macro.njk" import govukSkipLink -%}
-{% from "../govuk/components/header/macro.njk" import govukHeader -%}
 {% from "../govuk/components/footer/macro.njk" import govukFooter -%}
 {% from "../moj/components/header/macro.njk" import mojHeader %}
 
-{%- set _rebrand = govukRebrand() if govukRebrand is callable else govukRebrand -%}
-
-{# Hardcoded value is $govuk-brand-blue if rebrand, otherwise govuk-colour("black") -#}
-{% set themeColor = themeColor | default("#1d70b8" if _rebrand else "#0b0c0c", true) -%}
-{% set assetPath = assetPath | default("/assets/rebrand" if _rebrand else "/assets", true) -%}
+{% set themeColor = themeColor | default("#1d70b8", true) -%}
+{% set assetPath = assetPath | default("/assets", true) -%}
 
 <!DOCTYPE html>
-<html lang="{{ htmlLang | default("en", true) }}" class="govuk-template {%- if _rebrand %} govuk-template--rebranded{% endif %} {%- if htmlClasses %} {{ htmlClasses }}{% endif %}">
+<html lang="{{ htmlLang | default("en", true) }}" class="govuk-template {%- if htmlClasses %} {{ htmlClasses }}{% endif %}">
   <head>
     <meta charset="utf-8">
     <title {%- if pageTitleLang %} lang="{{ pageTitleLang }}"{% endif %}>{% block pageTitle %}{{ serviceName }}{% endblock %}</title>
@@ -37,7 +33,7 @@
     <script {%- if nonce %} nonce="{{ nonce }}"{% endif %}>document.body.className += ' js-enabled' + ('noModule' in HTMLScriptElement.prototype ? ' govuk-frontend-supported' : '');</script>
     {% block bodyStart %}{% endblock %}
 
-    {% block skipLink %}
+    {% block govukSkipLink %}
       {{ govukSkipLink({
         href: '#main-content',
         text: text.NAVIGATION.SKIP_MAIN_CONTENT_LINK
@@ -75,7 +71,7 @@
 
     {% block main %}
       <div class="govuk-width-container {%- if containerClasses %} {{ containerClasses }}{% endif %}">
-        {% block beforeContent %}{% endblock %}
+        {% block containerStart %}{% endblock %}
         <main class="govuk-main-wrapper {%- if mainClasses %} {{ mainClasses }}{% endif %}" id="main-content" {%- if mainLang %} lang="{{ mainLang }}"{% endif %}>
           {% block subNavigation %}{% endblock %}
           {% block content %}{% endblock %}
@@ -84,9 +80,14 @@
     {% endblock %}
 
     {% block footer %}
-      {{ govukFooter({
-        rebrand: _rebrand
-      }) }}
+      <footer class="govuk-template__footer {%- if footerClasses %} {{ footerClasses }}{% endif %}" {{- govukAttributes(footerAttributes) }}>
+        {% block footerStart %}{% endblock %}
+        {% block govukFooter %}
+          {{ govukFooter({
+          }) }}
+        {% endblock %}
+        {% block footerEnd %}{% endblock %}
+      </footer>
     {% endblock %}
 
     {% block bodyEnd %}{% endblock %}
