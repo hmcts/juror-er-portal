@@ -84,6 +84,18 @@
         {% block footerStart %}{% endblock %}
         {% block govukFooter %}
           {{ govukFooter({
+            meta: {
+              items: [
+                {
+                  href: "/cookies",
+                  text: text.NAVIGATION.FOOTER_LINKS.COOKIES,
+                  attributes: {
+                    target: "_blank",
+                    alt: text.NAVIGATION.LINK_OPENS_NEW_WINDOW
+                  }
+                }
+              ]
+            }
           }) }}
         {% endblock %}
         {% block footerEnd %}{% endblock %}
