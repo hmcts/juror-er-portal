@@ -1,19 +1,21 @@
 {
   "PAGE_HEADING": "Cookies",
-  
+
   "COOKIE_GUIDANCE_1": "Cookies are small files saved on your phone, tablet or computer when you visit a website.",
   "COOKIE_GUIDANCE_2": "We use cookies to make the 'Electoral register data portal' service work securely.",
 
   "ESSENTIAL_COOKIES_HEADING": "Essential cookies",
   "ESSENTIAL_COOKIES_GUIDANCE": "Essential cookies keep your information secure while you use this service. We do not need to ask permission to use them.",
-  "ESSENTIAL_COOKIES_TABLE":
-  {
+  "ESSENTIAL_COOKIES_TABLE": {
     "CAPTION": "Essential cookies we use",
     "HEADINGS": ["Name", "Purpose", "Expires"],
-    "ROWS":
-    [
+    "ROWS": [
       ["juror_er_portal_session", "Keeps track of whether you're logged in or not", "When you close your browser"],
-      ["_csrf", "Ensures website security by validating that requests are intentionally made by the legitimate user", "When you close your browser"]
+      [
+        "_csrf",
+        "Ensures website security by validating that requests are intentionally made by the legitimate user",
+        "When you close your browser"
+      ]
     ]
   }
 }
