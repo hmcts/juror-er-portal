@@ -30,7 +30,6 @@ export class Nunjucks {
       res.locals.pagePath = req.path;
       res.locals.csrftoken = req.csrfToken;
       res.locals.env = app.locals.ENV;
-      res.locals.govukRebrand = true;
       next();
     });
   }

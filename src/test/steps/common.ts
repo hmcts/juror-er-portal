@@ -1,6 +1,6 @@
 import { config as testConfig } from '../config';
 
-const { I } = inject();
+const { I } = inject() as CodeceptJS.SupportObject;
 
 export const iAmOnPage = (text: string): void => {
   const url = new URL(text, testConfig.TEST_URL);
