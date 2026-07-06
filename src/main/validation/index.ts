@@ -2,6 +2,12 @@ import Joi from 'joi';
 
 export type ValidationErrorMap = Record<string, string>;
 
+const validationOptions: Joi.ValidationOptions = {
+  abortEarly: false,
+  allowUnknown: true,
+  stripUnknown: true,
+};
+
 export const validationResultToErrorMap = (validationResult: Joi.ValidationResult): ValidationErrorMap | undefined => {
   if (!validationResult.error) {
     return undefined;
@@ -18,12 +24,8 @@ export const validationResultToErrorMap = (validationResult: Joi.ValidationResul
   }, {});
 };
 
-export const validateJoiSchema = <T>(
-  schema: Joi.Schema<T>,
-  body: unknown,
-  options?: Joi.ValidationOptions
-): ValidationErrorMap | undefined => {
-  const validationResult = schema.validate(body, options);
+export const validateJoiSchema = <T>(schema: Joi.Schema<T>, body: unknown): ValidationErrorMap | undefined => {
+  const validationResult = schema.validate(body, validationOptions);
 
   return validationResultToErrorMap(validationResult);
 };

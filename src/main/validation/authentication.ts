@@ -3,12 +3,6 @@ import Joi from 'joi';
 
 import { ValidationErrorMap, validateJoiSchema } from '.';
 
-const validationOptions = {
-  abortEarly: false,
-  allowUnknown: true,
-  stripUnknown: true,
-};
-
 const createDevSignInBodySchema = (validationMessages: any) =>
   Joi.object({
     email: Joi.string().trim().required().messages({
@@ -27,10 +21,9 @@ const localAuthoritySelectionBodySchema = (validationMessages: any) =>
   });
 
 export const validateDevSignInBody = (body: unknown, validationMessages: unknown): ValidationErrorMap | undefined =>
-  validateJoiSchema(createDevSignInBodySchema(validationMessages), body, validationOptions);
+  validateJoiSchema(createDevSignInBodySchema(validationMessages), body);
 
 export const validateLocalAuthoritySelectionBody = (
   body: unknown,
   validationMessages: unknown
-): ValidationErrorMap | undefined =>
-  validateJoiSchema(localAuthoritySelectionBodySchema(validationMessages), body, validationOptions);
+): ValidationErrorMap | undefined => validateJoiSchema(localAuthoritySelectionBodySchema(validationMessages), body);
