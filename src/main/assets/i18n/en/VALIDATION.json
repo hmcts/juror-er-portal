@@ -6,7 +6,8 @@
     "LOGIN_FAILED": "Unable to sign in with the provided email address",
     "USER_NOT_FOUND": "No account found for the provided email address",
     "USER_INACTIVE": "Account is marked as inactive",
-    "AZURE_NOT_CONFIGURED": "Azure authentication is not configured"
+    "AZURE_NOT_CONFIGURED": "Azure authentication is not configured",
+    "LOCAL_AUTHORITY_REQUIRED": "Select the local authority you want to manage"
   },
   "FILE_UPLOAD": {
     "FILE_REQUIRED": "Choose a file to upload",

@@ -1,6 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import Joi from 'joi';
 
+import { ValidationErrorMap, validateJoiSchema } from '.';
+
 const validationOptions = {
   abortEarly: false,
   allowUnknown: true,
@@ -10,17 +12,25 @@ const validationOptions = {
 const createDevSignInBodySchema = (validationMessages: any) =>
   Joi.object({
     email: Joi.string().trim().required().messages({
-      'any.required': validationMessages.LOGIN.EMAIL_REQUIRED,
-      'string.empty': validationMessages.LOGIN.EMAIL_REQUIRED,
+      'any.required': validationMessages.EMAIL_REQUIRED,
+      'string.empty': validationMessages.EMAIL_REQUIRED,
     }),
   });
 
-export const localAuthoritySelectionBodySchema = Joi.object({
-  la: Joi.string().trim().min(1).required(),
-});
+const localAuthoritySelectionBodySchema = (validationMessages: any) =>
+  Joi.object({
+    laCode: Joi.string().trim().min(1).required().messages({
+      'any.required': validationMessages.LOCAL_AUTHORITY_REQUIRED,
+      'string.empty': validationMessages.LOCAL_AUTHORITY_REQUIRED,
+      'string.min': validationMessages.LOCAL_AUTHORITY_REQUIRED,
+    }),
+  });
 
-export const validateDevSignInBody = (body: unknown, validationMessages: unknown): Joi.ValidationResult =>
-  createDevSignInBodySchema(validationMessages).validate(body, validationOptions);
+export const validateDevSignInBody = (body: unknown, validationMessages: unknown): ValidationErrorMap | undefined =>
+  validateJoiSchema(createDevSignInBodySchema(validationMessages), body, validationOptions);
 
-export const validateLocalAuthoritySelectionBody = (body: unknown): Joi.ValidationResult =>
-  localAuthoritySelectionBodySchema.validate(body, validationOptions);
+export const validateLocalAuthoritySelectionBody = (
+  body: unknown,
+  validationMessages: unknown
+): ValidationErrorMap | undefined =>
+  validateJoiSchema(localAuthoritySelectionBodySchema(validationMessages), body, validationOptions);
