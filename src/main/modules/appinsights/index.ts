@@ -10,11 +10,9 @@ export class AppInsights {
       return;
     }
 
-    const appInsightsConfiguration = appInsights.setup(connectionString);
+    appInsights.setup(connectionString).setAutoCollectConsole(true, true).setSendLiveMetrics(true).start();
 
     appInsights.defaultClient.context.tags[appInsights.defaultClient.context.keys.cloudRole] = 'juror-er-portal';
-
-    appInsightsConfiguration.setAutoCollectConsole(true, true).setSendLiveMetrics(true).start();
 
     appInsights.defaultClient.trackTrace({
       message: 'App insights activated',
