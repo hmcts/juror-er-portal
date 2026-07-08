@@ -225,11 +225,6 @@ export default function (app: Application): void {
         uploadDetails.otherInformation = val;
         formData.otherInformation = val;
       }
-
-      if (fieldname === 'filename') {
-        uploadDetails.fileName = sanitizeFilename(val);
-        formData.fileName = sanitizeFilename(val);
-      }
     });
 
     // Process file upload
@@ -264,7 +259,7 @@ export default function (app: Application): void {
         uploadDetails.fileMimeType = '';
         uploadDetails.fileExtension = '';
       } else {
-        uploadDetails.fileName = fileInfo.filename.trim();
+        uploadDetails.fileName = sanitizeFilename(fileInfo.filename.trim());
         uploadDetails.fileMimeType = fileInfo.mimeType;
         uploadDetails.fileExtension = path.extname(fileInfo.filename).toLowerCase();
 
