@@ -3,6 +3,7 @@ import { Application } from 'express';
 import { app as myApp } from '../app';
 
 const healthcheck = require('@hmcts/nodejs-healthcheck');
+
 const pkg = require('../../../package.json');
 
 process.env.PACKAGES_NAME ??= pkg.name;
