@@ -13,7 +13,7 @@ import errors from '../modules/errors';
 import { authDAO, laListDAO } from '../objects/login';
 
 export default function (app: Application): void {
-  const csrfProtection = csrf({ cookie: true });
+  const csrfProtection = csrf();
 
   if (process.env.NODE_ENV === 'development' || process.env.SKIP_SSO === 'true') {
     app.post('/dev/sign-in', csrfProtection, async (req, res) => {
@@ -45,7 +45,7 @@ export default function (app: Application): void {
     }
   });
 
-  app.get('/auth/la-list', async (req, res) => {
+  app.get('/auth/la-list', csrfProtection, async (req, res) => {
     const body = { email: req.session.email || req.session.authentication?.username };
     if (!body) {
       req.session.errors = { email: 'Email is required for local authority list' };
@@ -89,11 +89,12 @@ export default function (app: Application): void {
       selectedLa: req.session.selectedLa, // this only gets set if the user is authenticated
       postUrl: '/auth/la-list',
       cancelUrl: '/',
+      csrftoken: req.csrfToken(),
       errors: tmpErrors,
     });
   });
 
-  app.post('/auth/la-list', async (req, res) => {
+  app.post('/auth/la-list', csrfProtection, async (req, res) => {
     const laCode = req.body.la?.split('-').pop();
     const body = { email: req.session.email || req.session?.authentication?.username, laCode };
 

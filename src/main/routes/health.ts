@@ -4,6 +4,12 @@ import { app as myApp } from '../app';
 
 const healthcheck = require('@hmcts/nodejs-healthcheck');
 
+const pkg = require('../../../package.json');
+
+process.env.PACKAGES_NAME ??= pkg.name;
+process.env.PACKAGES_PROJECT ??= pkg.name;
+process.env.PACKAGES_ENVIRONMENT ??= myApp.locals.ENV;
+
 function shutdownCheck(): boolean {
   return myApp.locals.shutdown;
 }

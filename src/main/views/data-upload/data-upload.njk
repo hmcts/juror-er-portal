@@ -30,6 +30,14 @@
 
   {% include "includes/errors.njk" %}
 
+  <noscript>
+    {{ mojAlert({
+      variant: "warning",
+      title: text.DATA_UPLOAD.JAVASCRIPT_REQUIRED_MESSAGE,
+      role: "alert"
+    }) }}
+  </noscript>
+
   {% set citizensOverAgeCheckedYes = undefined %}
   {% set citizensOverAgeCheckedNo = undefined %}
   {% if formData.citizensOverAge === 'Yes' %}
@@ -92,6 +100,7 @@
           <input type="hidden" id="citizensOverAgeVal" name="citizensOverAgeVal" value="">
           <input type="hidden" id="electorTypesVal" name="electorTypesVal" value="">
           <input type="hidden" id="otherInformationVal" name="otherInformationVal" value="">
+          <input type="hidden" id="javascriptEnabled" name="javascriptEnabled" value="false">
 
           <h2 class="govuk-heading-m">{{ text.DATA_UPLOAD.UPLOAD_SECTION_HEADING }}</h2>
           <p class="govuk-body">
@@ -220,9 +229,11 @@
           }) }}
 
           {# Submit button #}
+          {# Enabled only if javascript is available in browser #}
           {{ govukButton({
             text: text.DATA_UPLOAD.SUBMIT_BUTTON,
             type: "submit",
+            disabled: true,
             attributes: {
               id: "submitButton"
             }

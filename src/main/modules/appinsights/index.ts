@@ -13,6 +13,7 @@ export class AppInsights {
     appInsights.setup(connectionString).setAutoCollectConsole(true, true).setSendLiveMetrics(true).start();
 
     appInsights.defaultClient.context.tags[appInsights.defaultClient.context.keys.cloudRole] = 'juror-er-portal';
+
     appInsights.defaultClient.trackTrace({
       message: 'App insights activated',
     });
