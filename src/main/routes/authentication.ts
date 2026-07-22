@@ -11,15 +11,17 @@ import { authConfig } from '../modules/auth/azure/authConfig';
 import { acquireTokenByCode, getAuthCodeUrl } from '../modules/auth/azure/authProvider';
 import errors from '../modules/errors';
 import { authDAO, laListDAO } from '../objects/login';
+import { validateDevSignInBody, validateLocalAuthoritySelectionBody } from '../validation/authentication';
 
 export default function (app: Application): void {
   const csrfProtection = csrf();
 
   if (process.env.NODE_ENV === 'development' || process.env.SKIP_SSO === 'true') {
     app.post('/dev/sign-in', csrfProtection, async (req, res) => {
-      if (!req.body?.email) {
+      const validationResult = validateDevSignInBody(req.body, res.locals.text.VALIDATION.LOGIN);
+      if (typeof validationResult !== 'undefined') {
         app.logger.warn('No email provided for dev login');
-        req.session.errors = { email: res.locals.text.VALIDATION.LOGIN.EMAIL_REQUIRED };
+        req.session.errors = validationResult;
         return res.redirect('/');
       }
 
@@ -98,8 +100,9 @@ export default function (app: Application): void {
     const laCode = req.body.la?.split('-').pop();
     const body = { email: req.session.email || req.session?.authentication?.username, laCode };
 
-    if (!laCode) {
-      req.session.errors = { laList: 'Select the local authority you want to manage' };
+    const validationResult = validateLocalAuthoritySelectionBody(body, res.locals.text.VALIDATION.LOGIN);
+    if (typeof validationResult !== 'undefined' || !laCode) {
+      req.session.errors = validationResult;
 
       return res.redirect('/auth/la-list');
     }
