@@ -19,6 +19,10 @@ variable "aks_subscription_id" {
   description = "The aks subscription ID"
 }
 
+variable "private_dns_subscription_id" {
+  default = "1baf5470-1c3e-40d3-a6f7-74bfbce4b348"
+}
+
 variable "tenant_id" {
   description = "The Azure AD tenant ID for authenticating to key vault"
 }
