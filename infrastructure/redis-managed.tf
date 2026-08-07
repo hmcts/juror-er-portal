@@ -1,5 +1,5 @@
 locals {
-  managed_redis_environments = ["demo", "ithc", "test", "stg"]
+  managed_redis_environments = ["demo", "ithc", "test", "stg", "prod"]
   managed_redis_enabled_envs = contains(local.managed_redis_environments, var.env) ? toset([var.env]) : toset([])
 
   managed_redis_vnet_rg_name = "ss-${var.env}-network-rg"
