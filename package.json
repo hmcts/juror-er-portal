@@ -149,17 +149,21 @@
     "**/*.{js,ts}": "eslint --fix"
   },
   "resolutions": {
+    "@hono/node-server@npm:^1.19.9": "^1.19.17",
+    "axios@npm:1.16.1": "^1.19.0",
     "csurf/cookie": "^0.7.0",
     "fast-uri": "^3.1.5",
     "ip-address": "^10.3.1",
     "js-yaml@npm:^4.0.0": "4.3.1",
     "js-yaml@npm:^4.1.0": "4.3.1",
     "js-yaml@npm:^4.1.1": "4.3.1",
+    "minimatch@npm:9.0.3": "^9.0.9",
     "minimatch@npm:10.2.5/brace-expansion": "^5.0.9",
     "postcss@npm:^8.4.40": "8.5.26",
     "postcss@npm:^8.5.16": "8.5.26",
     "undici@npm:^7.19.0": "7.29.0",
-    "undici@npm:^8.4.1": "8.9.0"
+    "undici@npm:^8.4.1": "^8.9.0",
+    "uuid@npm:11.1.0": "^11.1.1"
   },
   "packageManager": "yarn@4.12.0"
 }
