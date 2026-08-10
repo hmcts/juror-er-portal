@@ -7,18 +7,29 @@ nodejs:
     juror:
       secrets:
         - name: er-portal-sessionSecret
+          alias: er-portal-sessionSecret
         - name: er-portal-jwtKey
+          alias: er-portal-jwtKey
         - name: er-portal-jwtNoAuthKey
+          alias: er-portal-jwtNoAuthKey
         - name: er-portal-jwtTTL
+          alias: er-portal-jwtTTL
         - name: app-insights-connection-string
-        - name: er-portal-redisConnection
+          alias: app-insights-connection-string
+        - name: er-portal-managedRedisConnection
+          alias: er-portal-redisConnection
         - name: er-portal-storage-connection-string
+          alias: er-portal-storage-connection-string
         - name: er-portal-azure-tenant-id
+          alias: er-portal-azure-tenant-id
         - name: er-portal-azure-app-id
+          alias: er-portal-azure-app-id
         - name: er-portal-azure-client-secret
+          alias: er-portal-azure-client-secret
   environment:
     API_ENDPOINT: https://juror-api.{{ .Values.global.environment }}.platform.hmcts.net/api/v1
     ALLOW_CONFIG_MUTATIONS: true
     REDIRECT_URI: https://juror-er.{{ .Values.global.environment }}.apps.hmcts.net/auth/redirect
     POST_LOGOUT_REDIRECT_URI: https://juror-er.{{ .Values.global.environment }}.apps.hmcts.net
     AZURE_STORAGE_CONTAINER_NAME: er-portal
+    REDIS_CLUSTER_ENABLED: true

@@ -1,14 +1,53 @@
+import { isIP } from 'node:net';
+
 import secretsConfig from 'config';
 import { RedisStore } from 'connect-redis';
 import * as express from 'express';
 import session, { SessionOptions } from 'express-session';
-import { RedisClientType, createClient } from 'redis';
+import { RedisClientType, RedisClusterType, createClient, createCluster } from 'redis';
 
 import { Logger } from '../logger';
 
+type RedisSessionClient = RedisClientType | RedisClusterType;
+
+const createRedisSessionClient = (redisConnectionString: string): RedisSessionClient => {
+  if (process.env.REDIS_CLUSTER_ENABLED !== 'true') {
+    return createClient({
+      url: redisConnectionString,
+      pingInterval: 5000,
+      socket: {
+        keepAlive: true,
+      },
+    });
+  }
+
+  const redisUrl = new URL(redisConnectionString);
+
+  return createCluster({
+    rootNodes: [{ url: redisConnectionString }],
+    defaults: {
+      username: redisUrl.username ? decodeURIComponent(redisUrl.username) : undefined,
+      password: redisUrl.password ? decodeURIComponent(redisUrl.password) : undefined,
+      pingInterval: 5000,
+      socket: {
+        keepAlive: true,
+        tls: redisUrl.protocol === 'rediss:',
+      },
+    },
+    nodeAddressMap: address => {
+      const [host, port] = address.split(':');
+
+      return {
+        host: isIP(host) ? redisUrl.hostname : host,
+        port: Number(port),
+      };
+    },
+  });
+};
+
 export class SessionConfig {
   private _sessionExpires: number = 10 * 60 * 60; // seconds
-  private _redisClient?: RedisClientType;
+  private _redisClient?: RedisSessionClient;
 
   public start(app: express.Express): void {
     const secret: string = secretsConfig.get('secrets.juror.er-portal-sessionSecret');
@@ -26,13 +65,7 @@ export class SessionConfig {
   }
 
   private redisClient() {
-    this._redisClient = createClient({
-      url: secretsConfig.get('secrets.juror.er-portal-redisConnection'),
-      pingInterval: 5000,
-      socket: {
-        keepAlive: true,
-      },
-    });
+    this._redisClient = createRedisSessionClient(secretsConfig.get('secrets.juror.er-portal-redisConnection'));
 
     this._redisClient.connect().catch((error: unknown) => {
       Logger.instance.crit('Error connecting redis client: ', error);
