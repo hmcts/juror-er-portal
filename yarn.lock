@@ -4751,9 +4751,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"applicationinsights@npm:2.9.6":
-  version: 2.9.6
-  resolution: "applicationinsights@npm:2.9.6"
+"applicationinsights@npm:2.9.8":
+  version: 2.9.8
+  resolution: "applicationinsights@npm:2.9.8"
   dependencies:
     "@azure/core-auth": "npm:1.7.2"
     "@azure/core-rest-pipeline": "npm:1.16.3"
@@ -4772,7 +4772,7 @@ __metadata:
   peerDependenciesMeta:
     applicationinsights-native-metrics:
       optional: true
-  checksum: 10/fb0a848262c73b9e0977e37124788f171343180f19643deb7ded5a37bcb7f61b4fdd36130f6ff65d4172f87fe87382e539671b3a837b62923c9cab869f2df2b2
+  checksum: 10/e8298cea60a6c3e7a5d66f1264d85f37fcf35da33e8a6570340dbb13fc744b410b2511b83a242931bc3a3249d7a3e13678e53a75f827b432487fb6c9b9162002
   languageName: node
   linkType: hard
 
@@ -10058,7 +10058,7 @@ __metadata:
     "@types/uuid": "npm:^9.0.8"
     "@typescript-eslint/eslint-plugin": "npm:^6.21.0"
     "@typescript-eslint/parser": "npm:^6.21.0"
-    applicationinsights: "npm:2.9.6"
+    applicationinsights: "npm:2.9.8"
     axios: "npm:^1.18.1"
     axios-debug-log: "npm:1.0.0"
     babel-loader: "npm:10.1.1"
