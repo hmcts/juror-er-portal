@@ -1,0 +1,245 @@
+name: Codex implementation
+
+on:
+  workflow_call:
+    inputs:
+      issueKey:
+        description: Jira issue key
+        required: true
+        type: string
+      summary:
+        description: Jira issue summary
+        required: true
+        type: string
+      description:
+        description: Jira issue description
+        required: true
+        type: string
+      status:
+        description: Jira issue status
+        required: true
+        type: string
+      assignee:
+        description: Jira assignee
+        required: true
+        type: string
+      issueUrl:
+        description: Jira issue URL
+        required: true
+        type: string
+      initiatorDisplayName:
+        description: Display name of the Jira user who initiated the automation
+        required: false
+        default: ''
+        type: string
+      runner_label:
+        description: Repository-scoped ARC runner scale-set label
+        required: true
+        type: string
+      node_version:
+        description: Node.js version provisioned for credential-free verification
+        required: false
+        default: "22"
+        type: string
+      github_app_client_id:
+        description: Client ID of the HMCTS-owned Codex GitHub App
+        required: true
+        type: string
+      sonar_host_url:
+        description: SonarQube base URL
+        required: true
+        type: string
+      sonar_project_key:
+        description: SonarQube project key for the caller repository
+        required: true
+        type: string
+      required_status_context:
+        description: Required post-PR status context
+        required: false
+        default: continuous-integration/jenkins/pr-head
+        type: string
+      jira_notify_timeout_seconds:
+        description: Jira callback timeout
+        required: false
+        default: "10"
+        type: string
+      required_status_poll_seconds:
+        description: Required status polling interval
+        required: false
+        default: "30"
+        type: string
+      required_status_timeout_seconds:
+        description: Required status timeout
+        required: false
+        default: "2700"
+        type: string
+    secrets:
+      CODEX_OPENAI_API_KEY:
+        required: true
+      CODEX_GITHUB_APP_PRIVATE_KEY:
+        required: true
+      CODEX_JIRA_PR_NOTIFY_URL:
+        required: true
+      CODEX_SONAR_TOKEN:
+        required: false
+
+jobs:
+  plan:
+    permissions:
+      contents: read
+    uses: ./.github/workflows/codex-plan.yml
+    with:
+      issueKey: ${{ inputs.issueKey }}
+      summary: ${{ inputs.summary }}
+      description: ${{ inputs.description }}
+      status: ${{ inputs.status }}
+      assignee: ${{ inputs.assignee }}
+      issueUrl: ${{ inputs.issueUrl }}
+      initiatorDisplayName: ${{ inputs.initiatorDisplayName }}
+      runner_label: ${{ inputs.runner_label }}
+      node_version: ${{ inputs.node_version }}
+      jira_notify_timeout_seconds: ${{ inputs.jira_notify_timeout_seconds }}
+    secrets:
+      CODEX_OPENAI_API_KEY: ${{ secrets.CODEX_OPENAI_API_KEY }}
+      CODEX_JIRA_PR_NOTIFY_URL: ${{ secrets.CODEX_JIRA_PR_NOTIFY_URL }}
+
+  generate:
+    needs: plan
+    if: needs.plan.outputs.ready_to_implement == 'true'
+    permissions:
+      contents: read
+    uses: ./.github/workflows/codex-generate.yml
+    with:
+      issueKey: ${{ inputs.issueKey }}
+      summary: ${{ inputs.summary }}
+      description: ${{ inputs.description }}
+      status: ${{ inputs.status }}
+      assignee: ${{ inputs.assignee }}
+      issueUrl: ${{ inputs.issueUrl }}
+      initiatorDisplayName: ${{ inputs.initiatorDisplayName }}
+      runner_label: ${{ inputs.runner_label }}
+      node_version: ${{ inputs.node_version }}
+      jira_notify_timeout_seconds: ${{ inputs.jira_notify_timeout_seconds }}
+      ready_to_implement: ${{ needs.plan.outputs.ready_to_implement }}
+      plan_sha256: ${{ needs.plan.outputs.plan_sha256 }}
+      plan_payload: ${{ needs.plan.outputs.plan_payload }}
+      planned_path_count: ${{ needs.plan.outputs.planned_path_count }}
+      plan_trusted_sha: ${{ needs.plan.outputs.trusted_sha }}
+    secrets:
+      CODEX_OPENAI_API_KEY: ${{ secrets.CODEX_OPENAI_API_KEY }}
+      CODEX_JIRA_PR_NOTIFY_URL: ${{ secrets.CODEX_JIRA_PR_NOTIFY_URL }}
+
+  verify-and-repair:
+    needs: [plan, generate]
+    if: needs.generate.outputs.has_changes == 'true'
+    permissions:
+      contents: read
+    uses: ./.github/workflows/codex-verification.yml
+    with:
+      issueKey: ${{ inputs.issueKey }}
+      summary: ${{ inputs.summary }}
+      description: ${{ inputs.description }}
+      status: ${{ inputs.status }}
+      assignee: ${{ inputs.assignee }}
+      issueUrl: ${{ inputs.issueUrl }}
+      initiatorDisplayName: ${{ inputs.initiatorDisplayName }}
+      runner_label: ${{ inputs.runner_label }}
+      node_version: ${{ inputs.node_version }}
+      branch_name: ${{ needs.generate.outputs.branch_name }}
+      has_changes: ${{ needs.generate.outputs.has_changes }}
+      trusted_sha: ${{ needs.generate.outputs.trusted_sha }}
+      source_artifact: ${{ needs.generate.outputs.source_artifact }}
+      plan_payload: ${{ needs.plan.outputs.plan_payload }}
+      plan_sha256: ${{ needs.plan.outputs.plan_sha256 }}
+    secrets:
+      CODEX_OPENAI_API_KEY: ${{ secrets.CODEX_OPENAI_API_KEY }}
+
+  publish:
+    needs: [plan, generate, verify-and-repair]
+    if: always() && needs.generate.outputs.has_changes == 'true'
+    permissions:
+      contents: read
+    uses: ./.github/workflows/codex-publish.yml
+    with:
+      issueKey: ${{ inputs.issueKey }}
+      summary: ${{ inputs.summary }}
+      issueUrl: ${{ inputs.issueUrl }}
+      github_app_client_id: ${{ inputs.github_app_client_id }}
+      jira_notify_timeout_seconds: ${{ inputs.jira_notify_timeout_seconds }}
+      branch_name: ${{ needs.generate.outputs.branch_name }}
+      trusted_sha: ${{ needs.generate.outputs.trusted_sha }}
+      source_artifact: ${{ needs.generate.outputs.source_artifact }}
+      source_sha: ${{ needs.generate.outputs.source_sha }}
+      has_changes: ${{ needs.generate.outputs.has_changes }}
+      verification_passed: ${{ needs.verify-and-repair.outputs.passed }}
+      output_artifact: ${{ needs.verify-and-repair.outputs.output_artifact }}
+      verified_artifact: ${{ needs.verify-and-repair.outputs.verified_artifact }}
+      latest_output_artifact: ${{ needs.verify-and-repair.outputs.latest_output_artifact }}
+      latest_draft_artifact: ${{ needs.verify-and-repair.outputs.latest_draft_artifact }}
+      latest_failure_artifact: ${{ needs.verify-and-repair.outputs.latest_failure_artifact }}
+    secrets:
+      CODEX_GITHUB_APP_PRIVATE_KEY: ${{ secrets.CODEX_GITHUB_APP_PRIVATE_KEY }}
+      CODEX_JIRA_PR_NOTIFY_URL: ${{ secrets.CODEX_JIRA_PR_NOTIFY_URL }}
+
+  verify-published-pr:
+    needs: [generate, publish]
+    if: always() && needs.publish.outputs.ready_published == 'true'
+    permissions:
+      contents: read
+    uses: ./.github/workflows/codex-post-verify.yml
+    with:
+      node_version: ${{ inputs.node_version }}
+      sonar_host_url: ${{ inputs.sonar_host_url }}
+      sonar_project_key: ${{ inputs.sonar_project_key }}
+      required_status_context: ${{ inputs.required_status_context }}
+      required_status_poll_seconds: ${{ inputs.required_status_poll_seconds }}
+      required_status_timeout_seconds: ${{ inputs.required_status_timeout_seconds }}
+      branch_name: ${{ needs.publish.outputs.branch_name }}
+      trusted_sha: ${{ needs.generate.outputs.trusted_sha }}
+      source_artifact: ${{ needs.generate.outputs.source_artifact }}
+      pr_number: ${{ needs.publish.outputs.pr_number }}
+      commit_sha: ${{ needs.publish.outputs.commit_sha }}
+      output_artifact: ${{ needs.publish.outputs.output_artifact }}
+    secrets:
+      CODEX_SONAR_TOKEN: ${{ secrets.CODEX_SONAR_TOKEN }}
+
+  repair-published-pr:
+    needs: [plan, generate, publish, verify-published-pr]
+    if: always() && needs.publish.outputs.ready_published == 'true' && needs.verify-published-pr.outputs.passed == 'false'
+    permissions:
+      contents: read
+    uses: ./.github/workflows/codex-post-repair.yml
+    with:
+      issueKey: ${{ inputs.issueKey }}
+      summary: ${{ inputs.summary }}
+      description: ${{ inputs.description }}
+      status: ${{ inputs.status }}
+      assignee: ${{ inputs.assignee }}
+      issueUrl: ${{ inputs.issueUrl }}
+      initiatorDisplayName: ${{ inputs.initiatorDisplayName }}
+      runner_label: ${{ inputs.runner_label }}
+      node_version: ${{ inputs.node_version }}
+      github_app_client_id: ${{ inputs.github_app_client_id }}
+      sonar_host_url: ${{ inputs.sonar_host_url }}
+      sonar_project_key: ${{ inputs.sonar_project_key }}
+      required_status_context: ${{ inputs.required_status_context }}
+      required_status_poll_seconds: ${{ inputs.required_status_poll_seconds }}
+      required_status_timeout_seconds: ${{ inputs.required_status_timeout_seconds }}
+      jira_notify_timeout_seconds: ${{ inputs.jira_notify_timeout_seconds }}
+      branch_name: ${{ needs.publish.outputs.branch_name }}
+      trusted_sha: ${{ needs.generate.outputs.trusted_sha }}
+      source_artifact: ${{ needs.generate.outputs.source_artifact }}
+      source_sha: ${{ needs.generate.outputs.source_sha }}
+      plan_payload: ${{ needs.plan.outputs.plan_payload }}
+      plan_sha256: ${{ needs.plan.outputs.plan_sha256 }}
+      pr_number: ${{ needs.publish.outputs.pr_number }}
+      commit_sha: ${{ needs.publish.outputs.commit_sha }}
+      pr_url: ${{ needs.publish.outputs.pr_url }}
+      output_artifact: ${{ needs.publish.outputs.output_artifact }}
+      initial_passed: ${{ needs.verify-published-pr.outputs.passed }}
+      initial_failure_artifact: ${{ needs.verify-published-pr.outputs.failure_artifact }}
+    secrets:
+      CODEX_OPENAI_API_KEY: ${{ secrets.CODEX_OPENAI_API_KEY }}
+      CODEX_GITHUB_APP_PRIVATE_KEY: ${{ secrets.CODEX_GITHUB_APP_PRIVATE_KEY }}
+      CODEX_JIRA_PR_NOTIFY_URL: ${{ secrets.CODEX_JIRA_PR_NOTIFY_URL }}
+      CODEX_SONAR_TOKEN: ${{ secrets.CODEX_SONAR_TOKEN }}

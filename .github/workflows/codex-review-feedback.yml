@@ -1,0 +1,161 @@
+name: Codex PR Review Feedback
+
+on:
+  workflow_call:
+    inputs:
+      runner_label:
+        description: Repository-scoped ARC runner scale-set label
+        required: true
+        type: string
+      node_version:
+        description: Node.js version provisioned for credential-free verification
+        required: false
+        default: "22"
+        type: string
+      github_app_client_id:
+        description: Client ID of the HMCTS-owned Codex GitHub App
+        required: true
+        type: string
+      sonar_host_url:
+        description: SonarQube base URL
+        required: true
+        type: string
+      sonar_project_key:
+        description: SonarQube project key for the caller repository
+        required: true
+        type: string
+      required_status_context:
+        description: Required post-PR status context
+        required: false
+        default: continuous-integration/jenkins/pr-head
+        type: string
+      required_status_poll_seconds:
+        description: Required status polling interval
+        required: false
+        default: "30"
+        type: string
+      required_status_timeout_seconds:
+        description: Required status timeout
+        required: false
+        default: "2700"
+        type: string
+      jira_notify_timeout_seconds:
+        description: Jira callback timeout
+        required: false
+        default: "10"
+        type: string
+    secrets:
+      CODEX_OPENAI_API_KEY:
+        required: true
+      CODEX_GITHUB_APP_PRIVATE_KEY:
+        required: true
+      CODEX_SONAR_TOKEN:
+        required: false
+      CODEX_JIRA_PR_NOTIFY_URL:
+        required: true
+
+permissions:
+  contents: read
+  pull-requests: read
+  issues: read
+
+jobs:
+  intake:
+    permissions:
+      contents: read
+      pull-requests: read
+      issues: read
+    uses: ./.github/workflows/codex-review-intake.yml
+
+  generate-and-verify:
+    needs: intake
+    if: needs.intake.outputs.is_codex_pr == 'true'
+    permissions:
+      contents: read
+      pull-requests: read
+      issues: read
+    uses: ./.github/workflows/codex-review-generate.yml
+    with:
+      runner_label: ${{ inputs.runner_label }}
+      node_version: ${{ inputs.node_version }}
+      is_codex_pr: ${{ needs.intake.outputs.is_codex_pr }}
+      pr_number: ${{ needs.intake.outputs.pr_number }}
+      head_ref: ${{ needs.intake.outputs.head_ref }}
+    secrets:
+      CODEX_OPENAI_API_KEY: ${{ secrets.CODEX_OPENAI_API_KEY }}
+
+  publish:
+    needs: [intake, generate-and-verify]
+    if: always() && needs.intake.outputs.is_codex_pr == 'true' && needs.generate-and-verify.outputs.passed == 'true'
+    permissions:
+      contents: read
+    uses: ./.github/workflows/codex-review-publish.yml
+    with:
+      github_app_client_id: ${{ inputs.github_app_client_id }}
+      sonar_host_url: ${{ inputs.sonar_host_url }}
+      sonar_project_key: ${{ inputs.sonar_project_key }}
+      required_status_context: ${{ inputs.required_status_context }}
+      required_status_poll_seconds: ${{ inputs.required_status_poll_seconds }}
+      required_status_timeout_seconds: ${{ inputs.required_status_timeout_seconds }}
+      is_codex_pr: ${{ needs.intake.outputs.is_codex_pr }}
+      pr_number: ${{ needs.generate-and-verify.outputs.pr_number }}
+      head_ref: ${{ needs.generate-and-verify.outputs.head_ref }}
+      head_sha: ${{ needs.generate-and-verify.outputs.head_sha }}
+      base_sha: ${{ needs.generate-and-verify.outputs.base_sha }}
+      trusted_sha: ${{ needs.generate-and-verify.outputs.trusted_sha }}
+      verification_passed: ${{ needs.generate-and-verify.outputs.passed }}
+    secrets:
+      CODEX_GITHUB_APP_PRIVATE_KEY: ${{ secrets.CODEX_GITHUB_APP_PRIVATE_KEY }}
+      CODEX_SONAR_TOKEN: ${{ secrets.CODEX_SONAR_TOKEN }}
+
+  repair:
+    needs: [generate-and-verify, publish]
+    if: always() && needs.publish.outputs.commit_sha != '' && needs.publish.outputs.passed == 'false'
+    permissions:
+      contents: read
+    uses: ./.github/workflows/codex-review-repair.yml
+    with:
+      runner_label: ${{ inputs.runner_label }}
+      node_version: ${{ inputs.node_version }}
+      github_app_client_id: ${{ inputs.github_app_client_id }}
+      sonar_host_url: ${{ inputs.sonar_host_url }}
+      sonar_project_key: ${{ inputs.sonar_project_key }}
+      required_status_context: ${{ inputs.required_status_context }}
+      required_status_poll_seconds: ${{ inputs.required_status_poll_seconds }}
+      required_status_timeout_seconds: ${{ inputs.required_status_timeout_seconds }}
+      jira_notify_timeout_seconds: ${{ inputs.jira_notify_timeout_seconds }}
+      pr_number: ${{ needs.generate-and-verify.outputs.pr_number }}
+      head_ref: ${{ needs.generate-and-verify.outputs.head_ref }}
+      base_ref: ${{ needs.generate-and-verify.outputs.base_ref }}
+      head_sha: ${{ needs.generate-and-verify.outputs.head_sha }}
+      base_sha: ${{ needs.generate-and-verify.outputs.base_sha }}
+      trusted_sha: ${{ needs.generate-and-verify.outputs.trusted_sha }}
+      published_commit_sha: ${{ needs.publish.outputs.commit_sha }}
+      published_output_artifact: ${{ needs.publish.outputs.output_artifact }}
+      initial_passed: ${{ needs.publish.outputs.passed }}
+      initial_failure_artifact: ${{ needs.publish.outputs.failure_artifact }}
+    secrets:
+      CODEX_OPENAI_API_KEY: ${{ secrets.CODEX_OPENAI_API_KEY }}
+      CODEX_GITHUB_APP_PRIVATE_KEY: ${{ secrets.CODEX_GITHUB_APP_PRIVATE_KEY }}
+      CODEX_JIRA_PR_NOTIFY_URL: ${{ secrets.CODEX_JIRA_PR_NOTIFY_URL }}
+      CODEX_SONAR_TOKEN: ${{ secrets.CODEX_SONAR_TOKEN }}
+
+  terminal-failure:
+    needs: [intake, generate-and-verify, publish]
+    if: always() && needs.intake.outputs.is_codex_pr == 'true'
+    permissions:
+      contents: read
+    uses: ./.github/workflows/codex-review-terminal.yml
+    with:
+      github_app_client_id: ${{ inputs.github_app_client_id }}
+      jira_notify_timeout_seconds: ${{ inputs.jira_notify_timeout_seconds }}
+      is_codex_pr: ${{ needs.intake.outputs.is_codex_pr }}
+      should_run: ${{ needs.generate-and-verify.outputs.should_run }}
+      pr_number: ${{ needs.generate-and-verify.outputs.pr_number || needs.intake.outputs.pr_number }}
+      head_sha: ${{ needs.generate-and-verify.outputs.head_sha }}
+      verification_passed: ${{ needs.generate-and-verify.outputs.passed }}
+      failure_artifact: ${{ needs.generate-and-verify.outputs.failure_artifact }}
+      published_commit_sha: ${{ needs.publish.outputs.commit_sha }}
+    secrets:
+      CODEX_GITHUB_APP_PRIVATE_KEY: ${{ secrets.CODEX_GITHUB_APP_PRIVATE_KEY }}
+      CODEX_JIRA_PR_NOTIFY_URL: ${{ secrets.CODEX_JIRA_PR_NOTIFY_URL }}
