@@ -45,7 +45,7 @@ concurrency:
 
 jobs:
   implement:
-    uses: ./.github/workflows/codex-implement.yml
+    uses: hmcts/codex-agent-workflows/.github/workflows/codex-implement.yml@codex/fix-shared-workflow-self-references
     with:
       issueKey: ${{ inputs.issueKey }}
       summary: ${{ inputs.summary }}
