@@ -1,0 +1,18 @@
+#!groovy
+
+properties([
+// H allow predefined but random minute see https://en.wikipedia.org/wiki/Cron#Non-standard_characters
+pipelineTriggers([cron('H 07 * * 1-5')])
+])
+
+@Library("Infrastructure@2.5.4") _
+
+def type = "nodejs"
+def product = "juror"
+def component = "er-portal"
+
+def yarnBuilder = new uk.gov.hmcts.contino.YarnBuilder(this)
+
+withNightlyPipeline(type, product, component) {
+  enableSlackNotifications('#juror-build-notices')
+}
