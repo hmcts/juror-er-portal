@@ -8,6 +8,12 @@ describe('validation/authentication', () => {
       });
     });
 
+    test('returns a field-message map when email is omitted', () => {
+      expect(validateDevSignInBody({}, { EMAIL_REQUIRED: 'Enter an email address' })).toEqual({
+        email: 'Enter an email address',
+      });
+    });
+
     test('returns undefined when the payload is valid', () => {
       expect(
         validateDevSignInBody({ email: 'person@example.com' }, { EMAIL_REQUIRED: 'Enter an email address' })
