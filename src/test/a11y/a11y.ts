@@ -68,7 +68,14 @@ function runPally(url: string): Promise<Pa11yResult> {
     hideElements: '.govuk-footer__licence-logo, .govuk-header__logotype-crown, .govuk-footer__crown',
     timeout: 120000,
     chromeLaunchConfig: {
-      args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-dev-shm-usage'],
+      executablePath: process.env.PUPPETEER_EXECUTABLE_PATH,
+      args: [
+        '--no-sandbox',
+        '--disable-setuid-sandbox',
+        '--disable-dev-shm-usage',
+        '--disable-breakpad',
+        '--disable-crash-reporter',
+      ],
     },
   });
 }
