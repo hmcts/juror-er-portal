@@ -50,11 +50,12 @@ const puppeteer = require('puppeteer');
 const version = require('puppeteer/package.json').version;
 
 console.error(`Puppeteer version: ${version}`);
-console.log(puppeteer.executablePath());
+console.log(puppeteer.executablePath({ browser: 'chrome', headless: 'shell' }));
 NODE
 } 2> >(tee "${browser_diagnostics_dir}/puppeteer-version.log" >&2))"
 
-echo "Chrome executable: ${browser_path}"
+export PUPPETEER_EXECUTABLE_PATH="${browser_path}"
+echo "Chrome headless shell executable: ${PUPPETEER_EXECUTABLE_PATH}"
 "${browser_path}" --version 2>&1 | tee "${browser_diagnostics_dir}/chrome-version.log"
 if command -v ldd >/dev/null 2>&1; then
   ldd "${browser_path}" >"${browser_diagnostics_dir}/chrome-libraries.log" 2>&1 || true
@@ -67,10 +68,11 @@ fi
 
 set +e
 "${browser_path}" \
-  --headless=new \
   --no-sandbox \
   --disable-setuid-sandbox \
   --disable-dev-shm-usage \
+  --disable-breakpad \
+  --disable-crash-reporter \
   --dump-dom about:blank \
   >"${browser_diagnostics_dir}/chrome-preflight.stdout.log" \
   2>"${browser_diagnostics_dir}/chrome-preflight.stderr.log"
