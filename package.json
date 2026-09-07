@@ -22,7 +22,8 @@
     "test:smoke": "NODE_TLS_REJECT_UNAUTHORIZED=0 jest -c jest.smoke.config.js",
     "test:functional": "yarn playwright install && NODE_TLS_REJECT_UNAUTHORIZED=0 codeceptjs run -c src/test/codecept.conf.ts --steps",
     "cichecks": "yarn install && yarn build && yarn rebuild puppeteer && yarn lint && yarn test && yarn test:routes && yarn test:a11y",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "fortifyScan": "./fortify/gradlew -p ./fortify fortifyScan"
   },
   "dependencies": {
     "@azure/identity": "^4.13.1",
