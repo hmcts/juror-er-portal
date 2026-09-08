@@ -49,7 +49,6 @@ When investigating or reporting a vulnerability affecting HMCTS systems, reporte
 
 These guidelines are intended to protect users, services, and data while allowing good-faith security research.
 
-
 ## Bug Bounty
 
 HMCTS does not operate a paid bug bounty programme.
