@@ -150,7 +150,11 @@
     "**/*.{js,ts}": "eslint --fix"
   },
   "resolutions": {
-    "csurf/cookie": "^0.7.0"
+    "csurf/cookie": "^0.7.0",
+    "@typescript-eslint/typescript-estree/minimatch": "^9.0.7",
+    "@xmldom/xmldom": "^0.9.12",
+    "axios": "^1.20.0",
+    "codeceptjs/uuid": "^11.1.1"
   },
   "packageManager": "yarn@4.12.0"
 }
