@@ -1,0 +1,22 @@
+#!groovy
+
+properties([
+pipelineTriggers([cron('H 08 * * 1-5')])
+])
+
+@Library("Infrastructure@2.6.0") _
+
+def type = "nodejs"
+def product = "juror"
+def component = "er-portal"
+
+def yarnBuilder = new uk.gov.hmcts.contino.YarnBuilder(this)
+
+withNightlyPipeline(type, product, component) {
+  enableSlackNotifications('#juror-build-notices')
+  enableFortifyScan()
+
+  afterSuccess('fortify-scan') {
+    steps.archiveArtifacts allowEmptyArchive: true, artifacts: '**/Fortify Scan/**/*'
+  }
+}
