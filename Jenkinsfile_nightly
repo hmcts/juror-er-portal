@@ -15,6 +15,7 @@ def yarnBuilder = new uk.gov.hmcts.contino.YarnBuilder(this)
 withNightlyPipeline(type, product, component) {
   enableSlackNotifications('#juror-build-notices')
   enableFortifyScan()
+  env.FORTIFY_SCAN_RUNNER = 'repo'
 
   afterSuccess('fortify-scan') {
     steps.archiveArtifacts allowEmptyArchive: true, artifacts: '**/Fortify Scan/**/*'
