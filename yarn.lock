@@ -326,8 +326,8 @@ __metadata:
   linkType: hard
 
 "@azure/storage-blob@npm:^12.33.0":
-  version: 12.33.0
-  resolution: "@azure/storage-blob@npm:12.33.0"
+  version: 12.34.0
+  resolution: "@azure/storage-blob@npm:12.34.0"
   dependencies:
     "@azure/abort-controller": "npm:^2.1.2"
     "@azure/core-auth": "npm:^1.9.0"
@@ -340,14 +340,15 @@ __metadata:
     "@azure/core-util": "npm:^1.11.0"
     "@azure/core-xml": "npm:^1.4.5"
     "@azure/logger": "npm:^1.1.4"
-    "@azure/storage-common": "npm:^12.4.1"
+    "@azure/storage-common": "npm:^12.5.0"
+    apache-arrow: "npm:^21.1.0"
     events: "npm:^3.0.0"
     tslib: "npm:^2.8.1"
-  checksum: 10/43a0a37dca6abed02e21ff3cdfb0fc4b2580ba626536513d486bda61cf6b9a6f1cb6952828626cae8e07338fe8ed9775be398850d1ef8c9777e56f961df90f03
+  checksum: 10/9e3f2e49f7d3770ee970fc9d6edec50748a6fa4958654a4214fad88a086d16c155ad6dad2de9a1e0c12a20ef52134150a87c065085c4c5f9f3ddab0772fef656
   languageName: node
   linkType: hard
 
-"@azure/storage-common@npm:^12.4.1":
+"@azure/storage-common@npm:^12.5.0":
   version: 12.5.0
   resolution: "@azure/storage-common@npm:12.5.0"
   dependencies:
@@ -3821,6 +3822,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/node@npm:^25.2.0":
+  version: 25.9.9
+  resolution: "@types/node@npm:25.9.9"
+  dependencies:
+    undici-types: "npm:>=7.24.0 <7.24.7"
+  checksum: 10/8accbdd15bc035db3b20bf9353dabce847a5d3dd1f3976c25e67907f4fd287b00b8163f661fe48cd6d644e30a11e1dffd67e2742233209c7b7cbc500d14d394c
+  languageName: node
+  linkType: hard
+
 "@types/node@npm:^25.9.7":
   version: 25.9.7
   resolution: "@types/node@npm:25.9.7"
@@ -4775,6 +4785,20 @@ __metadata:
   version: 1.0.1
   resolution: "anynum@npm:1.0.1"
   checksum: 10/096acef76cc8b9f34d43ec37ae9ba7a3d4e2e8c722a0dd59a78995248a8eb4021713ee91b55de106366ac4eaa47578ceb0fffe9829ef01d78b20f9fd6d412a88
+  languageName: node
+  linkType: hard
+
+"apache-arrow@npm:^21.1.0":
+  version: 21.2.0
+  resolution: "apache-arrow@npm:21.2.0"
+  dependencies:
+    "@types/node": "npm:^25.2.0"
+    flatbuffers: "npm:^25.1.24"
+    json-with-bigint: "npm:^3.5.3"
+    tslib: "npm:^2.6.2"
+  bin:
+    arrow2csv: bin/arrow2csv.js
+  checksum: 10/209850cda893c54e87a65d12548120ee1b0ed071682c6113d75aba8a662a2eddfa3d507e8441658842478d56759de2078da3e6a42b57914d37fd53eed2e977b0
   languageName: node
   linkType: hard
 
@@ -7894,6 +7918,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"flatbuffers@npm:^25.1.24":
+  version: 25.9.23
+  resolution: "flatbuffers@npm:25.9.23"
+  checksum: 10/e2086e7f9b04f7932a93f6935347d8cdca0cbdcb582cd23b2b7c55aa1f831c6e33ba595c49bebe25767a945fc4698984840692baa470d61db4484e06aac4df15
+  languageName: node
+  linkType: hard
+
 "flatted@npm:^3.2.9, flatted@npm:^3.4.2":
   version: 3.4.4
   resolution: "flatted@npm:3.4.4"
@@ -9972,6 +10003,13 @@ __metadata:
   version: 5.0.1
   resolution: "json-stringify-safe@npm:5.0.1"
   checksum: 10/59169a081e4eeb6f9559ae1f938f656191c000e0512aa6df9f3c8b2437a4ab1823819c6b9fd1818a4e39593ccfd72e9a051fdd3e2d1e340ed913679e888ded8c
+  languageName: node
+  linkType: hard
+
+"json-with-bigint@npm:^3.5.3":
+  version: 3.5.12
+  resolution: "json-with-bigint@npm:3.5.12"
+  checksum: 10/096a98e435311ab7cdc645769b949cda0cc723b2f1fd0dd5e86839432a703e804a99136da658536e86b876a85d193a87066352e6723dbcc498439fc6c3c34d5c
   languageName: node
   linkType: hard
 
