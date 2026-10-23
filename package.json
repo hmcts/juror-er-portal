@@ -84,7 +84,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.29.7",
-    "@babel/eslint-parser": "7.29.7",
+    "@babel/eslint-parser": "7.29.9",
     "@babel/preset-env": "^7.29.7",
     "@codeceptjs/configure": "^1.0.6",
     "@types/chai": "^5.2.3",
