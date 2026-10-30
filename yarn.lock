@@ -203,8 +203,8 @@ __metadata:
   linkType: hard
 
 "@azure/identity@npm:^4.13.0, @azure/identity@npm:^4.13.3":
-  version: 4.13.3
-  resolution: "@azure/identity@npm:4.13.3"
+  version: 4.14.1
+  resolution: "@azure/identity@npm:4.14.1"
   dependencies:
     "@azure/abort-controller": "npm:^2.0.0"
     "@azure/core-auth": "npm:^1.9.0"
@@ -215,10 +215,10 @@ __metadata:
     "@azure/core-util": "npm:^1.11.0"
     "@azure/logger": "npm:^1.0.0"
     "@azure/msal-browser": "npm:^5.5.0"
-    "@azure/msal-node": "npm:^6.0.0"
-    open: "npm:^10.1.0"
+    "@azure/msal-node": "npm:^7.1.0"
+    open: "npm:^11.0.0"
     tslib: "npm:^2.2.0"
-  checksum: 10/0b7e8955daee613e646d89f40e3fdbb8240680df688a98eb19f00c23a21a0ad68ed62c1f18f45cc775220ff2d7afd83725f9bded872f33a3dd46c450658d1c75
+  checksum: 10/c1b6cb9fa210661b79b8413522a6e7527e376a72d120b0931a643bfae6fb27417296700d65ddb5a0a7f54e8e9213aae7f91f48e21532f8dd5da30abbd60d9755
   languageName: node
   linkType: hard
 
@@ -290,6 +290,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@azure/msal-common@npm:16.15.0":
+  version: 16.15.0
+  resolution: "@azure/msal-common@npm:16.15.0"
+  checksum: 10/359f55848b13bbf3bc27281ec89f3c886e5a38ed4dee74d19a62e87569d14eb085aaec18081ebf56bddd4719034ff8e563ff22186faf2e0ab8025deee93e5dcc
+  languageName: node
+  linkType: hard
+
 "@azure/msal-node@npm:^5.6.0":
   version: 5.6.0
   resolution: "@azure/msal-node@npm:5.6.0"
@@ -300,13 +307,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@azure/msal-node@npm:^6.0.0":
-  version: 6.0.1
-  resolution: "@azure/msal-node@npm:6.0.1"
+"@azure/msal-node@npm:^7.1.0":
+  version: 7.1.2
+  resolution: "@azure/msal-node@npm:7.1.2"
   dependencies:
-    "@azure/msal-common": "npm:16.14.1"
+    "@azure/msal-common": "npm:16.15.0"
     jsonwebtoken: "npm:^9.0.0"
-  checksum: 10/75c8f2d42f0b905b14b0f0cea19efb5f1abff921e6ee2abd021a398b83a1dee6f18d31568f3fb8d3d46fc78d8be6db935a125fc4abe4b7bb674ec6bc74b91dc3
+  checksum: 10/22ae1c46b645c3c31634be2681b3f11f41231a52058318f0bdb9d5901b15de3f935ba86402e5066624c61412dd5102b7b452dfa804c0866736762974d05a012f
   languageName: node
   linkType: hard
 
@@ -326,8 +333,8 @@ __metadata:
   linkType: hard
 
 "@azure/storage-blob@npm:^12.33.0":
-  version: 12.33.0
-  resolution: "@azure/storage-blob@npm:12.33.0"
+  version: 12.34.0
+  resolution: "@azure/storage-blob@npm:12.34.0"
   dependencies:
     "@azure/abort-controller": "npm:^2.1.2"
     "@azure/core-auth": "npm:^1.9.0"
@@ -340,14 +347,15 @@ __metadata:
     "@azure/core-util": "npm:^1.11.0"
     "@azure/core-xml": "npm:^1.4.5"
     "@azure/logger": "npm:^1.1.4"
-    "@azure/storage-common": "npm:^12.4.1"
+    "@azure/storage-common": "npm:^12.5.0"
+    apache-arrow: "npm:^21.1.0"
     events: "npm:^3.0.0"
     tslib: "npm:^2.8.1"
-  checksum: 10/43a0a37dca6abed02e21ff3cdfb0fc4b2580ba626536513d486bda61cf6b9a6f1cb6952828626cae8e07338fe8ed9775be398850d1ef8c9777e56f961df90f03
+  checksum: 10/9e3f2e49f7d3770ee970fc9d6edec50748a6fa4958654a4214fad88a086d16c155ad6dad2de9a1e0c12a20ef52134150a87c065085c4c5f9f3ddab0772fef656
   languageName: node
   linkType: hard
 
-"@azure/storage-common@npm:^12.4.1":
+"@azure/storage-common@npm:^12.5.0":
   version: 12.5.0
   resolution: "@azure/storage-common@npm:12.5.0"
   dependencies:
@@ -3821,6 +3829,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/node@npm:^25.2.0":
+  version: 25.9.9
+  resolution: "@types/node@npm:25.9.9"
+  dependencies:
+    undici-types: "npm:>=7.24.0 <7.24.7"
+  checksum: 10/8accbdd15bc035db3b20bf9353dabce847a5d3dd1f3976c25e67907f4fd287b00b8163f661fe48cd6d644e30a11e1dffd67e2742233209c7b7cbc500d14d394c
+  languageName: node
+  linkType: hard
+
 "@types/node@npm:^25.9.7":
   version: 25.9.7
   resolution: "@types/node@npm:25.9.7"
@@ -4775,6 +4792,20 @@ __metadata:
   version: 1.0.1
   resolution: "anynum@npm:1.0.1"
   checksum: 10/096acef76cc8b9f34d43ec37ae9ba7a3d4e2e8c722a0dd59a78995248a8eb4021713ee91b55de106366ac4eaa47578ceb0fffe9829ef01d78b20f9fd6d412a88
+  languageName: node
+  linkType: hard
+
+"apache-arrow@npm:^21.1.0":
+  version: 21.2.0
+  resolution: "apache-arrow@npm:21.2.0"
+  dependencies:
+    "@types/node": "npm:^25.2.0"
+    flatbuffers: "npm:^25.1.24"
+    json-with-bigint: "npm:^3.5.3"
+    tslib: "npm:^2.6.2"
+  bin:
+    arrow2csv: bin/arrow2csv.js
+  checksum: 10/209850cda893c54e87a65d12548120ee1b0ed071682c6113d75aba8a662a2eddfa3d507e8441658842478d56759de2078da3e6a42b57914d37fd53eed2e977b0
   languageName: node
   linkType: hard
 
@@ -6504,7 +6535,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"default-browser@npm:^5.2.1":
+"default-browser@npm:^5.5.1":
   version: 5.5.1
   resolution: "default-browser@npm:5.5.1"
   dependencies:
@@ -7894,6 +7925,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"flatbuffers@npm:^25.1.24":
+  version: 25.9.23
+  resolution: "flatbuffers@npm:25.9.23"
+  checksum: 10/e2086e7f9b04f7932a93f6935347d8cdca0cbdcb582cd23b2b7c55aa1f831c6e33ba595c49bebe25767a945fc4698984840692baa470d61db4484e06aac4df15
+  languageName: node
+  linkType: hard
+
 "flatted@npm:^3.2.9, flatted@npm:^3.4.2":
   version: 3.4.4
   resolution: "flatted@npm:3.4.4"
@@ -9042,6 +9080,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"is-in-ssh@npm:^1.0.0":
+  version: 1.0.0
+  resolution: "is-in-ssh@npm:1.0.0"
+  checksum: 10/d55cb39afdbca0cdc94cd493da7819c00d35048ea04fc1624aabde6e0c86aa6b91ddb38b2baf73c4b5d53cc8fbf1a8dfbf2e315594a808474b751ffb6b0d3e58
+  languageName: node
+  linkType: hard
+
 "is-inside-container@npm:^1.0.0":
   version: 1.0.0
   resolution: "is-inside-container@npm:1.0.0"
@@ -9972,6 +10017,13 @@ __metadata:
   version: 5.0.1
   resolution: "json-stringify-safe@npm:5.0.1"
   checksum: 10/59169a081e4eeb6f9559ae1f938f656191c000e0512aa6df9f3c8b2437a4ab1823819c6b9fd1818a4e39593ccfd72e9a051fdd3e2d1e340ed913679e888ded8c
+  languageName: node
+  linkType: hard
+
+"json-with-bigint@npm:^3.5.3":
+  version: 3.5.12
+  resolution: "json-with-bigint@npm:3.5.12"
+  checksum: 10/096a98e435311ab7cdc645769b949cda0cc723b2f1fd0dd5e86839432a703e804a99136da658536e86b876a85d193a87066352e6723dbcc498439fc6c3c34d5c
   languageName: node
   linkType: hard
 
@@ -11234,15 +11286,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"open@npm:^10.1.0":
-  version: 10.2.0
-  resolution: "open@npm:10.2.0"
+"open@npm:^11.0.0":
+  version: 11.0.4
+  resolution: "open@npm:11.0.4"
   dependencies:
-    default-browser: "npm:^5.2.1"
+    default-browser: "npm:^5.5.1"
     define-lazy-prop: "npm:^3.0.0"
+    is-in-ssh: "npm:^1.0.0"
     is-inside-container: "npm:^1.0.0"
-    wsl-utils: "npm:^0.1.0"
-  checksum: 10/e6ad9474734eac3549dcc7d85e952394856ccaee48107c453bd6a725b82e3b8ed5f427658935df27efa76b411aeef62888edea8a9e347e8e7c82632ec966b30e
+    powershell-utils: "npm:^0.2.1"
+    wsl-utils: "npm:^1.0.0"
+  checksum: 10/2fa3c00154f4c23a336dac94b52ea351b0bab18072c32c18f1219a1372e05f413065aeaaa06d5cc5ef60501b6903d90fd2bcd3f2f8449d007e93512d031f4434
   languageName: node
   linkType: hard
 
@@ -11750,6 +11804,13 @@ __metadata:
     picocolors: "npm:^1.1.1"
     source-map-js: "npm:^1.2.1"
   checksum: 10/c34814c1da499f370cd3b02a085a2d866989a966629b7bd4025f4a2a10d538a2ec83dc3181e1008550edb4cf44e49a0c40ec82332b08d9600877e6841240ad05
+  languageName: node
+  linkType: hard
+
+"powershell-utils@npm:^0.2.0, powershell-utils@npm:^0.2.1":
+  version: 0.2.1
+  resolution: "powershell-utils@npm:0.2.1"
+  checksum: 10/8a5b5db6af7fbaf61252c0b8627da1fdfc1c9dd111721923557460cc250373cde56cc059b34188ba8012c64a1f34cb0913b10e70bb43e73806b5974af31b1c66
   languageName: node
   linkType: hard
 
@@ -14439,12 +14500,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"wsl-utils@npm:^0.1.0":
-  version: 0.1.0
-  resolution: "wsl-utils@npm:0.1.0"
+"wsl-utils@npm:^1.0.0":
+  version: 1.0.1
+  resolution: "wsl-utils@npm:1.0.1"
   dependencies:
     is-wsl: "npm:^3.1.0"
-  checksum: 10/de4c92187e04c3c27b4478f410a02e81c351dc85efa3447bf1666f34fc80baacd890a6698ec91995631714086992036013286aea3d77e6974020d40a08e00aec
+    powershell-utils: "npm:^0.2.0"
+  checksum: 10/24b4b83795eca684948fdf093165ee34ee775eca33d6fc298cb9f89b6504233f7047b976d1b09bb15c31510d1b40d208ae6c542819f86eb355040fa6bdd7a31e
   languageName: node
   linkType: hard
 
