@@ -1,5 +1,5 @@
 # ---- Base image ----
-FROM hmctsprod.azurecr.io/base/node:22-alpine as base
+FROM hmctsprod.azurecr.io/base/node:24-alpine AS base
 COPY package.json yarn.lock ./
 
 USER root

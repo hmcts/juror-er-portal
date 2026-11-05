@@ -3821,12 +3821,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:^25.9.7":
-  version: 25.9.7
-  resolution: "@types/node@npm:25.9.7"
+"@types/node@npm:^24.19.2":
+  version: 24.19.2
+  resolution: "@types/node@npm:24.19.2"
   dependencies:
     undici-types: "npm:>=7.24.0 <7.24.7"
-  checksum: 10/13116cb71f251b156f527b5e742e1fc3cc4687da9fe1e09f76cbb3a4f144091daec0191442fa35c7ec70696ec9fd5bbb9bbfc27fe0c5321f0c368728d8958482
+  checksum: 10/5bc31df093f2866db0a2f9df0a1e99c2a46c3154ca2dc62ee14bde7af216d6361e4737e1023880921007ccb326b8559980e239e18a6fa927cda507da9383225c
   languageName: node
   linkType: hard
 
@@ -10057,7 +10057,7 @@ __metadata:
     "@types/jest": "npm:^30.0.0"
     "@types/jsonwebtoken": "npm:^9.0.10"
     "@types/lodash": "npm:4.17.25"
-    "@types/node": "npm:^25.9.7"
+    "@types/node": "npm:^24.19.2"
     "@types/nunjucks": "npm:3.2.6"
     "@types/pa11y": "npm:^5.3.7"
     "@types/require-directory": "npm:2.1.7"
