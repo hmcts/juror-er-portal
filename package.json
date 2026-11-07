@@ -35,7 +35,7 @@
     "@hmcts/properties-volume": "1.4.1",
     "@ministryofjustice/frontend": "^9.0.0",
     "@types/body-parser": "1.19.6",
-    "@types/busboy": "1.5.4",
+    "@types/busboy": "1.5.5",
     "@types/config": "3.3.5",
     "@types/cookie-parser": "1.4.10",
     "@types/csurf": "1.11.5",
