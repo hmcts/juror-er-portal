@@ -3551,12 +3551,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/busboy@npm:1.5.4":
-  version: 1.5.4
-  resolution: "@types/busboy@npm:1.5.4"
+"@types/busboy@npm:1.5.5":
+  version: 1.5.5
+  resolution: "@types/busboy@npm:1.5.5"
   dependencies:
     "@types/node": "npm:*"
-  checksum: 10/43cdd26754603fbee81f538ac52769f2cc8445d5f238666845d99a9fee22e0b608a075d0c346f78c43ade4ce4ec04433a51a1ffa21524ca29ead9d2375f4ec9c
+  checksum: 10/dc1c54194b32bc888bed336dc835dbef99b030dad9c1ade0ad78d3c0843898b20354de575b506b141898f2f8e4aa37a15d6311e108279253d3e49ae7cfb8c677
   languageName: node
   linkType: hard
 
@@ -10043,7 +10043,7 @@ __metadata:
     "@hmcts/properties-volume": "npm:1.4.1"
     "@ministryofjustice/frontend": "npm:^9.0.0"
     "@types/body-parser": "npm:1.19.6"
-    "@types/busboy": "npm:1.5.4"
+    "@types/busboy": "npm:1.5.5"
     "@types/chai": "npm:^5.2.3"
     "@types/chai-as-promised": "npm:8.0.2"
     "@types/config": "npm:3.3.5"
