@@ -1,9 +1,9 @@
 {
   "name": "juror-er-portal",
-  "version": "5.34.0",
+  "version": "5.35.0",
   "private": true,
   "engines": {
-    "node": ">=22.0.0"
+    "node": ">=24.0.0"
   },
   "scripts": {
     "start": "NODE_ENV=production tsx src/main/server.ts",
