@@ -10,7 +10,7 @@ import { logout } from '../modules/auth';
 import { authConfig } from '../modules/auth/azure/authConfig';
 import { acquireTokenByCode, getAuthCodeUrl } from '../modules/auth/azure/authProvider';
 import errors from '../modules/errors';
-import { authDAO, laListDAO } from '../objects/login';
+import { authDAO, devLoginDAO, laListDAO } from '../objects/login';
 import { validateDevSignInBody, validateLocalAuthoritySelectionBody } from '../validation/authentication';
 
 export default function (app: Application): void {
@@ -25,8 +25,20 @@ export default function (app: Application): void {
         return res.redirect('/');
       }
 
-      req.session.email = req.body.email;
+      let response;
+      try {
+        response = await devLoginDAO.post(app, { email: req.body.email });
+      } catch (err) {
+        app.logger.crit('Failed to perform dev login', {
+          email: req.body.email,
+          error: typeof err.error !== 'undefined' ? err.error : err.toString(),
+        });
+        req.session.errors = { email: res.locals.text.VALIDATION.LOGIN.LOGIN_FAILED };
+        return res.redirect('/');
+      }
+
       req.session.isDevLogin = true;
+      req.session.objectId = response.objectId;
 
       return res.redirect('/auth/la-list');
     });
@@ -48,9 +60,9 @@ export default function (app: Application): void {
   });
 
   app.get('/auth/la-list', csrfProtection, async (req, res) => {
-    const body = { email: req.session.email || req.session.authentication?.username };
-    if (!body) {
-      req.session.errors = { email: 'Email is required for local authority list' };
+    const body = { objectId: req.session.objectId || req.session.authentication?.objectId };
+    if (!body.objectId) {
+      req.session.errors = { objectId: 'Object ID is required for local authority list' };
 
       return res.redirect('/');
     }
@@ -60,7 +72,7 @@ export default function (app: Application): void {
       localAuthorityList = await laListDAO.post(app, body);
     } catch (err) {
       app.logger.crit('Failed to get local authority list', {
-        email: body.email,
+        objectId: body.objectId,
         error: typeof err.error !== 'undefined' ? err.error : err.toString(),
       });
       req.session.errors = { email: res.locals.text.VALIDATION.LOGIN.LOGIN_FAILED };
@@ -69,15 +81,15 @@ export default function (app: Application): void {
 
     if (localAuthorityList.length === 1) {
       try {
-        await doLogin(app)(req, res, localAuthorityList[0].laCode, { email: body.email });
+        await doLogin(app)(req, res, localAuthorityList[0].laCode, { objectId: body.objectId });
         return res.redirect('/data-upload');
       } catch (err) {
         app.logger.crit('Failed to log in using a single local authority', {
-          email: body.email,
+          objectId: body.objectId,
           error: typeof err.error !== 'undefined' ? err.error : err.toString(),
         });
-        req.session.formFields = { email: body.email };
-        req.session.errors = { email: handleLoginError(res, err.error) };
+        req.session.formFields = { objectId: body.objectId };
+        req.session.errors = { objectId: handleLoginError(res, err.error) };
         return res.redirect('/');
       }
     }
@@ -87,7 +99,7 @@ export default function (app: Application): void {
 
     res.render('login/la-list.njk', {
       laList: localAuthorityList,
-      email: req.session.email,
+      objectId: req.session.objectId,
       selectedLa: req.session.selectedLa, // this only gets set if the user is authenticated
       postUrl: '/auth/la-list',
       cancelUrl: '/',
@@ -98,7 +110,7 @@ export default function (app: Application): void {
 
   app.post('/auth/la-list', csrfProtection, async (req, res) => {
     const laCode = req.body.la?.split('-').pop();
-    const body = { email: req.session.email || req.session?.authentication?.username, laCode };
+    const body = { objectId: req.session.objectId || req.session?.authentication?.objectId, laCode };
 
     const validationResult = validateLocalAuthoritySelectionBody(body, res.locals.text.VALIDATION.LOGIN);
     if (typeof validationResult !== 'undefined' || !laCode) {
@@ -112,11 +124,11 @@ export default function (app: Application): void {
       return res.redirect('/data-upload');
     } catch (err) {
       app.logger.crit('Failed to log in when selecting a local authority', {
-        email: body.email,
+        objectId: body.objectId,
         error: typeof err.error !== 'undefined' ? err.error : err.toString(),
       });
-      req.session.formFields = { email: body.email };
-      req.session.errors = { email: handleLoginError(res, err.error) };
+      req.session.formFields = { objectId: body.objectId };
+      req.session.errors = { objectId: handleLoginError(res, err.error) };
       return res.redirect('/');
     }
   });
@@ -146,9 +158,9 @@ export default function (app: Application): void {
       return errors(req, res, 400, '/');
     }
 
-    const email = idTokenClaims.preferred_username;
+    const objectId = idTokenClaims.oid;
 
-    req.session.email = email;
+    req.session.objectId = objectId;
 
     return res.redirect('/auth/la-list');
   });
@@ -179,7 +191,7 @@ export const doLogin =
     if (req.session.authToken) {
       req.session.authentication = jwt.decode(req.session.authToken) as JwtPayload;
     }
-    delete req.session.email;
+    delete req.session.objectId;
 
     app.logger.info('User logged in', {
       auth: req.session.authentication,
