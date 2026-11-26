@@ -2,7 +2,8 @@ import { AxiosRequestConfig, AxiosResponse } from 'axios';
 import secretsConfig from 'config';
 import { Application } from 'express';
 import _ from 'lodash';
-import { replaceAllObjKeys } from 'modules/utils';
+
+import { replaceAllObjKeys } from '../modules/utils';
 
 const jwt = require('jsonwebtoken');
 
